@@ -1,0 +1,4568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5" />
+<meta name="theme-color" content="#232326" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>HEX — PDF Studio</title>
+<style>
+  /* ============================================================
+     THEME
+     ============================================================ */
+  :root{
+    --bg:#1a1a1c;
+    --panel:#232326;
+    --panel-2:#2b2b2f;
+    --bar:#2f2f33;
+    --bar-2:#37373c;
+    --border:#3d3d43;
+    --border-soft:#333338;
+    --text:#e8e8ea;
+    --text-dim:#9a9aa2;
+    --text-dim2:#6f6f78;
+    --accent:#1473e6;
+    --accent-hover:#0d66d0;
+    --accent-soft:rgba(20,115,230,.18);
+    --danger:#e34850;
+    --success:#2d9d78;
+    --warn:#e8a33d;
+    --radius:6px;
+    --shadow:0 10px 34px rgba(0,0,0,.55);
+
+    --topbar-h:56px;
+    --mobile-nav-h:58px;
+    --mobile-toolbar-h:50px;
+    --safe-top:env(safe-area-inset-top, 0px);
+    --safe-bottom:env(safe-area-inset-bottom, 0px);
+    --safe-left:env(safe-area-inset-left, 0px);
+    --safe-right:env(safe-area-inset-right, 0px);
+  }
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+    font-size:13px;
+    background:var(--bg);
+    color:var(--text);
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overscroll-behavior:none;
+  }
+  button{font-family:inherit;font-size:inherit;color:inherit;}
+  input,select,textarea{font-family:inherit;}
+  ::-webkit-scrollbar{width:11px;height:11px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:#4a4a52;border-radius:6px;border:3px solid transparent;background-clip:content-box;}
+  ::-webkit-scrollbar-thumb:hover{background:#5e5e68;background-clip:content-box;border:3px solid transparent;}
+
+  /* ============================================================
+     APP SHELL
+     ============================================================ */
+  #app{
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+    height:100dvh;
+    width:100vw;
+    overflow:hidden;
+  }
+
+  /* ============================================================
+     DESKTOP MENU BAR
+     ============================================================ */
+  .menubar{
+    height:38px;
+    background:var(--bar);
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:2px;
+    padding:0 8px 0 10px;
+    flex:0 0 auto;
+    user-select:none;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding-right:14px;
+    margin-right:6px;
+    border-right:1px solid var(--border);
+    height:24px;
+    font-weight:600;
+    letter-spacing:.2px;
+    color:#fff;
+  }
+  .brand svg{width:19px;height:19px;color:var(--accent);}
+  .brand span{font-size:13px;}
+
+  .menus{display:flex;align-items:center;gap:1px;}
+  .menu{position:relative;}
+  .menu > button{
+    background:transparent;border:0;padding:5px 10px;border-radius:4px;
+    cursor:pointer;color:var(--text);font-size:12.5px;
+  }
+  .menu > button:hover,.menu.open > button{background:var(--bar-2);}
+  .dropdown{
+    position:absolute;top:calc(100% + 5px);left:0;min-width:252px;
+    background:#2c2c31;border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:5px;z-index:900;display:none;
+  }
+  .menu.open .dropdown{display:block;}
+  .dd-item{
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    padding:7px 10px;border-radius:4px;cursor:pointer;color:var(--text);
+    font-size:12.5px;white-space:nowrap;
+  }
+  .dd-item:hover{background:var(--accent);color:#fff;}
+  .dd-item:hover .dd-key{color:rgba(255,255,255,.75);}
+  .dd-key{color:var(--text-dim2);font-size:11px;}
+  .dd-sep{height:1px;background:var(--border);margin:5px 6px;}
+
+  .menubar-right{
+    margin-left:auto;display:flex;align-items:center;gap:8px;padding-left:12px;
+  }
+  #doc-title{
+    font-size:12px;color:var(--text-dim);max-width:340px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .server-pill{
+    display:flex;align-items:center;gap:6px;
+    background:var(--bar-2);border:1px solid var(--border);
+    padding:4px 10px;border-radius:20px;font-size:11.5px;cursor:pointer;
+    color:var(--text-dim);
+  }
+  .server-pill:hover{border-color:var(--accent);color:var(--text);}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim2);flex:0 0 auto;}
+  .dot.on{background:var(--success);box-shadow:0 0 7px rgba(45,157,120,.85);}
+  .dot.off{background:var(--danger);}
+
+  /* ============================================================
+     MOBILE TOP BAR
+     ============================================================ */
+  .mobile-topbar{
+    display:none;
+    align-items:center;
+    gap:2px;
+    height:calc(var(--topbar-h) + var(--safe-top));
+    padding:var(--safe-top) 6px 0 calc(6px + var(--safe-left));
+    background:linear-gradient(180deg,#2f2f33,#292930);
+    border-bottom:1px solid var(--border);
+    flex:0 0 auto;
+    user-select:none;
+    position:relative;
+    z-index:25;
+  }
+  .mtb-btn{
+    width:42px;height:42px;flex:0 0 auto;
+    display:grid;place-items:center;
+    background:transparent;border:0;border-radius:50%;
+    color:var(--text);
+    cursor:pointer;
+    transition:background .12s;
+  }
+  .mtb-btn:active{background:var(--bar-2);}
+  .mtb-btn svg{width:22px;height:22px;}
+  .mtb-btn:disabled{opacity:.35;}
+
+  .mtb-titlewrap{
+    flex:1 1 auto;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:0 4px;
+    line-height:1.15;
+  }
+  .mtb-title{
+    font-size:14px;
+    font-weight:600;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    max-width:100%;
+    color:#fff;
+  }
+  .mtb-sub{
+    font-size:10.5px;
+    color:var(--text-dim2);
+    margin-top:1px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:100%;
+  }
+
+  /* ============================================================
+     TOOLBAR
+     ============================================================ */
+  .toolbar{
+    height:52px;background:var(--panel);border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:4px;padding:0 10px;flex:0 0 auto;
+    overflow-x:auto;overflow-y:hidden;user-select:none;
+  }
+  .toolbar::-webkit-scrollbar{height:0;}
+  .tb-group{display:flex;align-items:center;gap:2px;flex:0 0 auto;}
+  .tb-sep{width:1px;height:28px;background:var(--border);margin:0 7px;flex:0 0 auto;}
+  .tb-btn{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    min-width:46px;height:42px;padding:0 7px;background:transparent;border:0;
+    border-radius:5px;cursor:pointer;color:var(--text-dim);transition:.12s;
+    flex:0 0 auto;
+  }
+  .tb-btn svg{width:18px;height:18px;}
+  .tb-btn span{font-size:9.5px;letter-spacing:.2px;white-space:nowrap;}
+  .tb-btn:hover:not(:disabled){background:var(--bar-2);color:#fff;}
+  .tb-btn:active:not(:disabled){background:var(--accent-soft);}
+  .tb-btn:disabled{opacity:.32;cursor:not-allowed;}
+
+  .zoom-box{
+    display:flex;align-items:center;background:var(--panel-2);
+    border:1px solid var(--border);border-radius:5px;height:30px;overflow:hidden;
+    flex:0 0 auto;
+  }
+  .zoom-box button{
+    background:transparent;border:0;width:28px;height:100%;cursor:pointer;
+    color:var(--text-dim);display:grid;place-items:center;
+  }
+  .zoom-box button:hover{background:var(--bar-2);color:#fff;}
+  .zoom-box input{
+    width:56px;height:100%;background:transparent;border:0;border-left:1px solid var(--border);
+    border-right:1px solid var(--border);color:var(--text);text-align:center;
+    font-size:12px;outline:none;
+  }
+  .page-box{
+    display:flex;align-items:center;gap:5px;background:var(--panel-2);
+    border:1px solid var(--border);border-radius:5px;height:30px;padding:0 8px;
+    flex:0 0 auto;
+  }
+  .page-box input{
+    width:42px;background:transparent;border:0;color:var(--text);
+    text-align:center;font-size:12px;outline:none;
+  }
+  .page-box span{color:var(--text-dim2);font-size:11.5px;}
+
+  /* ============================================================
+     WORKSPACE
+     ============================================================ */
+  .workspace{
+    flex:1 1 auto;display:flex;min-height:0;background:#141416;position:relative;
+  }
+
+  .left-panel{
+    width:216px;flex:0 0 auto;background:var(--panel);
+    border-right:1px solid var(--border);display:flex;flex-direction:column;min-height:0;
+  }
+  .panel-tabs{
+    display:flex;border-bottom:1px solid var(--border);flex:0 0 auto;background:var(--panel-2);
+  }
+  .ptab{
+    flex:1;background:transparent;border:0;padding:9px 4px;cursor:pointer;
+    color:var(--text-dim);font-size:11.5px;border-bottom:2px solid transparent;
+  }
+  .ptab:hover{color:var(--text);}
+  .ptab.active{color:#fff;border-bottom-color:var(--accent);background:var(--panel);}
+  .panel-body{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;position:relative;-webkit-overflow-scrolling:touch;}
+  .tab-pane{display:none;padding:10px;}
+  .tab-pane.active{display:block;}
+
+  .thumb{
+    margin:0 auto 12px;width:150px;cursor:pointer;border-radius:4px;
+    padding:4px;border:2px solid transparent;transition:.12s;
+  }
+  .thumb:hover{background:var(--bar-2);}
+  .thumb.active{border-color:var(--accent);background:var(--accent-soft);}
+  .thumb-canvas{
+    width:150px;min-height:196px;background:#fff;border-radius:2px;
+    display:grid;place-items:center;overflow:hidden;
+    box-shadow:0 2px 7px rgba(0,0,0,.5);
+  }
+  .thumb-canvas canvas{display:block;max-width:100%;height:auto;}
+  .thumb-num{
+    text-align:center;font-size:11px;color:var(--text-dim);margin-top:5px;
+  }
+  .thumb.active .thumb-num{color:#fff;font-weight:600;}
+
+  .outline-item{
+    display:block;padding:5px 8px;border-radius:4px;cursor:pointer;
+    color:var(--text-dim);font-size:12px;line-height:1.35;
+  }
+  .outline-item:hover{background:var(--bar-2);color:#fff;}
+  .outline-children{margin-left:11px;border-left:1px solid var(--border);padding-left:4px;}
+
+  .viewer{
+    flex:1 1 auto;overflow:auto;position:relative;
+    background:radial-gradient(circle at 50% 0%, #232329 0%, #141416 62%);
+    display:flex;align-items:flex-start;justify-content:center;padding:22px;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+  }
+  .page-wrap{
+    position:relative;background:#fff;border-radius:2px;
+    box-shadow:0 6px 30px rgba(0,0,0,.65);line-height:0;
+    transition:box-shadow .2s;
+    margin:auto;
+  }
+  #pdf-canvas{display:block;border-radius:2px;}
+
+  .empty-state{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:14px;color:var(--text-dim);
+    text-align:center;padding:30px;pointer-events:none;
+  }
+  .empty-state .big{
+    width:76px;height:76px;border-radius:18px;display:grid;place-items:center;
+    background:var(--panel-2);border:1px solid var(--border);color:var(--accent);
+  }
+  .empty-state .big svg{width:38px;height:38px;}
+  .empty-state h2{margin:0;font-size:16px;color:var(--text);font-weight:600;}
+  .empty-state p{margin:0;font-size:12.5px;max-width:430px;line-height:1.65;}
+  .empty-actions{display:flex;gap:10px;margin-top:6px;pointer-events:auto;flex-wrap:wrap;justify-content:center;}
+
+  .drop-overlay{
+    position:absolute;inset:12px;border:2px dashed var(--accent);
+    border-radius:10px;background:rgba(20,115,230,.09);
+    display:none;align-items:center;justify-content:center;
+    font-size:15px;color:#fff;font-weight:600;z-index:50;pointer-events:none;
+  }
+  .viewer.dragover .drop-overlay{display:flex;}
+
+  .right-panel{
+    width:224px;flex:0 0 auto;background:var(--panel);
+    border-left:1px solid var(--border);display:flex;flex-direction:column;
+    min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  }
+  .rp-section{padding:12px 12px 6px;}
+  .rp-title{
+    font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;
+    color:var(--text-dim2);margin-bottom:8px;font-weight:700;
+  }
+  .tool-btn{
+    display:flex;align-items:center;gap:9px;width:100%;padding:8px 9px;
+    background:transparent;border:0;border-radius:5px;cursor:pointer;
+    color:var(--text-dim);text-align:left;font-size:12px;margin-bottom:1px;
+  }
+  .tool-btn:hover:not(:disabled){background:var(--bar-2);color:#fff;}
+  .tool-btn:active:not(:disabled){background:var(--accent-soft);}
+  .tool-btn:disabled{opacity:.35;cursor:not-allowed;}
+  .tool-btn svg{width:15px;height:15px;flex:0 0 auto;}
+
+  .statusbar{
+    height:26px;background:var(--bar);border-top:1px solid var(--border);
+    display:flex;align-items:center;gap:16px;padding:0 12px;
+    font-size:11.5px;color:var(--text-dim);flex:0 0 auto;user-select:none;
+  }
+  .statusbar .spacer{flex:1;}
+  .status-msg{color:var(--text);}
+  .status-msg.err{color:var(--danger);}
+  .status-msg.ok{color:var(--success);}
+
+  /* ============================================================
+     MOBILE BOTTOM NAV
+     ============================================================ */
+  .mobile-nav{
+    display:none;
+    height:calc(var(--mobile-nav-h) + var(--safe-bottom));
+    padding-bottom:var(--safe-bottom);
+    padding-left:var(--safe-left);
+    padding-right:var(--safe-right);
+    background:linear-gradient(0deg,#26262b,#2c2c31);
+    border-top:1px solid var(--border);
+    flex:0 0 auto;
+    z-index:30;
+    user-select:none;
+  }
+  .mnav-item{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    background:transparent;
+    border:0;
+    color:var(--text-dim);
+    font-size:10.5px;
+    padding:4px;
+    cursor:pointer;
+    position:relative;
+    transition:color .15s;
+    min-height:44px;
+  }
+  .mnav-item svg{width:23px;height:23px;transition:transform .15s;}
+  .mnav-item span{font-weight:500;letter-spacing:.2px;}
+  .mnav-item.active{color:var(--accent);}
+  .mnav-item.active::before{
+    content:"";
+    position:absolute;
+    top:0;left:50%;transform:translateX(-50%);
+    width:34px;height:3px;
+    background:var(--accent);
+    border-radius:0 0 3px 3px;
+  }
+  .mnav-item:active{background:rgba(255,255,255,.05);}
+  .mnav-item:active svg{transform:scale(.9);}
+  .mnav-item:disabled{opacity:.32;}
+
+  .mobile-fab{
+    display:none;
+    position:fixed;
+    right:calc(16px + var(--safe-right));
+    bottom:calc(var(--mobile-nav-h) + var(--safe-bottom) + 16px);
+    width:54px;height:54px;
+    border-radius:50%;
+    background:linear-gradient(145deg,#1e82f5,#0d5fd1);
+    color:#fff;
+    border:0;
+    box-shadow:0 6px 20px rgba(20,115,230,.5), 0 2px 6px rgba(0,0,0,.4);
+    cursor:pointer;
+    z-index:40;
+    place-items:center;
+    transition:transform .16s, opacity .2s;
+  }
+  .mobile-fab:active{transform:scale(.92);}
+  .mobile-fab svg{width:26px;height:26px;}
+  body.no-doc .mobile-fab{display:none !important;}
+
+  .drawer-backdrop{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.55);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .24s ease;
+    z-index:150;
+    -webkit-backdrop-filter:blur(1.5px);
+    backdrop-filter:blur(1.5px);
+  }
+  body.drawer-open .drawer-backdrop,
+  body.sheet-open .drawer-backdrop,
+  body.menu-open .drawer-backdrop{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .mobile-menu{
+    display:none;
+    position:fixed;
+    left:0;right:0;bottom:0;
+    max-height:78vh;
+    background:var(--panel-2);
+    border-radius:18px 18px 0 0;
+    border-top:1px solid var(--border);
+    box-shadow:0 -10px 40px rgba(0,0,0,.65);
+    z-index:210;
+    flex-direction:column;
+    transform:translateY(105%);
+    transition:transform .3s cubic-bezier(.32,.72,0,1);
+    padding-bottom:var(--safe-bottom);
+    overscroll-behavior:contain;
+  }
+  body.menu-open .mobile-menu{transform:translateY(0);}
+  .mm-grabber{
+    width:40px;height:4px;border-radius:2px;background:var(--border);
+    margin:10px auto 6px;flex:0 0 auto;
+  }
+  .mm-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:4px 18px 12px;border-bottom:1px solid var(--border);
+    font-size:15px;font-weight:700;color:#fff;flex:0 0 auto;
+  }
+  .mm-close{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--bar);border:0;color:var(--text-dim);
+    display:grid;place-items:center;font-size:15px;cursor:pointer;
+  }
+  .mm-close:active{background:var(--bar-2);color:#fff;}
+  .mm-body{
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    padding:8px 10px 22px;
+    flex:1 1 auto;
+  }
+  .mm-group-title{
+    font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;
+    color:var(--text-dim2);font-weight:700;
+    padding:12px 10px 6px;
+  }
+  .mm-item{
+    display:flex;align-items:center;gap:14px;
+    width:100%;padding:13px 12px;
+    background:transparent;border:0;border-radius:10px;
+    color:var(--text);font-size:14.5px;text-align:left;
+    cursor:pointer;min-height:48px;
+  }
+  .mm-item:active{background:var(--accent-soft);}
+  .mm-item svg{width:20px;height:20px;color:var(--accent);flex:0 0 auto;}
+  .mm-item .mm-label{flex:1 1 auto;}
+
+  .page-toast{
+    position:fixed;
+    left:50%;transform:translateX(-50%);
+    bottom:calc(var(--mobile-nav-h) + var(--safe-bottom) + 20px);
+    background:rgba(20,20,22,.92);
+    color:#fff;
+    font-size:12.5px;font-weight:600;
+    padding:7px 16px;border-radius:20px;
+    border:1px solid var(--border);
+    box-shadow:0 4px 16px rgba(0,0,0,.5);
+    z-index:45;
+    opacity:0;pointer-events:none;
+    transition:opacity .25s;
+    letter-spacing:.3px;
+    -webkit-backdrop-filter:blur(8px);
+    backdrop-filter:blur(8px);
+    display:none;
+  }
+  .page-toast.show{opacity:1;}
+
+  /* ============================================================
+     MODAL
+     ============================================================ */
+  .modal-backdrop{
+    position:fixed;inset:0;background:rgba(0,0,0,.6);
+    display:flex;align-items:center;justify-content:center;z-index:1000;
+    -webkit-backdrop-filter:blur(2px);
+    backdrop-filter:blur(2px);
+    padding:20px;
+  }
+  .modal{
+    width:460px;max-width:100%;max-height:88vh;display:flex;flex-direction:column;
+    background:var(--panel-2);border:1px solid var(--border);
+    border-radius:9px;box-shadow:var(--shadow);overflow:hidden;
+    animation:pop .16s ease-out;
+  }
+  .modal.wide{width:640px;}
+  @keyframes pop{from{transform:translateY(10px) scale(.985);opacity:0;}to{transform:none;opacity:1;}}
+  .modal-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px 16px;border-bottom:1px solid var(--border);
+    font-weight:600;font-size:13.5px;background:var(--bar);
+    flex:0 0 auto;
+  }
+  .modal-x{
+    background:transparent;border:0;cursor:pointer;color:var(--text-dim);
+    font-size:15px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  }
+  .modal-x:hover{background:var(--danger);color:#fff;}
+  .modal-body{padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:13px;-webkit-overflow-scrolling:touch;}
+  .modal-foot{
+    display:flex;justify-content:flex-end;gap:9px;padding:12px 16px;
+    border-top:1px solid var(--border);background:var(--bar);
+    flex:0 0 auto;
+  }
+
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field label{font-size:11.5px;color:var(--text-dim);font-weight:600;letter-spacing:.2px;}
+  .field .hint{font-size:11px;color:var(--text-dim2);line-height:1.5;}
+  .field input[type=text],
+  .field input[type=number],
+  .field input[type=password],
+  .field select,
+  .field textarea{
+    background:#1d1d20;border:1px solid var(--border);border-radius:5px;
+    padding:8px 10px;color:var(--text);font-size:12.5px;outline:none;
+    font-family:inherit;width:100%;
+  }
+  .field textarea{resize:vertical;min-height:70px;}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);}
+  .field input[type=range]{width:100%;accent-color:var(--accent);}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;}
+
+  .checkline{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text);cursor:pointer;}
+  .checkline input{accent-color:var(--accent);width:15px;height:15px;cursor:pointer;flex:0 0 auto;}
+
+  .file-drop{
+    border:1.5px dashed var(--border);border-radius:7px;padding:18px;
+    text-align:center;cursor:pointer;color:var(--text-dim);font-size:12.5px;
+    transition:.14s;background:#1d1d20;
+  }
+  .file-drop:hover{border-color:var(--accent);color:var(--text);background:var(--accent-soft);}
+  .file-drop.hasfile{border-style:solid;border-color:var(--success);color:var(--text);}
+  .file-list{margin-top:8px;display:flex;flex-direction:column;gap:4px;max-height:130px;overflow-y:auto;}
+  .file-row{
+    display:flex;align-items:center;gap:7px;background:#1d1d20;border:1px solid var(--border);
+    border-radius:4px;padding:5px 8px;font-size:11.5px;color:var(--text-dim);
+  }
+  .file-row .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;}
+  .file-row .sz{color:var(--text-dim2);flex:0 0 auto;}
+
+  .btn{
+    padding:8px 15px;border-radius:5px;border:1px solid var(--border);
+    background:var(--bar-2);cursor:pointer;font-size:12.5px;color:var(--text);
+    transition:.13s;
+  }
+  .btn:hover{background:#43434a;}
+  .btn:active{transform:scale(.98);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+  .btn.primary:hover{background:var(--accent-hover);}
+  .btn.ghost{background:transparent;}
+  .btn.ghost:hover{background:var(--bar-2);}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+
+  /* ============================================================
+     PROXY LIST
+     ============================================================ */
+  .proxy-list{
+    display:flex;flex-direction:column;gap:5px;
+    background:#1d1d20;border:1px solid var(--border);border-radius:7px;
+    padding:6px;margin-top:6px;
+  }
+  .proxy-row{
+    display:flex;align-items:center;gap:8px;
+    padding:7px 9px;border-radius:5px;
+    background:transparent;font-size:12px;color:var(--text-dim);
+  }
+  .proxy-row:hover{background:var(--bar-2);}
+  .proxy-row .pr-name{flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .proxy-row .pr-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--text-dim2);flex:0 0 auto;
+    transition:background .2s,box-shadow .2s;
+  }
+  .proxy-row .pr-dot.testing{background:var(--warn);box-shadow:0 0 8px rgba(232,163,61,.8);animation:pulse 1s infinite;}
+  .proxy-row .pr-dot.ok{background:var(--success);box-shadow:0 0 8px rgba(45,157,120,.8);}
+  .proxy-row .pr-dot.fail{background:var(--danger);}
+  .proxy-row .pr-test{
+    background:transparent;border:1px solid var(--border);
+    border-radius:4px;padding:3px 8px;cursor:pointer;
+    color:var(--text-dim);font-size:10.5px;flex:0 0 auto;
+  }
+  .proxy-row .pr-test:hover{border-color:var(--accent);color:#fff;}
+  @keyframes pulse{50%{opacity:.4;}}
+
+  .proxy-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--accent-soft);border:1px solid var(--accent);
+    color:#fff;font-size:11px;font-weight:600;
+    padding:3px 9px;border-radius:12px;
+  }
+  .proxy-badge .dot{background:var(--success);width:6px;height:6px;}
+
+  /* ============================================================
+     SPINNER / BUSY / TOASTS
+     ============================================================ */
+  .spinner{
+    width:18px;height:18px;border:2px solid rgba(255,255,255,.18);
+    border-top-color:var(--accent);border-radius:50%;
+    animation:spin .7s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .busy-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:1200;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;
+    -webkit-backdrop-filter:blur(2px);
+    backdrop-filter:blur(2px);
+  }
+  .busy-overlay .box{
+    background:var(--panel-2);border:1px solid var(--border);border-radius:9px;
+    padding:24px 34px;display:flex;flex-direction:column;align-items:center;gap:12px;
+    box-shadow:var(--shadow);min-width:230px;
+  }
+  .busy-overlay .txt{font-size:12.5px;color:var(--text-dim);text-align:center;}
+
+  #toasts{
+    position:fixed;bottom:40px;right:18px;z-index:1500;
+    display:flex;flex-direction:column;gap:8px;align-items:flex-end;
+    pointer-events:none;
+  }
+  .toast{
+    background:var(--panel-2);border:1px solid var(--border);
+    border-left:3px solid var(--accent);border-radius:6px;
+    padding:10px 15px;font-size:12.5px;color:var(--text);
+    box-shadow:var(--shadow);max-width:360px;
+    animation:slideIn .2s ease-out;
+    pointer-events:auto;
+  }
+  .toast.err{border-left-color:var(--danger);}
+  .toast.ok{border-left-color:var(--success);}
+  .toast.warn{border-left-color:var(--warn);}
+  @keyframes slideIn{from{transform:translateX(24px);opacity:0;}to{transform:none;opacity:1;}}
+
+  @media print{
+    body *{visibility:hidden;}
+    #print-frame{visibility:visible;}
+  }
+  #print-frame{position:fixed;inset:0;border:0;width:100%;height:100%;display:none;}
+
+  /* ============================================================
+     TABLET
+     ============================================================ */
+  @media (max-width:1080px) and (min-width:821px){
+    .left-panel{width:190px;}
+    .right-panel{width:200px;}
+    .brand span{display:none;}
+    .brand{padding-right:10px;}
+    #doc-title{max-width:200px;}
+  }
+
+  /* ============================================================
+     MOBILE
+     ============================================================ */
+  @media (max-width:820px){
+    .menubar{display:none;}
+    .statusbar{display:none;}
+
+    .mobile-topbar{display:flex;}
+    .mobile-nav{display:flex;}
+    .mobile-fab{display:grid;}
+    .drawer-backdrop{display:block;}
+    .mobile-menu{display:flex;}
+    .page-toast{display:block;}
+
+    .toolbar{
+      height:var(--mobile-toolbar-h);
+      padding:0 6px;
+      gap:2px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      scroll-snap-type:x proximity;
+      border-bottom:1px solid var(--border);
+    }
+    .toolbar::-webkit-scrollbar{display:none;}
+    .tb-btn{
+      min-width:44px;
+      height:44px;
+      padding:0 6px;
+      scroll-snap-align:start;
+    }
+    .tb-btn span{display:none;}
+    .tb-btn svg{width:20px;height:20px;}
+    .tb-sep{height:26px;margin:0 4px;}
+    .zoom-box{height:36px;}
+    .zoom-box button{width:36px;}
+    .zoom-box input{width:52px;font-size:14px;}
+    .page-box{height:36px;padding:0 9px;}
+    .page-box input{width:44px;font-size:14px;}
+
+    .workspace{
+      position:relative;
+      flex:1 1 auto;
+      min-height:0;
+    }
+    .viewer{
+      padding:10px 8px 16px;
+      align-items:flex-start;
+      touch-action:pan-x pan-y;
+    }
+    .page-wrap{
+      border-radius:0;
+      box-shadow:0 2px 16px rgba(0,0,0,.7);
+      margin:0 auto;
+    }
+
+    .left-panel{
+      position:fixed;
+      top:0;
+      bottom:0;
+      left:0;
+      width:82%;
+      max-width:330px;
+      z-index:200;
+      border-right:1px solid var(--border);
+      transform:translateX(-105%);
+      transition:transform .3s cubic-bezier(.32,.72,0,1);
+      box-shadow:6px 0 32px rgba(0,0,0,.6);
+      padding-top:var(--safe-top);
+      padding-bottom:var(--safe-bottom);
+      will-change:transform;
+    }
+    body.drawer-open .left-panel{
+      transform:translateX(0);
+    }
+    .panel-tabs{padding-top:4px;}
+    .ptab{padding:13px 4px;font-size:13px;min-height:46px;}
+    .tab-pane{padding:12px;}
+
+    #thumbs{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:8px;
+      padding:10px;
+    }
+    .thumb{
+      width:100%;
+      margin:0;
+      padding:6px;
+      border-radius:8px;
+    }
+    .thumb-canvas{
+      width:100%;
+      min-height:0;
+      aspect-ratio:1 / 1.3;
+      border-radius:3px;
+    }
+    .thumb-num{font-size:12px;margin-top:6px;}
+    .thumb.active{border-color:var(--accent);background:var(--accent-soft);}
+
+    .outline-item{padding:11px 10px;font-size:13.5px;border-radius:8px;min-height:44px;display:flex;align-items:center;}
+
+    .right-panel{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      top:auto;
+      width:auto;
+      max-height:82vh;
+      z-index:200;
+      border-left:0;
+      border-top:1px solid var(--border);
+      border-radius:20px 20px 0 0;
+      transform:translateY(105%);
+      transition:transform .3s cubic-bezier(.32,.72,0,1);
+      box-shadow:0 -10px 44px rgba(0,0,0,.7);
+      padding-bottom:var(--safe-bottom);
+      overscroll-behavior:contain;
+      will-change:transform;
+    }
+    body.sheet-open .right-panel{
+      transform:translateY(0);
+    }
+    .right-panel::before{
+      content:"";
+      display:block;
+      width:42px;
+      height:4px;
+      border-radius:2px;
+      background:var(--border);
+      margin:10px auto 2px;
+      flex:0 0 auto;
+    }
+    .rp-section{padding:14px 14px 4px;}
+    .rp-title{font-size:11px;margin-bottom:10px;}
+    .tool-btn{
+      padding:12px 12px;
+      font-size:14px;
+      min-height:48px;
+      border-radius:10px;
+      gap:14px;
+      margin-bottom:2px;
+    }
+    .tool-btn svg{width:19px;height:19px;}
+
+    .modal-backdrop{
+      align-items:flex-end;
+      padding:0;
+    }
+    .modal,
+    .modal.wide{
+      width:100% !important;
+      max-width:100%;
+      max-height:92vh;
+      border-radius:20px 20px 0 0;
+      border-left:0;
+      border-right:0;
+      border-bottom:0;
+      animation:sheetUp .28s cubic-bezier(.32,.72,0,1);
+      padding-bottom:var(--safe-bottom);
+    }
+    @keyframes sheetUp{
+      from{transform:translateY(100%);}
+      to{transform:translateY(0);}
+    }
+    .modal-head{
+      padding:16px 18px 14px;
+      font-size:15px;
+      border-radius:20px 20px 0 0;
+      position:relative;
+    }
+    .modal-head::before{
+      content:"";
+      position:absolute;
+      top:8px;
+      left:50%;
+      transform:translateX(-50%);
+      width:42px;
+      height:4px;
+      border-radius:2px;
+      background:var(--border);
+    }
+    .modal-head span{padding-top:6px;}
+    .modal-x{
+      width:36px;height:36px;
+      background:var(--bar);
+      margin-top:4px;
+    }
+    .modal-body{
+      padding:18px;
+      gap:16px;
+    }
+    .modal-foot{
+      padding:12px 16px 16px;
+      gap:10px;
+    }
+    .modal-foot .btn{
+      flex:1;
+      min-height:48px;
+      font-size:14.5px;
+      font-weight:600;
+      border-radius:10px;
+      padding:12px 14px;
+    }
+
+    .field{gap:7px;}
+    .field label{font-size:13px;font-weight:600;}
+    .field .hint{font-size:12px;}
+    .field input[type=text],
+    .field input[type=number],
+    .field input[type=password],
+    .field select,
+    .field textarea{
+      font-size:16px !important;
+      padding:12px 14px;
+      min-height:48px;
+      border-radius:9px;
+    }
+    .field textarea{min-height:110px;font-size:15px !important;}
+    .field input[type=range]{height:34px;}
+    .row2,.row3{grid-template-columns:1fr;gap:14px;}
+
+    .checkline{font-size:14px;padding:6px 0;min-height:40px;}
+    .checkline input{width:22px;height:22px;}
+
+    .file-drop{padding:26px 18px;font-size:14px;border-radius:12px;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;}
+    .file-row{padding:9px 11px;font-size:13px;border-radius:8px;min-height:40px;}
+    .file-list{max-height:200px;}
+
+    .btn{
+      min-height:46px;
+      padding:11px 16px;
+      font-size:14px;
+      border-radius:9px;
+    }
+
+    .proxy-row{padding:11px 10px;font-size:13px;min-height:44px;}
+    .proxy-row .pr-test{padding:6px 12px;font-size:12px;min-height:34px;}
+
+    .empty-state{padding:22px 22px 30px;gap:16px;}
+    .empty-state .big{width:84px;height:84px;border-radius:22px;}
+    .empty-state .big svg{width:42px;height:42px;}
+    .empty-state h2{font-size:19px;}
+    .empty-state p{font-size:13.5px;line-height:1.6;}
+    .empty-actions{
+      flex-direction:column;
+      width:100%;
+      max-width:300px;
+      gap:10px;
+      margin-top:10px;
+    }
+    .empty-actions .btn{width:100%;}
+
+    #toasts{
+      left:12px;
+      right:12px;
+      bottom:calc(var(--mobile-nav-h) + var(--safe-bottom) + 16px);
+      align-items:stretch;
+    }
+    .toast{
+      max-width:none;
+      font-size:13px;
+      padding:12px 15px;
+      border-radius:9px;
+    }
+
+    .busy-overlay .box{padding:28px 32px;min-width:250px;border-radius:14px;}
+    .busy-overlay .txt{font-size:13.5px;}
+
+    .panel-body,
+    .right-panel,
+    .modal-body{
+      -webkit-overflow-scrolling:touch;
+      overscroll-behavior:contain;
+    }
+  }
+
+  @media (max-width:380px){
+    :root{--mobile-nav-h:56px;--mobile-toolbar-h:48px;}
+    .mnav-item span{font-size:9.5px;}
+    .mnav-item svg{width:21px;height:21px;}
+    .mobile-fab{width:50px;height:50px;right:14px;}
+    .mobile-fab svg{width:23px;height:23px;}
+    .mtb-title{font-size:13px;}
+    .mtb-sub{font-size:10px;}
+    .tb-btn{min-width:40px;height:40px;}
+    #thumbs{grid-template-columns:repeat(2, 1fr);gap:6px;}
+  }
+
+  @media (max-width:900px) and (orientation:landscape) and (max-height:520px){
+    :root{--topbar-h:46px;--mobile-nav-h:50px;--mobile-toolbar-h:44px;}
+    .mtb-btn{width:38px;height:38px;}
+    .mnav-item svg{width:20px;height:20px;}
+    .mnav-item span{font-size:9px;}
+    .mobile-fab{
+      width:46px;height:46px;
+      bottom:calc(var(--mobile-nav-h) + var(--safe-bottom) + 10px);
+    }
+    .mobile-fab svg{width:22px;height:22px;}
+    .right-panel{max-height:88vh;}
+    .modal{max-height:96vh;}
+    .empty-state .big{width:60px;height:60px;}
+    .empty-state .big svg{width:30px;height:30px;}
+    .empty-state h2{font-size:16px;}
+  }
+
+  @media (pointer:coarse){
+    .tb-btn{min-width:44px;height:44px;}
+    .menu > button{padding:8px 12px;min-height:40px;}
+    .dd-item{padding:11px 12px;min-height:44px;}
+    .tool-btn{min-height:46px;}
+    .zoom-box button{width:36px;}
+    .modal-x{width:36px;height:36px;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+  }
+</style>
+</head>
+<body class="no-doc">
+
+<div id="app">
+
+  <header class="mobile-topbar">
+    <button class="mtb-btn" id="mtbMenu" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/>
+      </svg>
+    </button>
+    <div class="mtb-titlewrap">
+      <div class="mtb-title" id="mtbTitle">No document</div>
+      <div class="mtb-sub" id="mtbSub">Tap ☰ to open a PDF</div>
+    </div>
+    <button class="mtb-btn" id="mtbProxy" aria-label="Proxy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/>
+      </svg>
+    </button>
+    <button class="mtb-btn" id="mtbMore" aria-label="More">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="menubar">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <path d="M14 2v6h6"/>
+        <path d="M9 15h6"/>
+        <path d="M9 11h2"/>
+      </svg>
+      <span>AcroStirling</span>
+    </div>
+
+    <div class="menus" id="menus">
+      <div class="menu" data-menu="file">
+        <button>File</button>
+        <div class="dropdown">
+          <div class="dd-item" data-cmd="open-file">Open File…<span class="dd-key">Ctrl+O</span></div>
+          <div class="dd-item" data-cmd="open-url">Open from URL…</div>
+          <div class="dd-item" data-cmd="open-server">Open from Stirling Server…</div>
+          <div class="dd-sep"></div>
+          <div class="dd-item" data-cmd="save">Download PDF<span class="dd-key">Ctrl+S</span></div>
+          <div class="dd-item" data-cmd="print">Print…<span class="dd-key">Ctrl+P</span></div>
+          <div class="dd-sep"></div>
+          <div class="dd-item" data-cmd="close-doc">Close Document</div>
+        </div>
+      </div>
+
+      <div class="menu" data-menu="edit">
+        <button>Edit</button>
+        <div class="dropdown">
+          <div class="dd-item" data-cmd="rotate-cw">Rotate View Clockwise</div>
+          <div class="dd-item" data-cmd="rotate-ccw">Rotate View Counter-Clockwise</div>
+          <div class="dd-sep"></div>
+          <div class="dd-item" data-cmd="tool-remove-pages">Delete Pages…</div>
+          <div class="dd-item" data-cmd="tool-rearrange">Reorder Pages…</div>
+          <div class="dd-item" data-cmd="tool-extract">Extract Pages…</div>
+          <div class="dd-sep"></div>
+          <div class="dd-item" data-cmd="tool-metadata">Document Properties…</div>
+        </div>
+      </div>
+
+      <div class="menu" data-menu="view">
+        <button>View</button>
+        <div class="dropdown">
+          <div class="dd-item" data-cmd="zoom-in">Zoom In<span class="dd-key">Ctrl++</span></div>
+          <div class="dd-item" data-cmd="zoom-out">Zoom Out<span class="dd-key">Ctrl+-</span></div>
+          <div class="dd-item" data-cmd="fit-width">Fit Width</div>
+          <div class="dd-item" data-cmd="fit-page">Fit Page</div>
+          <div class="dd-item" data-cmd="zoom-reset">Actual Size (100%)</div>
+          <div class="dd-sep"></div>
+          <div class="dd-item" data-cmd="toggle-left">Toggle Pages Panel</div>
+          <div class="dd-item" data-cmd="toggle-right">Toggle Tools Panel</div>
+        </div>
+      </div>
+
+      <div class="menu" data-menu="tools">
+        <button>Tools</button>
+        <div class="dropdown">
+          <div class="dd-item" data-cmd="tool-merge">Merge PDFs…</div>
+          <div class="dd-item" data-cmd="tool-split">Split PDF…</div>
+          <div class="dd-item" data-cmd="tool-compress">Compress PDF…</div>
+          <div class="dd-item" data-cmd="tool-rotate">Rotate Pages (permanent)…</div>
+          <div class="dd-sep"></div>
+          <div class="dd-item" data-cmd="tool-watermark">Add Watermark…</div>
+          <div class="dd-item" data-cmd="tool-pagenumbers">Add Page Numbers…</div>
+          <div class="dd-sep"></div>
+          <div class="dd-item" data-cmd="tool-protect">Password Protect…</div>
+          <div class="dd-item" data-cmd="tool-unlock">Remove Password…</div>
+          <div class="dd-sep"></div>
+          <div class="dd-item" data-cmd="tool-pdf2img">PDF → Images…</div>
+          <div class="dd-item" data-cmd="tool-img2pdf">Images → PDF…</div>
+          <div class="dd-item" data-cmd="tool-ocr">OCR PDF…</div>
+          <div class="dd-item" data-cmd="tool-text">Extract Text…</div>
+        </div>
+      </div>
+
+      <div class="menu" data-menu="help">
+        <button>Help</button>
+        <div class="dropdown">
+          <div class="dd-item" data-cmd="settings">Server Settings…</div>
+          <div class="dd-item" data-cmd="proxy-settings">CORS Proxy…</div>
+          <div class="dd-item" data-cmd="check-server">Test Server Connection</div>
+          <div class="dd-sep"></div>
+          <div class="dd-item" data-cmd="about">About HEX — PDF Studio</div>
+          <div class="dd-item" data-cmd="stirling-docs">HEX — PDF Docs ↗</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menubar-right">
+      <span id="doc-title">No document open</span>
+      <div class="server-pill" id="serverPill" title="Click to configure server">
+        <span class="dot" id="serverDot"></span>
+        <span id="serverLabel">localhost:8080</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar" id="toolbar">
+    <div class="tb-group">
+      <button class="tb-btn" id="tb-open" title="Open PDF (Ctrl+O)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg><span>Open</span>
+      </button>
+      <button class="tb-btn" id="tb-url" title="Open from URL (uses CORS proxy fallback)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/>
+          <path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>
+        </svg><span>URL</span>
+      </button>
+      <button class="tb-btn" id="tb-save" title="Download PDF (Ctrl+S)" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
+        </svg><span>Save</span>
+      </button>
+      <button class="tb-btn" id="tb-print" title="Print (Ctrl+P)" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 17h12v4H6z"/>
+        </svg><span>Print</span>
+      </button>
+    </div>
+
+    <div class="tb-sep"></div>
+
+    <div class="tb-group">
+      <button class="tb-btn" id="tb-prev" title="Previous Page" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 6-6 6 6 6"/>
+        </svg><span>Prev</span>
+      </button>
+      <div class="page-box">
+        <input type="text" id="pageInput" value="1" disabled />
+        <span>/ <b id="pageCount">0</b></span>
+      </div>
+      <button class="tb-btn" id="tb-next" title="Next Page" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m9 6 6 6-6 6"/>
+        </svg><span>Next</span>
+      </button>
+    </div>
+
+    <div class="tb-sep"></div>
+
+    <div class="tb-group">
+      <div class="zoom-box">
+        <button id="tb-zoom-out" title="Zoom Out (Ctrl+-)">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+            <path d="M5 12h14"/>
+          </svg>
+        </button>
+        <input type="text" id="zoomInput" value="100%" />
+        <button id="tb-zoom-in" title="Zoom In (Ctrl++)">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </button>
+      </div>
+      <button class="tb-btn" id="tb-fit-width" title="Fit Width">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12h18"/><path d="m7 8-4 4 4 4"/><path d="m17 8 4 4-4 4"/>
+        </svg><span>Fit W</span>
+      </button>
+      <button class="tb-btn" id="tb-fit-page" title="Fit Page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6v8H9z"/>
+        </svg><span>Fit P</span>
+      </button>
+    </div>
+
+    <div class="tb-sep"></div>
+
+    <div class="tb-group">
+      <button class="tb-btn" id="tb-rot-cw" title="Rotate View Clockwise" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/>
+        </svg><span>Rotate</span>
+      </button>
+      <button class="tb-btn" id="tb-rot-ccw" title="Rotate View Counter-Clockwise" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/>
+        </svg><span>Rot CCW</span>
+      </button>
+      <button class="tb-btn" id="tb-select" title="Select / Text mode (placeholder)" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4l7 16 2-6 6-2z"/>
+        </svg><span>Select</span>
+      </button>
+      <button class="tb-btn" id="tb-hand" title="Pan mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 11V6a2 2 0 0 0-4 0v5"/>
+          <path d="M14 10V4a2 2 0 0 0-4 0v6"/>
+          <path d="M10 10.5V6a2 2 0 0 0-4 0v8"/>
+          <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2a8 8 0 0 1-8-8v-1a2 2 0 1 1 4 0"/>
+        </svg><span>Pan</span>
+      </button>
+    </div>
+
+    <div class="tb-sep"></div>
+
+    <div class="tb-group">
+      <button class="tb-btn" id="tb-merge" title="Merge PDFs">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/>
+          <path d="M11 7h5a2 2 0 0 1 2 2v4"/>
+        </svg><span>Merge</span>
+      </button>
+      <button class="tb-btn" id="tb-split" title="Split PDF" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18"/><path d="M7 7 3 12l4 5"/><path d="m17 7 4 5-4 5"/>
+        </svg><span>Split</span>
+      </button>
+      <button class="tb-btn" id="tb-compress" title="Compress PDF" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 9h16"/><path d="M4 15h16"/>
+          <path d="m9 4 3 3 3-3"/><path d="m9 20 3-3 3 3"/>
+        </svg><span>Compress</span>
+      </button>
+      <button class="tb-btn" id="tb-watermark" title="Add Watermark" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h16"/>
+        </svg><span>Watermark</span>
+      </button>
+      <button class="tb-btn" id="tb-ocr" title="OCR PDF" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 7V5a1 1 0 0 1 1-1h2"/><path d="M17 4h2a1 1 0 0 1 1 1v2"/>
+          <path d="M20 17v2a1 1 0 0 1-1 1h-2"/><path d="M7 20H5a1 1 0 0 1-1-1v-2"/>
+          <path d="M8 9h8"/><path d="M8 13h5"/>
+        </svg><span>OCR</span>
+      </button>
+      <button class="tb-btn" id="tb-pdf2img" title="PDF to Images" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>
+        </svg><span>To Image</span>
+      </button>
+    </div>
+
+    <div class="tb-sep"></div>
+
+    <div class="tb-group">
+      <button class="tb-btn" id="tb-protect" title="Password Protect" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+        </svg><span>Protect</span>
+      </button>
+      <button class="tb-btn" id="tb-proxy" title="CORS Proxy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/>
+        </svg><span>Proxy</span>
+      </button>
+      <button class="tb-btn" id="tb-settings" title="Server Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 4.6 15a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.2-2.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 11 4.6a2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0 1.2 2.9 2 2 0 1 1 0 4 1.7 1.7 0 0 0-1.5 1z"/>
+        </svg><span>Server</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="workspace">
+    <aside class="left-panel" id="leftPanel">
+      <div class="panel-tabs">
+        <button class="ptab active" data-tab="thumbs">Pages</button>
+        <button class="ptab" data-tab="outline">Outline</button>
+      </div>
+      <div class="panel-body">
+        <div id="thumbs" class="tab-pane active"></div>
+        <div id="outline" class="tab-pane"></div>
+      </div>
+    </aside>
+
+    <main class="viewer" id="viewer">
+      <div class="page-wrap" id="pageWrap" style="display:none;">
+        <canvas id="pdf-canvas"></canvas>
+      </div>
+
+      <div class="empty-state" id="emptyState">
+        <div class="big">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <path d="M14 2v6h6"/><path d="M9 15h6"/><path d="M9 11h2"/>
+          </svg>
+        </div>
+        <h2>No document open</h2>
+        <p>Drag &amp; drop a PDF anywhere, open one from your device, or paste a URL — free CORS proxies handle cross-origin fetching automatically.</p>
+        <div class="empty-actions">
+          <button class="btn primary" id="empty-open">Open PDF</button>
+          <button class="btn" id="empty-url">Open from URL</button>
+          <button class="btn ghost" id="empty-proxy">Proxy Settings</button>
+        </div>
+      </div>
+
+      <div class="drop-overlay">Drop PDF here</div>
+    </main>
+
+    <aside class="right-panel" id="rightPanel">
+      <div class="rp-section">
+        <div class="rp-title">Organize</div>
+        <button class="tool-btn" data-cmd="tool-merge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/><path d="M11 7h5a2 2 0 0 1 2 2v4"/></svg>
+          Merge PDFs
+        </button>
+        <button class="tool-btn" data-cmd="tool-split">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M7 7 3 12l4 5"/><path d="m17 7 4 5-4 5"/></svg>
+          Split PDF
+        </button>
+        <button class="tool-btn" data-cmd="tool-extract">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
+          Extract Pages
+        </button>
+        <button class="tool-btn" data-cmd="tool-remove-pages">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+          Remove Pages
+        </button>
+        <button class="tool-btn" data-cmd="tool-rearrange">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11"/><path d="m12 4 3 3-3 3"/><path d="M20 17H9"/><path d="m12 14-3 3 3 3"/></svg>
+          Reorder Pages
+        </button>
+        <button class="tool-btn" data-cmd="tool-rotate">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+          Rotate Pages
+        </button>
+      </div>
+
+      <div class="rp-section">
+        <div class="rp-title">Optimize</div>
+        <button class="tool-btn" data-cmd="tool-compress">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16"/><path d="M4 15h16"/><path d="m9 4 3 3 3-3"/><path d="m9 20 3-3 3 3"/></svg>
+          Compress PDF
+        </button>
+      </div>
+
+      <div class="rp-section">
+        <div class="rp-title">Convert</div>
+        <button class="tool-btn" data-cmd="tool-pdf2img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+          PDF → Images
+        </button>
+        <button class="tool-btn" data-cmd="tool-img2pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+          Images → PDF
+        </button>
+        <button class="tool-btn" data-cmd="tool-text">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/></svg>
+          Extract Text
+        </button>
+        <button class="tool-btn" data-cmd="tool-ocr">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 0 1 1-1h2"/><path d="M17 4h2a1 1 0 0 1 1 1v2"/><path d="M20 17v2a1 1 0 0 1-1 1h-2"/><path d="M7 20H5a1 1 0 0 1-1-1v-2"/><path d="M8 9h8"/><path d="M8 13h5"/></svg>
+          OCR PDF
+        </button>
+      </div>
+
+      <div class="rp-section">
+        <div class="rp-title">Security &amp; Markup</div>
+        <button class="tool-btn" data-cmd="tool-protect">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          Password Protect
+        </button>
+        <button class="tool-btn" data-cmd="tool-unlock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 7-2.6"/></svg>
+          Remove Password
+        </button>
+        <button class="tool-btn" data-cmd="tool-watermark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h16"/></svg>
+          Add Watermark
+        </button>
+        <button class="tool-btn" data-cmd="tool-pagenumbers">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16"/><path d="M4 16h16"/><path d="M9 4v16"/></svg>
+          Add Page Numbers
+        </button>
+        <button class="tool-btn" data-cmd="tool-metadata">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+          Document Properties
+        </button>
+      </div>
+
+      <div class="rp-section" style="padding-bottom:18px;">
+        <div class="rp-title">Session</div>
+        <button class="tool-btn" data-cmd="save">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          Download Current PDF
+        </button>
+        <button class="tool-btn" data-cmd="proxy-settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></svg>
+          CORS Proxy Settings
+        </button>
+        <button class="tool-btn" data-cmd="check-server">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          Test Server Connection
+        </button>
+        <button class="tool-btn" data-cmd="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9 2 2 0 1 1-2.8 2.8 1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2 2 2 0 1 1-2.8-2.8A1.7 1.7 0 0 0 4.6 15a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.2-2.9 2 2 0 1 1 2.8-2.8 1.7 1.7 0 0 0 2.9-1.2 2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2 2 2 0 1 1 2.8 2.8 1.7 1.7 0 0 0 1.2 2.9 2 2 0 1 1 0 4z"/></svg>
+          Server Settings
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <div class="statusbar">
+    <span class="status-msg" id="statusMsg">Ready</span>
+    <span class="spacer"></span>
+    <span id="statPages">Pages: 0</span>
+    <span id="statSize">Size: —</span>
+    <span id="statZoom">Zoom: 100%</span>
+    <span id="statProxy">Proxy: Auto</span>
+    <span id="statServer">Server: —</span>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav">
+    <button class="mnav-item" id="mnavPages" data-mnav="pages">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      <span>Pages</span>
+    </button>
+    <button class="mnav-item" id="mnavTools" data-mnav="tools">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.7 6.3a4 4 0 0 0 5 5L21 21H3l6-8 3 3 2.7-9.7z"/>
+      </svg>
+      <span>Tools</span>
+    </button>
+    <button class="mnav-item" id="mnavSave" data-mnav="save" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
+      </svg>
+      <span>Save</span>
+    </button>
+    <button class="mnav-item" id="mnavMore" data-mnav="more">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/>
+      </svg>
+      <span>More</span>
+    </button>
+  </nav>
+</div>
+
+<button class="mobile-fab" id="mobileFab" aria-label="Open PDF">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 5v14"/><path d="M5 12h14"/>
+  </svg>
+</button>
+
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mm-grabber"></div>
+  <div class="mm-head">
+    <span>Menu</span>
+    <button class="mm-close" id="mmClose" aria-label="Close">✕</button>
+  </div>
+  <div class="mm-body" id="mmBody"></div>
+</div>
+
+<div class="page-toast" id="pageToast">1 / 1</div>
+
+<div id="modalRoot"></div>
+<div id="toasts"></div>
+<iframe id="print-frame"></iframe>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+/* ============================================================================
+   AcroStirling — Adobe-style PDF front-end for Stirling PDF
+   Free unlimited CORS proxy support (auto-fallback)
+   ============================================================================ */
+(function () {
+  "use strict";
+
+  /* ================================================================
+     0. PDF.js bootstrap
+     ================================================================ */
+  var pdfjsLib = window.pdfjsLib;
+  if (!pdfjsLib) {
+    document.body.innerHTML =
+      '<div style="padding:40px;font-family:sans-serif;color:#eee;background:#1a1a1c;height:100vh">' +
+      '<h2>PDF.js failed to load</h2><p>Check your internet connection / CDN access.</p></div>';
+    return;
+  }
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+  /* ================================================================
+     1. FREE CORS PROXIES
+     ----------------------------------------------------------------
+     These are public, signup-free, unlimited-use CORS proxies.
+     When 'Auto' mode is active, we try direct fetch first, then
+     rotate through every proxy in this list until one succeeds.
+     ================================================================ */
+  var CORS_PROXIES = [
+    {
+      id: "allorigins",
+      name: "allorigins.win",
+      template: "https://api.allorigins.win/raw?url={url}",
+      description: "Free, unlimited, no signup required",
+      free: true
+    },
+    {
+      id: "corseu",
+      name: "cors.eu.org",
+      template: "https://cors.eu.org/{url}",
+      description: "Free public CORS proxy",
+      free: true
+    },
+    {
+      id: "codetabs",
+      name: "codetabs.com",
+      template: "https://api.codetabs.com/v1/proxy?quest={url}",
+      description: "Free, no rate limit for reasonable use",
+      free: true
+    },
+    {
+      id: "corsproxy",
+      name: "corsproxy.io",
+      template: "https://corsproxy.io/?url={url}",
+      description: "Free tier, no signup for basic use",
+      free: true
+    },
+    {
+      id: "thingproxy",
+      name: "thingproxy",
+      template: "https://thingproxy.freeboard.io/fetch/{url}",
+      description: "Free public proxy",
+      free: true
+    },
+    {
+      id: "isomorphic",
+      name: "isomorphic-git.org",
+      template: "https://cors.isomorphic-git.org/{url}",
+      description: "Free proxy maintained by isomorphic-git",
+      free: true
+    }
+  ];
+
+  /* ================================================================
+     2. Global state
+     ================================================================ */
+  var state = {
+    pdfDoc: null,
+    pdfBytes: null,
+    fileName: "document.pdf",
+    pageNum: 1,
+    scale: 1.0,
+    rotation: 0,
+    fitMode: null,
+    renderTask: null,
+    renderToken: 0,
+    serverUrl: localStorage.getItem("stirlingServerUrl") || "http://localhost:8080",
+
+    // CORS proxy settings — persisted
+    corsMode: localStorage.getItem("stirlingCorsMode") || "auto", // auto | direct | custom
+    corsProxy: localStorage.getItem("stirlingCorsProxy") || "",
+    lastUsedProxy: localStorage.getItem("stirlingLastProxy") || "",
+
+    busy: false
+  };
+
+  var thumbObserver = null;
+  var isMobile = function () { return window.matchMedia("(max-width:820px)").matches; };
+
+  /* ================================================================
+     3. DOM helpers
+     ================================================================ */
+  function $(id) { return document.getElementById(id); }
+  function qs(sel, root) { return (root || document).querySelector(sel); }
+  function qsa(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  function el(tag, attrs, children) {
+    var n = document.createElement(tag);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (k) {
+        if (k === "class") n.className = attrs[k];
+        else if (k === "html") n.innerHTML = attrs[k];
+        else if (k === "text") n.textContent = attrs[k];
+        else if (k.indexOf("on") === 0 && typeof attrs[k] === "function") {
+          n.addEventListener(k.slice(2), attrs[k]);
+        } else if (attrs[k] !== null && attrs[k] !== undefined) {
+          n.setAttribute(k, attrs[k]);
+        }
+      });
+    }
+    (children || []).forEach(function (c) {
+      if (c === null || c === undefined) return;
+      n.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+    });
+    return n;
+  }
+
+  function fmtBytes(b) {
+    if (b === null || b === undefined || isNaN(b)) return "—";
+    if (b < 1024) return b + " B";
+    if (b < 1024 * 1024) return (b / 1024).toFixed(1) + " KB";
+    if (b < 1024 * 1024 * 1024) return (b / 1048576).toFixed(2) + " MB";
+    return (b / 1073741824).toFixed(2) + " GB";
+  }
+
+  /* ================================================================
+     4. Toasts / status
+     ================================================================ */
+  function toast(msg, type, ms) {
+    var t = el("div", { class: "toast " + (type || ""), text: msg });
+    $("toasts").appendChild(t);
+    setTimeout(function () {
+      t.style.transition = "opacity .25s, transform .25s";
+      t.style.opacity = "0";
+      t.style.transform = "translateX(20px)";
+      setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 260);
+    }, ms || 3800);
+  }
+
+  function setStatus(msg, type) {
+    var n = $("statusMsg");
+    if (!n) return;
+    n.textContent = msg;
+    n.className = "status-msg " + (type || "");
+    var sub = $("mtbSub");
+    if (sub && isMobile()) sub.textContent = msg;
+  }
+
+  function updateProxyStatusLabel() {
+    var el = $("statProxy");
+    if (!el) return;
+    var label = "Auto";
+    if (state.corsMode === "direct") label = "Direct";
+    else if (state.corsMode === "custom") label = "Custom";
+    else if (state.lastUsedProxy) label = "Auto · " + state.lastUsedProxy;
+    el.textContent = "Proxy: " + label;
+  }
+
+  /* ================================================================
+     5. Busy overlay
+     ================================================================ */
+  function showBusy(text) {
+    if (state.busy) return;
+    state.busy = true;
+    var ov = el("div", { class: "busy-overlay", id: "busyOverlay" }, [
+      el("div", { class: "box" }, [
+        el("div", { class: "spinner" }),
+        el("div", { class: "txt", text: text || "Working…" })
+      ])
+    ]);
+    document.body.appendChild(ov);
+  }
+  function updateBusy(text) {
+    var ov = $("busyOverlay");
+    if (ov) { var t = qs(".txt", ov); if (t) t.textContent = text; }
+  }
+  function hideBusy() {
+    state.busy = false;
+    var ov = $("busyOverlay");
+    if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
+  }
+
+  /* ================================================================
+     6. Modal system
+     ================================================================ */
+  var modalEscHandler = null;
+
+  function closeModal() {
+    $("modalRoot").innerHTML = "";
+    if (modalEscHandler) {
+      document.removeEventListener("keydown", modalEscHandler);
+      modalEscHandler = null;
+    }
+  }
+
+  function showModal(opts) {
+    closeModal();
+    var root = $("modalRoot");
+
+    var bodyNode = el("div", { class: "modal-body" });
+    if (opts.bodyNode) bodyNode.appendChild(opts.bodyNode);
+    else if (opts.bodyHTML) bodyNode.innerHTML = opts.bodyHTML;
+
+    var okBtn = el("button", {
+      class: "btn primary",
+      text: opts.okText || "Apply"
+    });
+    var cancelBtn = el("button", {
+      class: "btn ghost",
+      text: opts.cancelText || "Cancel"
+    });
+
+    var head = el("div", { class: "modal-head" }, [
+      el("span", { text: opts.title || "" }),
+      el("button", { class: "modal-x", text: "✕", onclick: closeModal, "aria-label": "Close" })
+    ]);
+
+    var foot = el("div", { class: "modal-foot" }, [cancelBtn, okBtn]);
+    var modal = el("div", { class: "modal" + (opts.wide ? " wide" : "") }, [head, bodyNode, foot]);
+    var backdrop = el("div", { class: "modal-backdrop" }, [modal]);
+    backdrop.addEventListener("mousedown", function (e) {
+      if (e.target === backdrop) closeModal();
+    });
+
+    root.appendChild(backdrop);
+    cancelBtn.addEventListener("click", closeModal);
+
+    okBtn.addEventListener("click", function () {
+      if (!opts.onOk) { closeModal(); return; }
+      var res = opts.onOk(bodyNode, okBtn);
+      if (res === false) return;
+      if (res && typeof res.then === "function") {
+        okBtn.disabled = true;
+        var old = okBtn.textContent;
+        okBtn.textContent = "Working…";
+        res.then(function (r) {
+          okBtn.disabled = false;
+          okBtn.textContent = old;
+          if (r !== false) closeModal();
+        }).catch(function () {
+          okBtn.disabled = false;
+          okBtn.textContent = old;
+        });
+      } else {
+        closeModal();
+      }
+    });
+
+    modalEscHandler = function (e) {
+      if (e.key === "Escape") closeModal();
+    };
+    document.addEventListener("keydown", modalEscHandler);
+
+    setTimeout(function () {
+      var f = qs("input,select,textarea", bodyNode);
+      if (f && !isMobile()) f.focus();
+    }, 60);
+
+    return { modal: modal, body: bodyNode, ok: okBtn, cancel: cancelBtn };
+  }
+
+  function field(labelText, inputHTML, hint) {
+    var f = el("div", { class: "field" });
+    if (labelText) f.appendChild(el("label", { text: labelText }));
+    var wrap = el("div", { html: inputHTML });
+    f.appendChild(wrap.firstElementChild ? wrap.firstElementChild : wrap);
+    if (hint) f.appendChild(el("div", { class: "hint", text: hint }));
+    return f;
+  }
+
+  function fileDropHTML(id, multiple, accept) {
+    return '<div class="file-drop" id="' + id + '_drop">' +
+      '<div style="font-weight:600;margin-bottom:3px;">Click to choose file' + (multiple ? "s" : "") + '</div>' +
+      '<div style="font-size:11.5px;opacity:.75;">or drag &amp; drop here</div>' +
+      '<input type="file" id="' + id + '" ' + (multiple ? "multiple" : "") +
+      ' accept="' + (accept || "application/pdf") + '" style="display:none" />' +
+      '</div>' +
+      '<div class="file-list" id="' + id + '_list"></div>';
+  }
+
+  function wireFileDrop(root, id, onChange) {
+    var drop = qs("#" + id + "_drop", root);
+    var input = qs("#" + id, root);
+    var list = qs("#" + id + "_list", root);
+    var files = [];
+
+    function render() {
+      list.innerHTML = "";
+      files.forEach(function (f) {
+        list.appendChild(el("div", { class: "file-row" }, [
+          el("span", { class: "nm", text: f.name }),
+          el("span", { class: "sz", text: fmtBytes(f.size) })
+        ]));
+      });
+      if (files.length) drop.classList.add("hasfile");
+      else drop.classList.remove("hasfile");
+      if (onChange) onChange(files);
+    }
+
+    drop.addEventListener("click", function () { input.click(); });
+    input.addEventListener("change", function () {
+      files = Array.prototype.slice.call(input.files);
+      render();
+    });
+
+    ["dragenter", "dragover"].forEach(function (ev) {
+      drop.addEventListener(ev, function (e) {
+        e.preventDefault(); e.stopPropagation();
+        drop.style.borderColor = "var(--accent)";
+      });
+    });
+    ["dragleave", "drop"].forEach(function (ev) {
+      drop.addEventListener(ev, function (e) {
+        e.preventDefault(); e.stopPropagation();
+        drop.style.borderColor = "";
+      });
+    });
+    drop.addEventListener("drop", function (e) {
+      var dt = e.dataTransfer;
+      if (!dt || !dt.files) return;
+      files = Array.prototype.slice.call(dt.files);
+      render();
+    });
+
+    return {
+      getFiles: function () { return files; },
+      setFiles: function (f) { files = f; render(); }
+    };
+  }
+
+  /* ================================================================
+     7. FREE CORS PROXY ENGINE
+     ================================================================ */
+
+  function applyProxyTemplate(tpl, url) {
+    return tpl.replace("{url}", encodeURIComponent(url));
+  }
+
+  /** Single fetch with timeout. */
+  function fetchOnce(url, timeoutMs) {
+    var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, timeoutMs || 25000);
+
+    return fetch(url, {
+      method: "GET",
+      mode: "cors",
+      redirect: "follow",
+      credentials: "omit",
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function (res) {
+      clearTimeout(timer);
+      if (!res.ok) throw new Error("HTTP " + res.status + " " + res.statusText);
+      return res.arrayBuffer();
+    }).catch(function (err) {
+      clearTimeout(timer);
+      throw err;
+    });
+  }
+
+  /**
+   * Quick reachability test — tries to HEAD or GET a tiny resource.
+   * Uses a 5-second timeout so the UI stays snappy.
+   */
+  function testProxy(proxy, testUrl) {
+    if (!testUrl) {
+      testUrl = "https://raw.githubusercontent.com/mozilla/pdf.js/master/README.md";
+    }
+    var target = proxy.template ? applyProxyTemplate(proxy.template, testUrl) : testUrl;
+    return fetchOnce(target, 6000).then(function () { return true; });
+  }
+
+  /**
+   * MAIN fetch function with auto-fallback.
+   *
+   * Modes:
+   *   auto   → try direct first, then rotate through every free proxy
+   *   direct → no proxy, direct fetch only
+   *   custom → use user-supplied proxy URL only
+   *
+   * Returns { buffer: ArrayBuffer, via: string, url: string }
+   */
+  function fetchRemote(url, onProgress) {
+    if (state.corsMode === "direct") {
+      if (onProgress) onProgress("Fetching directly (no proxy)…");
+      return fetchOnce(url, 30000).then(function (buf) {
+        state.lastUsedProxy = "Direct";
+        localStorage.setItem("stirlingLastProxy", "Direct");
+        updateProxyStatusLabel();
+        return { buffer: buf, via: "Direct (no proxy)", url: url };
+      }).catch(function (err) {
+        throw new Error("Direct fetch blocked (likely CORS). Switch to Auto mode. " + err.message);
+      });
+    }
+
+    if (state.corsMode === "custom") {
+      if (!state.corsProxy || !state.corsProxy.trim()) {
+        throw new Error("Custom proxy mode is active, but no proxy URL is configured.");
+      }
+      var cUrl = applyProxyTemplate(state.corsProxy.trim(), url);
+      if (onProgress) onProgress("Fetching via custom proxy…");
+      return fetchOnce(cUrl, 30000).then(function (buf) {
+        state.lastUsedProxy = "Custom";
+        localStorage.setItem("stirlingLastProxy", "Custom");
+        updateProxyStatusLabel();
+        return { buffer: buf, via: "Custom proxy", url: cUrl };
+      });
+    }
+
+    /* ----- AUTO MODE ----- */
+    // Build attempt list: direct first, then each free proxy in order.
+    // If we have a "last used" proxy, give it priority (skip direct).
+    var attempts = [];
+
+    var lastId = state.lastUsedProxy;
+    var preferred = null;
+    for (var i = 0; i < CORS_PROXIES.length; i++) {
+      if (CORS_PROXIES[i].name === lastId) { preferred = CORS_PROXIES[i]; break; }
+    }
+
+    if (preferred) {
+      attempts.push({
+        name: preferred.name,
+        url: applyProxyTemplate(preferred.template, url),
+        via: preferred.name + " (cached)"
+      });
+    }
+
+    attempts.push({ name: "Direct", url: url, via: "Direct (no proxy)" });
+
+    CORS_PROXIES.forEach(function (p) {
+      if (preferred && p.id === preferred.id) return;
+      attempts.push({
+        name: p.name,
+        url: applyProxyTemplate(p.template, url),
+        via: p.name
+      });
+    });
+
+    var idx = 0;
+    var lastErr = null;
+    var errors = [];
+
+    function attemptNext() {
+      if (idx >= attempts.length) {
+        var detail = errors.slice(0, 3).map(function (e) { return e.name + ": " + e.error; }).join(" · ");
+        throw new Error("All " + attempts.length + " fetch attempts failed. " + detail);
+      }
+      var a = attempts[idx++];
+      if (onProgress) {
+        onProgress("Trying " + a.name + " (" + idx + "/" + attempts.length + ")…");
+      }
+      return fetchOnce(a.url, 25000).then(function (buf) {
+        state.lastUsedProxy = a.name;
+        localStorage.setItem("stirlingLastProxy", a.name);
+        updateProxyStatusLabel();
+        return { buffer: buf, via: a.via, url: a.url };
+      }).catch(function (err) {
+        lastErr = err;
+        errors.push({ name: a.name, error: err.message || String(err) });
+        return attemptNext();
+      });
+    }
+
+    return attemptNext();
+  }
+
+  /* ================================================================
+     8. Server helpers
+     ================================================================ */
+  function serverBase() {
+    var u = (state.serverUrl || "").trim();
+    if (!u) return "";
+    return u.replace(/\/+$/, "");
+  }
+
+  function apiUrl(path) {
+    return serverBase() + path;
+  }
+
+  function currentFile() {
+    if (!state.pdfBytes) return null;
+    var copy = new Uint8Array(state.pdfBytes);
+    return new File([copy], state.fileName || "document.pdf", { type: "application/pdf" });
+  }
+
+  function stirlingPost(path, formData, opts) {
+    opts = opts || {};
+    var url = apiUrl(path);
+    if (!serverBase()) {
+      return Promise.reject(new Error("No Stirling server configured. Open Server Settings."));
+    }
+    return fetch(url, {
+      method: "POST",
+      body: formData,
+      mode: "cors",
+      credentials: opts.credentials || "omit"
+    }).then(function (res) {
+      if (!res.ok) {
+        return res.text().then(function (txt) {
+          var msg = "HTTP " + res.status + " " + res.statusText;
+          if (txt) {
+            try {
+              var j = JSON.parse(txt);
+              if (j && (j.message || j.error)) msg += " — " + (j.message || j.error);
+              else msg += " — " + txt.slice(0, 260);
+            } catch (e) {
+              msg += " — " + txt.slice(0, 260);
+            }
+          }
+          throw new Error(msg);
+        }, function () {
+          throw new Error("HTTP " + res.status + " " + res.statusText);
+        });
+      }
+      return res;
+    });
+  }
+
+  function checkServer(silent) {
+    var dot = $("serverDot");
+    var label = $("serverLabel");
+    if (label) label.textContent = (state.serverUrl || "not set").replace(/^https?:\/\//, "");
+    var ss = $("statServer");
+    if (ss) ss.textContent = "Server: " + (state.serverUrl || "—");
+
+    if (!serverBase()) {
+      if (dot) dot.className = "dot off";
+      if (!silent) toast("No server URL configured.", "warn");
+      return Promise.resolve(false);
+    }
+
+    var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 6000);
+
+    return fetch(apiUrl("/api/v1/info/status"), {
+      method: "GET",
+      mode: "cors",
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function (res) {
+      clearTimeout(timer);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json().catch(function () { return {}; });
+    }).then(function (data) {
+      if (dot) dot.className = "dot on";
+      var v = (data && (data.version || data.appVersion)) || "";
+      if (!silent) toast("Connected to Stirling PDF" + (v ? " v" + v : "") + ".", "ok");
+      setStatus("Server online", "ok");
+      return true;
+    }).catch(function (err) {
+      clearTimeout(timer);
+      if (dot) dot.className = "dot off";
+      if (!silent) {
+        toast("Server unreachable: " + err.message + " (CORS? see notes)", "err", 6000);
+      }
+      setStatus("Server offline", "err");
+      return false;
+    });
+  }
+
+  /* ================================================================
+     9. Document loading
+     ================================================================ */
+  function resetViewer() {
+    state.pdfDoc = null;
+    state.pdfBytes = null;
+    state.pageNum = 1;
+    state.rotation = 0;
+    state.fitMode = null;
+    document.body.classList.add("no-doc");
+    $("pageWrap").style.display = "none";
+    $("emptyState").style.display = "flex";
+    $("thumbs").innerHTML = "";
+    $("outline").innerHTML = "";
+    $("pageCount").textContent = "0";
+    $("pageInput").value = "1";
+    $("doc-title").textContent = "No document open";
+    var mtb = $("mtbTitle");
+    if (mtb) mtb.textContent = "No document";
+    var msub = $("mtbSub");
+    if (msub) msub.textContent = "Tap ☰ to open a PDF";
+    var sp = $("statPages");
+    if (sp) sp.textContent = "Pages: 0";
+    var ssz = $("statSize");
+    if (ssz) ssz.textContent = "Size: —";
+    setToolbarEnabled(false);
+    setMobileNavEnabled(false);
+  }
+
+  function setMobileNavEnabled(on) {
+    var mnavSave = $("mnavSave");
+    if (mnavSave) mnavSave.disabled = !on;
+  }
+
+  function setToolbarEnabled(on) {
+    [
+      "tb-save", "tb-print", "tb-prev", "tb-next", "tb-rot-cw", "tb-rot-ccw",
+      "tb-select", "tb-split", "tb-compress", "tb-watermark", "tb-ocr",
+      "tb-pdf2img", "tb-protect"
+    ].forEach(function (id) {
+      var b = $(id);
+      if (b) b.disabled = !on;
+    });
+    $("pageInput").disabled = !on;
+  }
+
+  function loadPdfFromBuffer(buffer, name, opts) {
+    opts = opts || {};
+    var bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+    state.pdfBytes = new Uint8Array(bytes);
+    state.fileName = name || "document.pdf";
+    state.pageNum = 1;
+    state.rotation = 0;
+
+    var forPdfJs = new Uint8Array(bytes);
+
+    setStatus("Parsing document…");
+
+    return pdfjsLib.getDocument({
+      data: forPdfJs,
+      cMapUrl: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
+      cMapPacked: true
+    }).promise.then(function (doc) {
+      state.pdfDoc = doc;
+      document.body.classList.remove("no-doc");
+      $("pageCount").textContent = String(doc.numPages);
+      $("pageInput").value = "1";
+      $("doc-title").textContent = state.fileName;
+      var mtb = $("mtbTitle");
+      if (mtb) mtb.textContent = state.fileName;
+      var msub = $("mtbSub");
+      if (msub) msub.textContent = doc.numPages + " page" + (doc.numPages === 1 ? "" : "s");
+      var sp = $("statPages");
+      if (sp) sp.textContent = "Pages: " + doc.numPages;
+      var ssz = $("statSize");
+      if (ssz) ssz.textContent = "Size: " + fmtBytes(state.pdfBytes.length);
+      $("emptyState").style.display = "none";
+      $("pageWrap").style.display = "block";
+      setToolbarEnabled(true);
+      setMobileNavEnabled(true);
+
+      buildThumbnails();
+      buildOutline();
+
+      return fitWidth(true).then(function () {
+        return renderPage(1);
+      }).then(function () {
+        setStatus("Loaded " + state.fileName, "ok");
+        if (!opts.silent) toast("Loaded: " + state.fileName, "ok");
+        return doc;
+      });
+    }).catch(function (err) {
+      console.error(err);
+      resetViewer();
+      setStatus("Failed to load PDF", "err");
+      toast("Failed to load PDF: " + err.message, "err", 6000);
+      throw err;
+    });
+  }
+
+  function openLocalFile() {
+    closeMobileMenu();
+    var input = el("input", {
+      type: "file", accept: "application/pdf,.pdf", style: "display:none"
+    });
+    document.body.appendChild(input);
+    input.addEventListener("change", function () {
+      var f = input.files && input.files[0];
+      if (f) readAndLoad(f);
+      if (input.parentNode) input.parentNode.removeChild(input);
+    });
+    input.click();
+  }
+
+  function readAndLoad(file) {
+    showBusy("Reading " + file.name + "…");
+    var reader = new FileReader();
+    reader.onload = function () {
+      loadPdfFromBuffer(reader.result, file.name)
+        .catch(function () {})
+        .then(function () { hideBusy(); });
+    };
+    reader.onerror = function () {
+      hideBusy();
+      toast("Could not read the file.", "err");
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  /* ---------------------------------------------------------------
+     Open from URL — uses the free CORS proxy engine
+     --------------------------------------------------------------- */
+  function openFromUrlDialog() {
+    closeMobileMenu();
+
+    var body = el("div");
+
+    // URL field
+    var urlField = el("div", { class: "field" }, [
+      el("label", { text: "PDF URL" }),
+      el("input", {
+        type: "text", id: "urlInput",
+        placeholder: "https://example.com/file.pdf",
+        inputmode: "url", autocomplete: "off", autocapitalize: "off", spellcheck: "false"
+      })
+    ]);
+    body.appendChild(urlField);
+
+    // Proxy mode quick picker
+    var proxyPicker = el("div", { class: "field" }, [
+      el("label", { text: "Fetch via" }),
+      el("select", { id: "urlProxyMode" }, [
+        el("option", { value: "auto",   text: "Auto — free CORS proxies (recommended)" }),
+        el("option", { value: "direct", text: "Direct — no proxy (fastest if CORS allowed)" }),
+        el("option", { value: "custom", text: "Custom proxy URL" })
+      ]),
+      el("div", { class: "hint", text: "Auto mode tries direct first, then rotates through 6 free public CORS proxies until one succeeds." })
+    ]);
+    body.appendChild(proxyPicker);
+
+    // Custom proxy input (hidden unless custom mode selected)
+    var customWrap = el("div", { class: "field", style: "display:none" }, [
+      el("label", { text: "Custom proxy URL template" }),
+      el("input", {
+        type: "text", id: "urlCustomProxy",
+        placeholder: "https://my-proxy.example/?url={url}",
+        autocapitalize: "off", spellcheck: "false"
+      }),
+      el("div", { class: "hint", text: "Use {url} as the placeholder for the target PDF URL." })
+    ]);
+    body.appendChild(customWrap);
+
+    // Optional filename
+    var nameField = el("div", { class: "field" }, [
+      el("label", { text: "Save as (optional)" }),
+      el("input", { type: "text", id: "urlName", placeholder: "document.pdf" })
+    ]);
+    body.appendChild(nameField);
+
+    // Current proxy badge
+    var badgeRow = el("div", { style: "display:flex;align-items:center;gap:8px;flex-wrap:wrap;" });
+    badgeRow.appendChild(el("span", { class: "hint", text: "Active proxy:" }));
+    var badge = el("span", { class: "proxy-badge", id: "urlProxyBadge" });
+    badge.appendChild(el("span", { class: "dot" }));
+    badge.appendChild(el("span", { text: state.lastUsedProxy || "Auto (not yet used)" }));
+    badgeRow.appendChild(badge);
+    body.appendChild(badgeRow);
+
+    // Wire the mode picker
+    setTimeout(function () {
+      var sel = qs("#urlProxyMode", body);
+      var cw = qs("#urlCustomProxy", body).parentNode;
+      var customInput = qs("#urlCustomProxy", body);
+
+      sel.value = state.corsMode || "auto";
+      customInput.value = state.corsProxy || "";
+      if (sel.value === "custom") cw.style.display = "flex";
+
+      sel.addEventListener("change", function () {
+        cw.style.display = sel.value === "custom" ? "flex" : "none";
+      });
+    }, 10);
+
+    showModal({
+      title: "Open PDF from URL",
+      bodyNode: body,
+      okText: "Fetch & Open",
+      wide: true,
+      onOk: function (root) {
+        var url = qs("#urlInput", root).value.trim();
+        if (!url) { toast("Enter a URL.", "warn"); return false; }
+
+        var mode = qs("#urlProxyMode", root).value;
+        var custom = qs("#urlCustomProxy", root).value.trim();
+
+        // Persist mode change
+        state.corsMode = mode;
+        localStorage.setItem("stirlingCorsMode", mode);
+        if (mode === "custom") {
+          if (!custom) { toast("Enter a custom proxy URL.", "warn"); return false; }
+          state.corsProxy = custom;
+          localStorage.setItem("stirlingCorsProxy", custom);
+        }
+        updateProxyStatusLabel();
+
+        var nm = qs("#urlName", root).value.trim();
+        if (!nm) {
+          try {
+            var u = new URL(url);
+            nm = decodeURIComponent(u.pathname.split("/").pop() || "document.pdf");
+          } catch (e) { nm = "document.pdf"; }
+        }
+        if (!/\.pdf$/i.test(nm)) nm += ".pdf";
+
+        showBusy("Fetching remote PDF…");
+
+        var t0 = Date.now();
+        return fetchRemote(url, function (msg) { updateBusy(msg); })
+          .then(function (result) {
+            var elapsed = ((Date.now() - t0) / 1000).toFixed(1);
+            updateBusy("Parsing document…");
+            toast("Fetched via " + result.via + " in " + elapsed + "s", "ok", 3000);
+            return loadPdfFromBuffer(result.buffer, nm);
+          })
+          .then(function () {
+            hideBusy();
+          })
+          .catch(function (err) {
+            hideBusy();
+            console.error(err);
+            toast("Fetch failed: " + err.message, "err", 8000);
+            setStatus("Fetch failed", "err");
+            return false;
+          });
+      }
+    });
+  }
+
+  function openFromServerDialog() {
+    closeMobileMenu();
+    var body = el("div");
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "Stirling PDF can read files that already live on the server's filesystem. " +
+            "Provide the absolute path (requires the server's load-from-path endpoint to be enabled)."
+    }));
+    var f = el("div", { class: "field" }, [
+      el("label", { text: "Absolute path on server" }),
+      el("input", {
+        type: "text", id: "srvPath", placeholder: "/home/user/docs/file.pdf",
+        autocapitalize: "off", spellcheck: "false"
+      })
+    ]);
+    body.appendChild(f);
+
+    showModal({
+      title: "Open from Stirling Server",
+      bodyNode: body,
+      okText: "Open",
+      onOk: function (root) {
+        var p = qs("#srvPath", root).value.trim();
+        if (!p) { toast("Enter a path.", "warn"); return false; }
+        var fd = new FormData();
+        fd.append("fileInput", new File([new Blob([])], "placeholder.pdf"));
+        fd.append("filePath", p);
+
+        showBusy("Requesting file from server…");
+        return stirlingPost("/api/v1/general/load-from-path", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            return blob.arrayBuffer().then(function (buf) {
+              var nm = p.split("/").pop() || "document.pdf";
+              return loadPdfFromBuffer(buf, nm);
+            });
+          })
+          .then(function () { hideBusy(); })
+          .catch(function (err) {
+            hideBusy();
+            toast("Server load failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* ================================================================
+     10. Rendering
+     ================================================================ */
+  function renderPage(num) {
+    if (!state.pdfDoc) return Promise.resolve();
+    num = Math.max(1, Math.min(state.pdfDoc.numPages, num));
+    state.pageNum = num;
+
+    var token = ++state.renderToken;
+
+    if (state.renderTask) {
+      try { state.renderTask.cancel(); } catch (e) {}
+      state.renderTask = null;
+    }
+
+    return state.pdfDoc.getPage(num).then(function (page) {
+      if (token !== state.renderToken) return null;
+
+      var viewport = page.getViewport({ scale: state.scale, rotation: state.rotation });
+      var canvas = $("pdf-canvas");
+      var ctx = canvas.getContext("2d", { alpha: false });
+      var dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 2.5 : 2);
+
+      canvas.width = Math.floor(viewport.width * dpr);
+      canvas.height = Math.floor(viewport.height * dpr);
+      canvas.style.width = Math.floor(viewport.width) + "px";
+      canvas.style.height = Math.floor(viewport.height) + "px";
+
+      var transform = dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null;
+
+      var task = page.render({
+        canvasContext: ctx,
+        viewport: viewport,
+        transform: transform,
+        background: "#ffffff"
+      });
+      state.renderTask = task;
+
+      return task.promise.then(function () {
+        if (token !== state.renderToken) return;
+        state.renderTask = null;
+        $("pageInput").value = String(num);
+        var sz = $("statZoom");
+        if (sz) sz.textContent = "Zoom: " + Math.round(state.scale * 100) + "%";
+        $("zoomInput").value = Math.round(state.scale * 100) + "%";
+        updateActiveThumb();
+        showPageToast();
+        setStatus("Page " + num + " of " + state.pdfDoc.numPages);
+      }).catch(function (err) {
+        if (err && err.name === "RenderingCancelledException") return;
+        console.error(err);
+      });
+    });
+  }
+
+  function goToPage(n) {
+    if (!state.pdfDoc) return;
+    n = Math.max(1, Math.min(state.pdfDoc.numPages, n));
+    if (n === state.pageNum) return;
+    renderPage(n);
+  }
+
+  function nextPage() { goToPage(state.pageNum + 1); }
+  function prevPage() { goToPage(state.pageNum - 1); }
+
+  var pageToastTimer = null;
+  function showPageToast() {
+    if (!isMobile()) return;
+    var t = $("pageToast");
+    if (!t || !state.pdfDoc) return;
+    t.textContent = state.pageNum + " / " + state.pdfDoc.numPages;
+    t.classList.add("show");
+    clearTimeout(pageToastTimer);
+    pageToastTimer = setTimeout(function () {
+      t.classList.remove("show");
+    }, 1400);
+  }
+
+  function setScale(s, keepFit) {
+    if (!state.pdfDoc) return;
+    state.scale = Math.max(0.1, Math.min(8, s));
+    if (!keepFit) state.fitMode = null;
+    renderPage(state.pageNum);
+  }
+
+  function zoomIn() { setScale(state.scale * 1.2); }
+  function zoomOut() { setScale(state.scale / 1.2); }
+  function zoomReset() { setScale(1); }
+
+  function fitWidth(silent) {
+    if (!state.pdfDoc) return Promise.resolve();
+    return state.pdfDoc.getPage(state.pageNum).then(function (page) {
+      var vp = page.getViewport({ scale: 1, rotation: state.rotation });
+      var padding = isMobile() ? 16 : 64;
+      var avail = $("viewer").clientWidth - padding;
+      state.scale = Math.max(0.1, avail / vp.width);
+      state.fitMode = "width";
+      if (!silent) renderPage(state.pageNum);
+      return true;
+    });
+  }
+
+  function fitPage() {
+    if (!state.pdfDoc) return Promise.resolve();
+    return state.pdfDoc.getPage(state.pageNum).then(function (page) {
+      var vp = page.getViewport({ scale: 1, rotation: state.rotation });
+      var padding = isMobile() ? 20 : 64;
+      var availW = $("viewer").clientWidth - padding;
+      var availH = $("viewer").clientHeight - padding;
+      state.scale = Math.max(0.1, Math.min(availW / vp.width, availH / vp.height));
+      state.fitMode = "page";
+      renderPage(state.pageNum);
+      return true;
+    });
+  }
+
+  /* ================================================================
+     11. Thumbnails
+     ================================================================ */
+  function buildThumbnails() {
+    var wrap = $("thumbs");
+    wrap.innerHTML = "";
+    if (thumbObserver) { thumbObserver.disconnect(); thumbObserver = null; }
+    if (!state.pdfDoc) return;
+
+    var total = state.pdfDoc.numPages;
+
+    if (total > 400) {
+      wrap.appendChild(el("div", {
+        class: "hint",
+        style: "padding:8px;color:var(--text-dim2);grid-column:1/-1;",
+        text: "Large document (" + total + " pages) — thumbnails render as you scroll."
+      }));
+    }
+
+    for (var i = 1; i <= total; i++) {
+      (function (pageNum) {
+        var item = el("div", {
+          class: "thumb" + (pageNum === 1 ? " active" : ""),
+          "data-page": String(pageNum)
+        }, [
+          el("div", { class: "thumb-canvas" }, [el("div", { class: "spinner" })]),
+          el("div", { class: "thumb-num", text: String(pageNum) })
+        ]);
+        item.addEventListener("click", function () {
+          goToPage(pageNum);
+          if (isMobile()) closeDrawer();
+        });
+        wrap.appendChild(item);
+      })(i);
+    }
+
+    thumbObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          thumbObserver.unobserve(entry.target);
+          renderThumbInto(entry.target);
+        }
+      });
+    }, { root: wrap, rootMargin: "260px 0px" });
+
+    qsa(".thumb", wrap).forEach(function (t) { thumbObserver.observe(t); });
+  }
+
+  function renderThumbInto(item) {
+    if (!state.pdfDoc) return;
+    var pageNum = parseInt(item.getAttribute("data-page"), 10);
+    state.pdfDoc.getPage(pageNum).then(function (page) {
+      var vp1 = page.getViewport({ scale: 1 });
+      var holder = qs(".thumb-canvas", item);
+      var targetW = holder ? Math.max(80, holder.clientWidth - 4) : 142;
+      if (!targetW || targetW < 40) targetW = 142;
+      var scale = targetW / vp1.width;
+      var vp = page.getViewport({ scale: scale });
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      var canvas = document.createElement("canvas");
+      canvas.width = Math.floor(vp.width * dpr);
+      canvas.height = Math.floor(vp.height * dpr);
+      canvas.style.width = "100%";
+      canvas.style.height = "auto";
+
+      return page.render({
+        canvasContext: canvas.getContext("2d"),
+        viewport: vp,
+        transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null,
+        background: "#ffffff"
+      }).promise.then(function () {
+        if (holder) {
+          holder.innerHTML = "";
+          holder.appendChild(canvas);
+        }
+      });
+    }).catch(function () {});
+  }
+
+  function updateActiveThumb() {
+    var wrap = $("thumbs");
+    qsa(".thumb", wrap).forEach(function (t) {
+      t.classList.toggle("active", parseInt(t.getAttribute("data-page"), 10) === state.pageNum);
+    });
+    var active = qs(".thumb.active", wrap);
+    if (active && active.scrollIntoView) {
+      active.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }
+
+  /* ================================================================
+     12. Outline
+     ================================================================ */
+  function buildOutline() {
+    var pane = $("outline");
+    pane.innerHTML = "";
+    if (!state.pdfDoc) return;
+
+    state.pdfDoc.getOutline().then(function (outline) {
+      if (!outline || !outline.length) {
+        pane.appendChild(el("div", {
+          class: "hint",
+          style: "color:var(--text-dim2);padding:6px",
+          text: "This document has no outline / bookmarks."
+        }));
+        return;
+      }
+
+      function renderItems(items, container) {
+        items.forEach(function (item) {
+          var node = el("div", { class: "outline-item", text: item.title || "(untitled)" });
+          node.addEventListener("click", function () {
+            resolveDest(item.dest).then(function (pageIndex) {
+              if (pageIndex !== null && pageIndex !== undefined) {
+                goToPage(pageIndex + 1);
+                if (isMobile()) closeDrawer();
+              }
+            });
+          });
+          container.appendChild(node);
+
+          if (item.items && item.items.length) {
+            var sub = el("div", { class: "outline-children" });
+            renderItems(item.items, sub);
+            container.appendChild(sub);
+          }
+        });
+      }
+
+      function resolveDest(dest) {
+        if (!dest) return Promise.resolve(null);
+        if (typeof dest === "string") {
+          return state.pdfDoc.getDestination(dest).then(function (d) {
+            return d ? state.pdfDoc.getPageIndex(d[0]) : null;
+          }).catch(function () { return null; });
+        }
+        if (Array.isArray(dest)) {
+          return state.pdfDoc.getPageIndex(dest[0]).catch(function () { return null; });
+        }
+        return Promise.resolve(null);
+      }
+
+      renderItems(outline, pane);
+    }).catch(function () {
+      pane.appendChild(el("div", { class: "hint", text: "No outline available." }));
+    });
+  }
+
+  /* ================================================================
+     13. Download / print
+     ================================================================ */
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 8000);
+  }
+
+  function downloadCurrent() {
+    if (!state.pdfBytes) { toast("No document open.", "warn"); return; }
+    var blob = new Blob([state.pdfBytes], { type: "application/pdf" });
+    downloadBlob(blob, state.fileName || "document.pdf");
+    setStatus("Downloaded " + state.fileName, "ok");
+    if (isMobile()) toast("Saved to Downloads", "ok", 2500);
+  }
+
+  function printCurrent() {
+    if (!state.pdfBytes) { toast("No document open.", "warn"); return; }
+    var blob = new Blob([state.pdfBytes], { type: "application/pdf" });
+    var url = URL.createObjectURL(blob);
+    var frame = $("print-frame");
+    frame.src = url;
+    frame.style.display = "block";
+    frame.onload = function () {
+      try {
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+      } catch (e) {
+        window.open(url, "_blank");
+      }
+      setTimeout(function () {
+        frame.style.display = "none";
+        URL.revokeObjectURL(url);
+      }, 60000);
+    };
+  }
+
+  /* ================================================================
+     14. Server tools
+     ================================================================ */
+  function requireDoc() {
+    if (!state.pdfBytes) {
+      toast("Open a PDF first.", "warn");
+      return false;
+    }
+    return true;
+  }
+
+  function loadResponseIntoViewer(res, name) {
+    return res.blob().then(function (blob) {
+      if (blob.type && blob.type.indexOf("pdf") === -1 && blob.size < 200) {
+        return blob.text().then(function (t) { throw new Error(t.slice(0, 300)); });
+      }
+      return blob.arrayBuffer().then(function (buf) {
+        return loadPdfFromBuffer(buf, name || "result.pdf");
+      });
+    });
+  }
+
+  function resultDialog(blob, suggestedName, opts) {
+    opts = opts || {};
+    var isPdf = /pdf/i.test(blob.type) || /\.pdf$/i.test(suggestedName || "");
+
+    var body = el("div");
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "The server returned " + fmtBytes(blob.size) + " (" +
+            (blob.type || "application/octet-stream") + ")."
+    }));
+
+    if (!isPdf) {
+      body.appendChild(el("div", {
+        class: "hint",
+        style: "color:var(--warn)",
+        text: "This result is not a PDF, so it cannot be opened in the viewer — download it instead."
+      }));
+    }
+
+    showModal({
+      title: opts.title || "Operation complete",
+      bodyNode: body,
+      okText: isPdf ? "Open in Viewer" : "Download",
+      cancelText: "Download",
+      onOk: function () {
+        if (!isPdf) {
+          downloadBlob(blob, suggestedName);
+          return true;
+        }
+        return blob.arrayBuffer().then(function (buf) {
+          return loadPdfFromBuffer(buf, suggestedName);
+        }).catch(function (e) {
+          toast("Could not open result: " + e.message, "err");
+          downloadBlob(blob, suggestedName);
+          return true;
+        });
+      }
+    });
+  }
+
+  /* -------- MERGE -------- */
+  function toolMerge() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    var body = el("div");
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "Select two or more PDF files. They are merged in the order shown below (use the arrows to reorder)."
+    }));
+    var dropHost = el("div", { html: fileDropHTML("mergeFiles", true, "application/pdf") });
+    body.appendChild(dropHost);
+
+    var orderBox = el("div", { class: "file-list", id: "mergeOrder" });
+    body.appendChild(el("label", { text: "Merge order" }));
+    body.appendChild(orderBox);
+
+    var local = { files: [] };
+
+    function renderOrder() {
+      orderBox.innerHTML = "";
+      local.files.forEach(function (f, i) {
+        var row = el("div", { class: "file-row" }, [
+          el("span", { text: String(i + 1) + "." }),
+          el("span", { class: "nm", text: f.name }),
+          el("span", { class: "sz", text: fmtBytes(f.size) })
+        ]);
+        var up = el("button", { class: "btn ghost", text: "↑", style: "padding:1px 7px;" });
+        var dn = el("button", { class: "btn ghost", text: "↓", style: "padding:1px 7px;" });
+        up.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (i > 0) {
+            var tmp = local.files[i - 1];
+            local.files[i - 1] = local.files[i];
+            local.files[i] = tmp;
+            renderOrder();
+          }
+        });
+        dn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (i < local.files.length - 1) {
+            var tmp = local.files[i + 1];
+            local.files[i + 1] = local.files[i];
+            local.files[i] = tmp;
+            renderOrder();
+          }
+        });
+        row.appendChild(up);
+        row.appendChild(dn);
+        orderBox.appendChild(row);
+      });
+    }
+
+    var includeCurrent = el("label", { class: "checkline" }, [
+      el("input", { type: "checkbox", id: "mergeIncludeCurrent" }),
+      document.createTextNode("Include the currently open document")
+    ]);
+    body.appendChild(includeCurrent);
+
+    wireFileDrop(body, "mergeFiles", function (files) {
+      local.files = files.slice();
+      renderOrder();
+    });
+
+    showModal({
+      title: "Merge PDFs",
+      bodyNode: body,
+      okText: "Merge",
+      wide: true,
+      onOk: function () {
+        var files = local.files.slice();
+        if (qs("#mergeIncludeCurrent", body).checked && currentFile()) {
+          files.unshift(currentFile());
+        }
+        if (files.length < 2) {
+          toast("Select at least two PDFs to merge.", "warn");
+          return false;
+        }
+        var fd = new FormData();
+        files.forEach(function (f) { fd.append("fileInput", f, f.name); });
+
+        showBusy("Merging " + files.length + " files…");
+        return stirlingPost("/api/v1/general/merge-pdfs", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("Merge complete", "ok");
+            resultDialog(blob, "merged.pdf", { title: "Merge complete" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Merge failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- SPLIT -------- */
+  function toolSplit() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+
+    var body = el("div");
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "Enter page numbers and/or ranges separated by commas, e.g. 1,3,5-8. " +
+            "Each group becomes its own PDF (returned as a ZIP when more than one group is produced)."
+    }));
+    body.appendChild(field("Pages to extract",
+      '<input type="text" id="splitPages" placeholder="1,3,5-8" value="1" />'));
+
+    var modeWrap = el("div", { class: "field" }, [
+      el("label", { text: "Split mode" }),
+      el("select", { id: "splitMode" }, [
+        el("option", { value: "pages", text: "Split at listed pages/ranges" }),
+        el("option", { value: "every", text: "Split every N pages" }),
+        el("option", { value: "half", text: "Split into two halves" })
+      ])
+    ]);
+    body.appendChild(modeWrap);
+
+    var everyWrap = el("div", { class: "field", style: "display:none" }, [
+      el("label", { text: "Pages per file" }),
+      el("input", { type: "number", id: "splitEvery", value: "1", min: "1" })
+    ]);
+    body.appendChild(everyWrap);
+
+    setTimeout(function () {
+      var sel = qs("#splitMode", body);
+      sel.addEventListener("change", function () {
+        everyWrap.style.display = sel.value === "every" ? "flex" : "none";
+      });
+    }, 10);
+
+    showModal({
+      title: "Split PDF",
+      bodyNode: body,
+      okText: "Split",
+      onOk: function () {
+        var mode = qs("#splitMode", body).value;
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        var endpoint = "/api/v1/general/split-pages";
+
+        if (mode === "every") {
+          endpoint = "/api/v1/general/split-pdfs";
+          fd.append("splitType", "SPLIT_BY_SIZE");
+          fd.append("splitValue", qs("#splitEvery", body).value || "1");
+        } else if (mode === "half") {
+          endpoint = "/api/v1/general/split-pdf-by-sections";
+          fd.append("horizontalDivisions", "2");
+          fd.append("verticalDivisions", "1");
+        } else {
+          var pages = qs("#splitPages", body).value.trim();
+          if (!pages) { toast("Enter page numbers.", "warn"); return false; }
+          fd.append("pageNumbers", pages);
+        }
+
+        showBusy("Splitting document…");
+        return stirlingPost(endpoint, fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("Split complete", "ok");
+            resultDialog(blob, "split.zip", { title: "Split complete" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Split failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- EXTRACT -------- */
+  function toolExtract() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+    var body = el("div");
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "Create a new PDF containing only the pages you list."
+    }));
+    body.appendChild(field("Pages to keep", '<input type="text" id="extractPages" placeholder="1,4,7-9" />'));
+
+    showModal({
+      title: "Extract Pages",
+      bodyNode: body,
+      okText: "Extract",
+      onOk: function () {
+        var pages = qs("#extractPages", body).value.trim();
+        if (!pages) { toast("Enter page numbers.", "warn"); return false; }
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        fd.append("pageNumbers", pages);
+        showBusy("Extracting pages…");
+        return stirlingPost("/api/v1/general/rearrange-pages", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("Extract complete", "ok");
+            resultDialog(blob, "extracted.pdf", { title: "Extract complete" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Extract failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- REMOVE PAGES -------- */
+  function toolRemovePages() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+    var body = el("div");
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "Delete the listed pages from the document. Use commas and ranges, e.g. 2,5-7."
+    }));
+    body.appendChild(field("Pages to delete", '<input type="text" id="removePages" placeholder="2,5-7" />'));
+
+    showModal({
+      title: "Delete Pages",
+      bodyNode: body,
+      okText: "Delete",
+      onOk: function () {
+        var pages = qs("#removePages", body).value.trim();
+        if (!pages) { toast("Enter page numbers.", "warn"); return false; }
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        fd.append("pageNumbers", pages);
+        showBusy("Deleting pages…");
+        return stirlingPost("/api/v1/general/remove-pages", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("Pages deleted", "ok");
+            resultDialog(blob, "pages-removed.pdf", { title: "Pages deleted" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Delete failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- REORDER -------- */
+  function toolRearrange() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+    var body = el("div");
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "Supply the full page order. Example: for a 5 page file, '5,4,3,2,1' reverses it."
+    }));
+    body.appendChild(field("New page order", '<input type="text" id="reorderPages" placeholder="3,1,2,4" />'));
+
+    showModal({
+      title: "Reorder Pages",
+      bodyNode: body,
+      okText: "Apply Order",
+      onOk: function () {
+        var pages = qs("#reorderPages", body).value.trim();
+        if (!pages) { toast("Enter the new order.", "warn"); return false; }
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        fd.append("pageNumbers", pages);
+        showBusy("Reordering pages…");
+        return stirlingPost("/api/v1/general/rearrange-pages", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("Reordered", "ok");
+            resultDialog(blob, "reordered.pdf", { title: "Reorder complete" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Reorder failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- ROTATE -------- */
+  function toolRotate() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+    var body = el("div");
+    body.appendChild(field("Rotate by",
+      '<select id="rotAngle">' +
+      '<option value="90">90° clockwise</option>' +
+      '<option value="180">180°</option>' +
+      '<option value="270">270° (90° counter-clockwise)</option>' +
+      '</select>'));
+
+    showModal({
+      title: "Rotate Pages",
+      bodyNode: body,
+      okText: "Rotate",
+      onOk: function () {
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        fd.append("angle", qs("#rotAngle", body).value);
+        showBusy("Rotating…");
+        return stirlingPost("/api/v1/general/rotate-pdf", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("Rotated", "ok");
+            resultDialog(blob, "rotated.pdf", { title: "Rotation complete" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Rotate failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- COMPRESS -------- */
+  function toolCompress() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+    var body = el("div");
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "Higher optimization levels shrink the file more but reduce image quality."
+    }));
+    body.appendChild(field("Optimization level (1 = best quality, 9 = smallest)",
+      '<input type="range" id="compressLevel" min="1" max="9" value="5" />' +
+      '<div style="text-align:center;font-size:14px;color:var(--text-dim);margin-top:6px;" id="compressVal">5</div>'));
+
+    setTimeout(function () {
+      var r = qs("#compressLevel", body);
+      var out = qs("#compressVal", body);
+      r.addEventListener("input", function () { out.textContent = r.value; });
+    }, 10);
+
+    showModal({
+      title: "Compress PDF",
+      bodyNode: body,
+      okText: "Compress",
+      onOk: function () {
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        fd.append("optimizeLevel", qs("#compressLevel", body).value);
+        var before = state.pdfBytes ? state.pdfBytes.length : 0;
+
+        showBusy("Compressing…");
+        return stirlingPost("/api/v1/misc/compress-pdf", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            var saved = before ? Math.max(0, Math.round((1 - blob.size / before) * 100)) : 0;
+            setStatus("Compressed (" + saved + "% smaller)", "ok");
+            toast("Compressed: " + fmtBytes(before) + " → " + fmtBytes(blob.size) +
+                  " (" + saved + "% smaller)", "ok", 5000);
+            resultDialog(blob, "compressed.pdf", { title: "Compression complete" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Compress failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- WATERMARK -------- */
+  function toolWatermark() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+    var body = el("div");
+    body.appendChild(field("Watermark text", '<input type="text" id="wmText" value="CONFIDENTIAL" />'));
+
+    var row = el("div", { class: "row2" });
+    row.appendChild(field("Font size", '<input type="number" id="wmSize" value="30" min="1" />'));
+    row.appendChild(field("Rotation", '<input type="number" id="wmRotation" value="45" min="-180" max="180" />'));
+    body.appendChild(row);
+
+    var row2 = el("div", { class: "row3" });
+    row2.appendChild(field("Opacity (0-1)", '<input type="number" id="wmOpacity" value="0.3" min="0" max="1" step="0.05" />'));
+    row2.appendChild(field("Colour", '<input type="color" id="wmColor" value="#ff0000" style="height:40px;padding:2px;" />'));
+    row2.appendChild(field("Position", '<select id="wmPosition">' +
+      '<option value="1">Top Left</option><option value="2">Top Centre</option><option value="3">Top Right</option>' +
+      '<option value="4">Middle Left</option><option value="5">Centre</option><option value="6">Middle Right</option>' +
+      '<option value="7">Bottom Left</option><option value="8" selected>Bottom Centre</option><option value="9">Bottom Right</option>' +
+      '</select>'));
+    body.appendChild(row2);
+
+    showModal({
+      title: "Add Watermark",
+      bodyNode: body,
+      okText: "Add Watermark",
+      wide: true,
+      onOk: function () {
+        var text = qs("#wmText", body).value.trim();
+        if (!text) { toast("Enter watermark text.", "warn"); return false; }
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        fd.append("watermarkType", "text");
+        fd.append("watermarkText", text);
+        fd.append("fontSize", qs("#wmSize", body).value);
+        fd.append("rotation", qs("#wmRotation", body).value);
+        fd.append("opacity", qs("#wmOpacity", body).value);
+        fd.append("customColor", qs("#wmColor", body).value.replace("#", ""));
+        fd.append("position", qs("#wmPosition", body).value);
+        fd.append("widthSpacer", "50");
+        fd.append("heightSpacer", "50");
+        showBusy("Applying watermark…");
+        return stirlingPost("/api/v1/misc/add-watermark", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("Watermark applied", "ok");
+            resultDialog(blob, "watermarked.pdf", { title: "Watermark complete" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Watermark failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- PAGE NUMBERS -------- */
+  function toolPageNumbers() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+    var body = el("div");
+
+    var row = el("div", { class: "row2" });
+    row.appendChild(field("Position", '<select id="pnPosition">' +
+      '<option value="1">Top Left</option><option value="2">Top Centre</option><option value="3">Top Right</option>' +
+      '<option value="4">Middle Left</option><option value="5">Centre</option><option value="6">Middle Right</option>' +
+      '<option value="7">Bottom Left</option><option value="8">Bottom Centre</option><option value="9">Bottom Right</option>' +
+      '</select>'));
+    row.appendChild(field("Starting number", '<input type="number" id="pnStart" value="1" min="1" />'));
+    body.appendChild(row);
+
+    var row2 = el("div", { class: "row3" });
+    row2.appendChild(field("Font size", '<input type="number" id="pnSize" value="12" min="4" />'));
+    row2.appendChild(field("Font", '<select id="pnFont">' +
+      '<option value="helvetica">Helvetica</option>' +
+      '<option value="times">Times</option>' +
+      '<option value="courier">Courier</option>' +
+      '</select>'));
+    row2.appendChild(field("Colour", '<input type="color" id="pnColor" value="#000000" style="height:40px;padding:2px;" />'));
+    body.appendChild(row2);
+
+    body.appendChild(field("Pages to number (leave blank for all)",
+      '<input type="text" id="pnPages" placeholder="1-10" />'));
+
+    showModal({
+      title: "Add Page Numbers",
+      bodyNode: body,
+      okText: "Add Numbers",
+      wide: true,
+      onOk: function () {
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        fd.append("position", qs("#pnPosition", body).value);
+        fd.append("startingNumber", qs("#pnStart", body).value);
+        fd.append("fontSize", qs("#pnSize", body).value);
+        fd.append("fontType", qs("#pnFont", body).value);
+        fd.append("fontColor", qs("#pnColor", body).value.replace("#", ""));
+        fd.append("customMargin", "20");
+        var pages = qs("#pnPages", body).value.trim();
+        if (pages) fd.append("pagesToNumber", pages);
+        showBusy("Adding page numbers…");
+        return stirlingPost("/api/v1/misc/add-page-numbers", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("Page numbers added", "ok");
+            resultDialog(blob, "numbered.pdf", { title: "Page numbers added" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Page numbers failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- PROTECT -------- */
+  function toolProtect() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+    var body = el("div");
+    body.appendChild(field("Password", '<input type="password" id="protPass" placeholder="••••••••" />'));
+    body.appendChild(field("Confirm password", '<input type="password" id="protPass2" placeholder="••••••••" />'));
+    body.appendChild(field("Key length", '<select id="protKey">' +
+      '<option value="256">256-bit (strongest)</option>' +
+      '<option value="128">128-bit</option>' +
+      '<option value="40">40-bit (legacy)</option>' +
+      '</select>'));
+
+    showModal({
+      title: "Password Protect",
+      bodyNode: body,
+      okText: "Protect",
+      onOk: function () {
+        var p1 = qs("#protPass", body).value;
+        var p2 = qs("#protPass2", body).value;
+        if (!p1) { toast("Enter a password.", "warn"); return false; }
+        if (p1 !== p2) { toast("Passwords do not match.", "warn"); return false; }
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        fd.append("password", p1);
+        fd.append("keyLength", qs("#protKey", body).value);
+        showBusy("Encrypting…");
+        return stirlingPost("/api/v1/security/add-password", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("Document protected", "ok");
+            resultDialog(blob, "protected.pdf", { title: "Protection complete" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Protect failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- UNLOCK -------- */
+  function toolUnlock() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+    var body = el("div");
+    body.appendChild(field("Current password", '<input type="password" id="unlockPass" placeholder="••••••••" />'));
+
+    showModal({
+      title: "Remove Password",
+      bodyNode: body,
+      okText: "Unlock",
+      onOk: function () {
+        var p = qs("#unlockPass", body).value;
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        fd.append("password", p);
+        showBusy("Removing password…");
+        return stirlingPost("/api/v1/security/remove-password", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("Password removed", "ok");
+            resultDialog(blob, "unlocked.pdf", { title: "Password removed" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Unlock failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- PDF → IMAGES -------- */
+  function toolPdfToImages() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+    var body = el("div");
+
+    var row = el("div", { class: "row2" });
+    row.appendChild(field("Image format", '<select id="imgFmt">' +
+      '<option value="png">PNG</option>' +
+      '<option value="jpeg">JPEG</option>' +
+      '</select>'));
+    row.appendChild(field("DPI", '<input type="number" id="imgDpi" value="150" min="36" max="600" />'));
+    body.appendChild(row);
+
+    var row2 = el("div", { class: "row2" });
+    row2.appendChild(field("Colour", '<select id="imgColor">' +
+      '<option value="color">Colour</option>' +
+      '<option value="greyscale">Greyscale</option>' +
+      '<option value="blackwhite">Black &amp; White</option>' +
+      '</select>'));
+    row2.appendChild(field("Output", '<select id="imgSingle">' +
+      '<option value="multiple">One image per page (ZIP)</option>' +
+      '<option value="single">Single long image</option>' +
+      '</select>'));
+    body.appendChild(row2);
+
+    showModal({
+      title: "PDF → Images",
+      bodyNode: body,
+      okText: "Convert",
+      wide: true,
+      onOk: function () {
+        var fmt = qs("#imgFmt", body).value;
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        fd.append("imageFormat", fmt);
+        fd.append("dpi", qs("#imgDpi", body).value);
+        fd.append("colorType", qs("#imgColor", body).value);
+        fd.append("singleOrMultiple", qs("#imgSingle", body).value);
+        showBusy("Converting to images…");
+        return stirlingPost("/api/v1/convert/pdf/img", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("Conversion complete", "ok");
+            var ext = qs("#imgSingle", body).value === "single" ? fmt : "zip";
+            resultDialog(blob, "images." + ext, { title: "PDF → Images" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Conversion failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- IMAGES → PDF -------- */
+  function toolImagesToPdf() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    var body = el("div");
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "Select one or more images. They are placed in the order shown."
+    }));
+    var host = el("div", { html: fileDropHTML("i2pFiles", true, "image/*") });
+    body.appendChild(host);
+
+    var orderBox = el("div", { class: "file-list", id: "i2pOrder" });
+    body.appendChild(orderBox);
+
+    var files = [];
+    function render() {
+      orderBox.innerHTML = "";
+      files.forEach(function (f, i) {
+        var row = el("div", { class: "file-row" }, [
+          el("span", { text: String(i + 1) + "." }),
+          el("span", { class: "nm", text: f.name }),
+          el("span", { class: "sz", text: fmtBytes(f.size) })
+        ]);
+        orderBox.appendChild(row);
+      });
+    }
+
+    wireFileDrop(body, "i2pFiles", function (f) { files = f.slice(); render(); });
+
+    var row = el("div", { class: "row2" });
+    row.appendChild(field("Fit", '<select id="i2pFit">' +
+      '<option value="fillPage">Fill page</option>' +
+      '<option value="fitDocumentToImage">Fit page to image</option>' +
+      '<option value="maintainAspectRatio">Maintain aspect ratio</option>' +
+      '</select>'));
+    row.appendChild(field("Colour", '<select id="i2pColor">' +
+      '<option value="color">Colour</option>' +
+      '<option value="greyscale">Greyscale</option>' +
+      '</select>'));
+    body.appendChild(row);
+
+    showModal({
+      title: "Images → PDF",
+      bodyNode: body,
+      okText: "Create PDF",
+      wide: true,
+      onOk: function () {
+        if (!files.length) { toast("Select at least one image.", "warn"); return false; }
+        var fd = new FormData();
+        files.forEach(function (f) { fd.append("imageInput", f, f.name); });
+        fd.append("fitOption", qs("#i2pFit", body).value);
+        fd.append("colorType", qs("#i2pColor", body).value);
+        showBusy("Building PDF…");
+        return stirlingPost("/api/v1/convert/img/pdf", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("PDF created", "ok");
+            resultDialog(blob, "images.pdf", { title: "Images → PDF" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("Conversion failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- OCR -------- */
+  function toolOcr() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+    var body = el("div");
+    body.appendChild(field("OCR languages (Tesseract codes, e.g. eng+deu)",
+      '<input type="text" id="ocrLangs" value="eng" autocapitalize="off" spellcheck="false" />'));
+    body.appendChild(field("OCR mode", '<select id="ocrType">' +
+      '<option value="skip-text">Skip pages that already contain text</option>' +
+      '<option value="force-ocr">Force OCR on every page</option>' +
+      '<option value="normal">Normal (auto)</option>' +
+      '</select>'));
+    body.appendChild(el("label", { class: "checkline" }, [
+      el("input", { type: "checkbox", id: "ocrSidecar" }),
+      document.createTextNode("Also produce a sidecar text file")
+    ]));
+
+    showModal({
+      title: "OCR PDF",
+      bodyNode: body,
+      okText: "Run OCR",
+      onOk: function () {
+        var fd = new FormData();
+        fd.append("fileInput", currentFile());
+        fd.append("languages", qs("#ocrLangs", body).value.trim() || "eng");
+        fd.append("ocrType", qs("#ocrType", body).value);
+        fd.append("sidecar", qs("#ocrSidecar", body).checked ? "true" : "false");
+        showBusy("Running OCR (this can take a while)…");
+        return stirlingPost("/api/v1/misc/ocr-pdf", fd)
+          .then(function (res) { return res.blob(); })
+          .then(function (blob) {
+            hideBusy();
+            setStatus("OCR complete", "ok");
+            resultDialog(blob, "ocr.pdf", { title: "OCR complete" });
+          })
+          .catch(function (err) {
+            hideBusy();
+            toast("OCR failed: " + err.message, "err", 7000);
+            return false;
+          });
+      }
+    });
+  }
+
+  /* -------- EXTRACT TEXT -------- */
+  function toolExtractText() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+
+    showBusy("Extracting text…");
+    var fd = new FormData();
+    fd.append("fileInput", currentFile());
+
+    stirlingPost("/api/v1/convert/pdf/text", fd)
+      .then(function (res) { return res.text(); })
+      .then(function (text) {
+        hideBusy();
+
+        var body = el("div");
+        var ta = el("textarea", {
+          id: "extractedText",
+          style: "min-height:280px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;",
+          spellcheck: "false"
+        });
+        ta.value = text || "(no text returned)";
+        body.appendChild(ta);
+
+        var info = el("div", {
+          class: "hint",
+          text: "Characters: " + (text ? text.length : 0)
+        });
+        body.appendChild(info);
+
+        var copyBtn = el("button", { class: "btn", text: "Copy to clipboard", style: "align-self:flex-start;" });
+        copyBtn.addEventListener("click", function () {
+          ta.select();
+          try {
+            document.execCommand("copy");
+            toast("Copied to clipboard.", "ok");
+          } catch (e) {
+            if (navigator.clipboard) navigator.clipboard.writeText(ta.value);
+            toast("Copied to clipboard.", "ok");
+          }
+        });
+        body.appendChild(copyBtn);
+
+        showModal({
+          title: "Extracted Text",
+          bodyNode: body,
+          okText: "Save as .txt",
+          cancelText: "Close",
+          wide: true,
+          onOk: function () {
+            var blob = new Blob([ta.value], { type: "text/plain;charset=utf-8" });
+            downloadBlob(blob, (state.fileName || "document").replace(/\.pdf$/i, "") + ".txt");
+            return true;
+          }
+        });
+      })
+      .catch(function (err) {
+        hideBusy();
+        toast("Text extraction failed: " + err.message, "err", 7000);
+      });
+  }
+
+  /* -------- METADATA -------- */
+  function toolMetadata() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+    if (!requireDoc()) return;
+
+    showBusy("Reading metadata…");
+    state.pdfDoc.getMetadata().then(function (md) {
+      hideBusy();
+      var info = md.info || {};
+
+      var body = el("div");
+      var row = el("div", { class: "row2" });
+      row.appendChild(field("Title", '<input type="text" id="mdTitle" />'));
+      row.appendChild(field("Author", '<input type="text" id="mdAuthor" />'));
+      body.appendChild(row);
+
+      var row2 = el("div", { class: "row2" });
+      row2.appendChild(field("Subject", '<input type="text" id="mdSubject" />'));
+      row2.appendChild(field("Keywords", '<input type="text" id="mdKeywords" />'));
+      body.appendChild(row2);
+
+      var row3 = el("div", { class: "row2" });
+      row3.appendChild(field("Creator", '<input type="text" id="mdCreator" />'));
+      row3.appendChild(field("Producer", '<input type="text" id="mdProducer" />'));
+      body.appendChild(row3);
+
+      body.appendChild(el("div", {
+        class: "hint",
+        text: "Pages: " + state.pdfDoc.numPages +
+              "  •  PDF version: " + (md.info && md.info.PDFFormatVersion ? md.info.PDFFormatVersion : "n/a")
+      }));
+
+      setTimeout(function () {
+        qs("#mdTitle", body).value = info.Title || "";
+        qs("#mdAuthor", body).value = info.Author || "";
+        qs("#mdSubject", body).value = info.Subject || "";
+        qs("#mdKeywords", body).value = info.Keywords || "";
+        qs("#mdCreator", body).value = info.Creator || "";
+        qs("#mdProducer", body).value = info.Producer || "";
+      }, 10);
+
+      showModal({
+        title: "Document Properties",
+        bodyNode: body,
+        okText: "Save Metadata",
+        wide: true,
+        onOk: function () {
+          var fd = new FormData();
+          fd.append("fileInput", currentFile());
+          fd.append("title", qs("#mdTitle", body).value);
+          fd.append("author", qs("#mdAuthor", body).value);
+          fd.append("subject", qs("#mdSubject", body).value);
+          fd.append("keywords", qs("#mdKeywords", body).value);
+          fd.append("creator", qs("#mdCreator", body).value);
+          fd.append("producer", qs("#mdProducer", body).value);
+          showBusy("Saving metadata…");
+          return stirlingPost("/api/v1/misc/update-metadata", fd)
+            .then(function (res) { return res.blob(); })
+            .then(function (blob) {
+              hideBusy();
+              setStatus("Metadata saved", "ok");
+              resultDialog(blob, "metadata.pdf", { title: "Metadata saved" });
+            })
+            .catch(function (err) {
+              hideBusy();
+              toast("Metadata update failed: " + err.message, "err", 7000);
+              return false;
+            });
+        }
+      });
+    }).catch(function (err) {
+      hideBusy();
+      toast("Could not read metadata: " + err.message, "err");
+    });
+  }
+
+  /* ================================================================
+     15. CORS PROXY SETTINGS DIALOG
+     ================================================================ */
+  function openProxySettings() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+
+    var body = el("div");
+
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "Fetching PDFs from other websites is normally blocked by the browser's " +
+            "CORS security policy. Auto mode transparently retries the request through " +
+            "several free public CORS proxies until one works — no signup, no API key, " +
+            "no cost."
+    }));
+
+    // Mode selector
+    var modeField = el("div", { class: "field" }, [
+      el("label", { text: "Fetching mode" }),
+      el("select", { id: "pxMode" }, [
+        el("option", { value: "auto",   text: "Auto — try direct, then free proxies (recommended)" }),
+        el("option", { value: "direct", text: "Direct — no proxy (fastest if site allows CORS)" }),
+        el("option", { value: "custom", text: "Custom — use my own proxy URL" })
+      ])
+    ]);
+    body.appendChild(modeField);
+
+    // Custom proxy input (hidden unless custom mode)
+    var customWrap = el("div", { class: "field", style: "display:none" }, [
+      el("label", { text: "Custom proxy URL template" }),
+      el("input", {
+        type: "text", id: "pxCustom",
+        placeholder: "https://my-proxy.example/?url={url}",
+        autocapitalize: "off", spellcheck: "false"
+      }),
+      el("div", { class: "hint", text: "Use {url} as the placeholder for the target PDF URL." })
+    ]);
+    body.appendChild(customWrap);
+
+    // Built-in proxy list with test buttons
+    body.appendChild(el("label", { text: "Built-in free proxies (used in Auto mode)" }));
+    var listWrap = el("div", { class: "proxy-list", id: "pxList" });
+
+    CORS_PROXIES.forEach(function (proxy) {
+      var dot = el("span", { class: "pr-dot", "data-proxy": proxy.id });
+      var testBtn = el("button", { class: "pr-test", text: "Test" });
+      var row = el("div", { class: "proxy-row" }, [
+        dot,
+        el("span", { class: "pr-name", text: proxy.name + "  —  " + proxy.description }),
+        testBtn
+      ]);
+      row.setAttribute("data-proxy", proxy.id);
+
+      testBtn.addEventListener("click", function () {
+        dot.className = "pr-dot testing";
+        testBtn.disabled = true;
+        testBtn.textContent = "…";
+        testProxy(proxy).then(function () {
+          dot.className = "pr-dot ok";
+          testBtn.textContent = "OK";
+          setTimeout(function () {
+            testBtn.disabled = false;
+            testBtn.textContent = "Test";
+          }, 2500);
+        }).catch(function () {
+          dot.className = "pr-dot fail";
+          testBtn.textContent = "Fail";
+          setTimeout(function () {
+            testBtn.disabled = false;
+            testBtn.textContent = "Test";
+          }, 2500);
+        });
+      });
+
+      listWrap.appendChild(row);
+    });
+    body.appendChild(listWrap);
+
+    body.appendChild(el("div", {
+      class: "hint",
+      style: "margin-top:6px;",
+      text: "Tip: If every proxy fails, try a different network or use the 'Open from server' " +
+            "option — Stirling PDF can fetch files directly from its own filesystem."
+    }));
+
+    // Wire UI
+    setTimeout(function () {
+      var sel = qs("#pxMode", body);
+      var custom = qs("#pxCustom", body);
+      var cw = custom.parentNode;
+
+      sel.value = state.corsMode || "auto";
+      custom.value = state.corsProxy || "";
+      if (sel.value === "custom") cw.style.display = "flex";
+
+      sel.addEventListener("change", function () {
+        cw.style.display = sel.value === "custom" ? "flex" : "none";
+      });
+    }, 10);
+
+    showModal({
+      title: "CORS Proxy Settings",
+      bodyNode: body,
+      okText: "Save",
+      wide: true,
+      onOk: function () {
+        var mode = qs("#pxMode", body).value;
+        var custom = qs("#pxCustom", body).value.trim();
+
+        if (mode === "custom" && !custom) {
+          toast("Enter a custom proxy URL or choose Auto mode.", "warn");
+          return false;
+        }
+
+        state.corsMode = mode;
+        localStorage.setItem("stirlingCorsMode", mode);
+
+        if (mode === "custom") {
+          state.corsProxy = custom;
+          localStorage.setItem("stirlingCorsProxy", custom);
+        }
+
+        updateProxyStatusLabel();
+        toast("Proxy settings saved (mode: " + mode + ").", "ok");
+        return true;
+      }
+    });
+  }
+
+  /* ================================================================
+     16. SERVER SETTINGS DIALOG
+     ================================================================ */
+  function openSettings() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+
+    var body = el("div");
+
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "Point this client at your running Stirling PDF instance. " +
+            "The default Docker image listens on port 8080."
+    }));
+
+    body.appendChild(field("Stirling PDF server URL",
+      '<input type="text" id="setServer" placeholder="http://localhost:8080" autocapitalize="off" spellcheck="false" inputmode="url" />',
+      "Example: http://localhost:8080 or https://pdf.mycompany.com"));
+
+    // Server test
+    var testRow = el("div", { style: "display:flex;gap:9px;align-items:center;margin-top:4px;flex-wrap:wrap;" });
+    var testBtn = el("button", { class: "btn", text: "Test connection" });
+    var testOut = el("span", { class: "hint", text: "" });
+    testRow.appendChild(testBtn);
+    testRow.appendChild(testOut);
+    body.appendChild(testRow);
+
+    // Proxy quick link
+    var proxyRow = el("div", {
+      style: "display:flex;align-items:center;gap:10px;padding:10px 12px;background:#1d1d20;border:1px solid var(--border);border-radius:8px;margin-top:6px;"
+    });
+    proxyRow.appendChild(el("div", {
+      style: "flex:1;font-size:12px;color:var(--text-dim);line-height:1.5;",
+      html: "<b style='color:var(--text);'>CORS Proxy</b><br>Free auto-fallback proxies are enabled for URL fetching."
+    }));
+    var openProxyBtn = el("button", { class: "btn", text: "Configure" });
+    openProxyBtn.addEventListener("click", function () {
+      closeModal();
+      setTimeout(openProxySettings, 120);
+    });
+    proxyRow.appendChild(openProxyBtn);
+    body.appendChild(proxyRow);
+
+    // Endpoint reference
+    var endpoints = el("details", { style: "margin-top:6px;" });
+    endpoints.appendChild(el("summary", {
+      text: "Endpoint reference",
+      style: "cursor:pointer;font-size:12px;color:var(--text-dim);"
+    }));
+    endpoints.appendChild(el("div", {
+      class: "hint",
+      style: "margin-top:8px;line-height:1.9;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;word-break:break-all;",
+      html:
+        "GET&nbsp;&nbsp;/api/v1/info/status<br>" +
+        "POST /api/v1/general/merge-pdfs<br>" +
+        "POST /api/v1/general/split-pages<br>" +
+        "POST /api/v1/general/rotate-pdf<br>" +
+        "POST /api/v1/general/rearrange-pages<br>" +
+        "POST /api/v1/general/remove-pages<br>" +
+        "POST /api/v1/misc/compress-pdf<br>" +
+        "POST /api/v1/misc/add-watermark<br>" +
+        "POST /api/v1/misc/add-page-numbers<br>" +
+        "POST /api/v1/misc/ocr-pdf<br>" +
+        "POST /api/v1/misc/update-metadata<br>" +
+        "POST /api/v1/security/add-password<br>" +
+        "POST /api/v1/security/remove-password<br>" +
+        "POST /api/v1/convert/pdf/img<br>" +
+        "POST /api/v1/convert/img/pdf<br>" +
+        "POST /api/v1/convert/pdf/text"
+    }));
+    body.appendChild(endpoints);
+
+    setTimeout(function () {
+      qs("#setServer", body).value = state.serverUrl || "";
+    }, 10);
+
+    testBtn.addEventListener("click", function () {
+      var url = qs("#setServer", body).value.trim().replace(/\/+$/, "");
+      if (!url) { testOut.textContent = "Enter a URL first."; testOut.style.color = "var(--warn)"; return; }
+      testOut.textContent = "Testing…";
+      testOut.style.color = "var(--text-dim)";
+
+      var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+      var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 7000);
+
+      fetch(url + "/api/v1/info/status", { method: "GET", mode: "cors", signal: ctrl ? ctrl.signal : undefined })
+        .then(function (r) {
+          clearTimeout(timer);
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json().catch(function () { return {}; });
+        })
+        .then(function (d) {
+          testOut.textContent = "✓ Connected" + (d && d.version ? " (v" + d.version + ")" : "");
+          testOut.style.color = "var(--success)";
+        })
+        .catch(function (e) {
+          clearTimeout(timer);
+          testOut.textContent = "✗ " + e.message;
+          testOut.style.color = "var(--danger)";
+        });
+    });
+
+    showModal({
+      title: "Server Settings",
+      bodyNode: body,
+      okText: "Save",
+      wide: true,
+      onOk: function () {
+        var url = qs("#setServer", body).value.trim().replace(/\/+$/, "");
+        state.serverUrl = url;
+        localStorage.setItem("stirlingServerUrl", url);
+        checkServer(true);
+        toast("Server settings saved.", "ok");
+        return true;
+      }
+    });
+  }
+
+  /* ================================================================
+     17. ABOUT
+     ================================================================ */
+  function showAbout() {
+    closeMobileMenu();
+    var body = el("div");
+    body.appendChild(el("div", {
+      class: "hint",
+      style: "line-height:1.8;",
+      html:
+        "<b>HEX — PDF Studio</b> — an Adobe Acrobat–style front-end for " +
+        "<a href='https://hexsleuth.github.io/PDF-TTS-Reader/' target='_blank' rel='noopener' style='color:var(--accent)'>Stirling PDF</a>.<br><br>" +
+        "Rendering by PDF.js 3.11.174.<br>" +
+        "URL fetching uses free public CORS proxies with automatic fallback.<br>" +
+        "Server operations are proxied to your own Stirling PDF instance.<br><br>" +
+        "<b>Privacy:</b> files never leave your machine unless you explicitly invoke a server tool."
+    }));
+    showModal({
+      title: "About",
+      bodyNode: body,
+      okText: "Close",
+      cancelText: "",
+      onOk: function () { return true; }
+    });
+  }
+
+  /* ================================================================
+     18. COMMAND ROUTER
+     ================================================================ */
+  var COMMANDS = {
+    "open-file": openLocalFile,
+    "open-url": openFromUrlDialog,
+    "open-server": openFromServerDialog,
+    "save": downloadCurrent,
+    "print": printCurrent,
+    "close-doc": function () {
+      if (!state.pdfDoc) return;
+      resetViewer();
+      setStatus("Document closed");
+    },
+    "rotate-cw": function () {
+      if (!state.pdfDoc) return;
+      state.rotation = (state.rotation + 90) % 360;
+      renderPage(state.pageNum);
+    },
+    "rotate-ccw": function () {
+      if (!state.pdfDoc) return;
+      state.rotation = (state.rotation - 90 + 360) % 360;
+      renderPage(state.pageNum);
+    },
+    "zoom-in": zoomIn,
+    "zoom-out": zoomOut,
+    "zoom-reset": zoomReset,
+    "fit-width": function () { fitWidth(false); },
+    "fit-page": fitPage,
+    "toggle-left": function () {
+      var p = $("leftPanel");
+      if (isMobile()) { toggleDrawer(); return; }
+      p.style.display = p.style.display === "none" ? "flex" : "none";
+    },
+    "toggle-right": function () {
+      if (isMobile()) { toggleSheet(); return; }
+      var p = $("rightPanel");
+      p.style.display = p.style.display === "none" ? "flex" : "none";
+    },
+    "tool-merge": toolMerge,
+    "tool-split": toolSplit,
+    "tool-extract": toolExtract,
+    "tool-remove-pages": toolRemovePages,
+    "tool-rearrange": toolRearrange,
+    "tool-rotate": toolRotate,
+    "tool-compress": toolCompress,
+    "tool-watermark": toolWatermark,
+    "tool-pagenumbers": toolPageNumbers,
+    "tool-protect": toolProtect,
+    "tool-unlock": toolUnlock,
+    "tool-pdf2img": toolPdfToImages,
+    "tool-img2pdf": toolImagesToPdf,
+    "tool-ocr": toolOcr,
+    "tool-text": toolExtractText,
+    "tool-metadata": toolMetadata,
+    "settings": openSettings,
+    "proxy-settings": openProxySettings,
+    "check-server": function () { checkServer(false); },
+    "about": showAbout,
+    "stirling-docs": function () {
+      window.open("https://docs.stirlingpdf.com", "_blank", "noopener");
+    }
+  };
+
+  function runCommand(cmd) {
+    var fn = COMMANDS[cmd];
+    if (fn) {
+      try { fn(); } catch (e) {
+        console.error(e);
+        toast("Command error: " + e.message, "err");
+      }
+    }
+    closeAllMenus();
+  }
+
+  /* ================================================================
+     19. Menu wiring (desktop)
+     ================================================================ */
+  function closeAllMenus() {
+    qsa(".menu").forEach(function (m) { m.classList.remove("open"); });
+  }
+
+  function initMenus() {
+    qsa(".menu").forEach(function (menu) {
+      var btn = menu.querySelector("button");
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var isOpen = menu.classList.contains("open");
+        closeAllMenus();
+        if (!isOpen) menu.classList.add("open");
+      });
+      menu.addEventListener("mouseenter", function () {
+        if (qsa(".menu.open").length) {
+          closeAllMenus();
+          menu.classList.add("open");
+        }
+      });
+    });
+
+    document.addEventListener("click", function () { closeAllMenus(); });
+
+    qsa(".dd-item").forEach(function (item) {
+      item.addEventListener("click", function (e) {
+        e.stopPropagation();
+        runCommand(item.getAttribute("data-cmd"));
+      });
+    });
+  }
+
+  /* ================================================================
+     20. Overlay helpers
+     ================================================================ */
+  function openDrawer() {
+    closeSheet();
+    closeMobileMenu();
+    document.body.classList.add("drawer-open");
+  }
+  function closeDrawer() {
+    document.body.classList.remove("drawer-open");
+  }
+  function toggleDrawer() {
+    if (document.body.classList.contains("drawer-open")) closeDrawer();
+    else openDrawer();
+  }
+
+  function openSheet() {
+    closeDrawer();
+    closeMobileMenu();
+    document.body.classList.add("sheet-open");
+  }
+  function closeSheet() {
+    document.body.classList.remove("sheet-open");
+  }
+  function toggleSheet() {
+    if (document.body.classList.contains("sheet-open")) closeSheet();
+    else openSheet();
+  }
+
+  function openMobileMenu() {
+    closeDrawer();
+    closeSheet();
+    document.body.classList.add("menu-open");
+  }
+  function closeMobileMenu() {
+    document.body.classList.remove("menu-open");
+  }
+  function toggleMobileMenu() {
+    if (document.body.classList.contains("menu-open")) closeMobileMenu();
+    else openMobileMenu();
+  }
+
+  function closeAllOverlays() {
+    closeDrawer();
+    closeSheet();
+    closeMobileMenu();
+  }
+
+  /* ================================================================
+     21. Mobile menu content
+     ================================================================ */
+  var MOBILE_MENU_ITEMS = [
+    { group: "File" },
+    { label: "Open from device",   cmd: "open-file",   icon: "file" },
+    { label: "Open from URL",      cmd: "open-url",    icon: "link" },
+    { label: "Open from server",   cmd: "open-server", icon: "server" },
+    { label: "Save / Download",    cmd: "save",        icon: "download" },
+    { label: "Print",              cmd: "print",       icon: "printer" },
+    { label: "Close document",     cmd: "close-doc",   icon: "x" },
+
+    { group: "View" },
+    { label: "Zoom in",            cmd: "zoom-in",     icon: "plus" },
+    { label: "Zoom out",           cmd: "zoom-out",    icon: "minus" },
+    { label: "Fit width",          cmd: "fit-width",   icon: "fitw" },
+    { label: "Fit page",           cmd: "fit-page",    icon: "fitp" },
+    { label: "Actual size",        cmd: "zoom-reset",  icon: "one" },
+    { label: "Rotate clockwise",   cmd: "rotate-cw",   icon: "rotcw" },
+    { label: "Rotate counter",     cmd: "rotate-ccw",  icon: "rotccw" },
+
+    { group: "Tools" },
+    { label: "Merge PDFs",         cmd: "tool-merge",       icon: "merge" },
+    { label: "Split PDF",          cmd: "tool-split",       icon: "split" },
+    { label: "Extract pages",      cmd: "tool-extract",     icon: "extract" },
+    { label: "Remove pages",       cmd: "tool-remove-pages",icon: "trash" },
+    { label: "Reorder pages",      cmd: "tool-rearrange",   icon: "reorder" },
+    { label: "Rotate pages",       cmd: "tool-rotate",      icon: "rotcw" },
+    { label: "Compress PDF",       cmd: "tool-compress",    icon: "compress" },
+    { label: "Add watermark",      cmd: "tool-watermark",   icon: "water" },
+    { label: "Add page numbers",   cmd: "tool-pagenumbers", icon: "numbers" },
+    { label: "Password protect",   cmd: "tool-protect",     icon: "lock" },
+    { label: "Remove password",    cmd: "tool-unlock",      icon: "unlock" },
+    { label: "PDF → Images",       cmd: "tool-pdf2img",     icon: "image" },
+    { label: "Images → PDF",       cmd: "tool-img2pdf",     icon: "imageplus" },
+    { label: "OCR PDF",            cmd: "tool-ocr",         icon: "ocr" },
+    { label: "Extract text",       cmd: "tool-text",        icon: "text" },
+    { label: "Document properties",cmd: "tool-metadata",    icon: "info" },
+
+    { group: "App" },
+    { label: "CORS Proxy settings",cmd: "proxy-settings",   icon: "globe" },
+    { label: "Server settings",    cmd: "settings",         icon: "gear" },
+    { label: "Test connection",    cmd: "check-server",     icon: "plug" },
+    { label: "About",              cmd: "about",            icon: "info" },
+    { label: "Stirling PDF docs",  cmd: "stirling-docs",    icon: "link" }
+  ];
+
+  var MM_ICONS = {
+    file:      '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
+    link:      '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+    server:    '<rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><path d="M7 7.5h.01"/><path d="M7 16.5h.01"/>',
+    download:  '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>',
+    printer:   '<path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 17h12v4H6z"/>',
+    x:         '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+    plus:      '<path d="M12 5v14"/><path d="M5 12h14"/>',
+    minus:     '<path d="M5 12h14"/>',
+    fitw:      '<path d="M3 12h18"/><path d="m7 8-4 4 4 4"/><path d="m17 8 4 4-4 4"/>',
+    fitp:      '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6v8H9z"/>',
+    one:       '<circle cx="12" cy="12" r="9"/><path d="M12 8v8"/>',
+    rotcw:     '<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/>',
+    rotccw:    '<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/>',
+    merge:     '<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/><path d="M11 7h5a2 2 0 0 1 2 2v4"/>',
+    split:     '<path d="M12 3v18"/><path d="M7 7 3 12l4 5"/><path d="m17 7 4 5-4 5"/>',
+    extract:   '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/>',
+    trash:     '<path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>',
+    reorder:   '<path d="M4 7h11"/><path d="m12 4 3 3-3 3"/><path d="M20 17H9"/><path d="m12 14-3 3 3 3"/>',
+    compress:  '<path d="M4 9h16"/><path d="M4 15h16"/><path d="m9 4 3 3 3-3"/><path d="m9 20 3-3 3 3"/>',
+    water:     '<path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h16"/>',
+    numbers:   '<path d="M4 8h16"/><path d="M4 16h16"/><path d="M9 4v16"/>',
+    lock:      '<rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+    unlock:    '<rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 7-2.6"/>',
+    image:     '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>',
+    imageplus: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/>',
+    ocr:       '<path d="M4 7V5a1 1 0 0 1 1-1h2"/><path d="M17 4h2a1 1 0 0 1 1 1v2"/><path d="M20 17v2a1 1 0 0 1-1 1h-2"/><path d="M7 20H5a1 1 0 0 1-1-1v-2"/><path d="M8 9h8"/><path d="M8 13h5"/>',
+    text:      '<path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/>',
+    info:      '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>',
+    gear:      '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9 2 2 0 1 1-2.8 2.8 1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2 2 2 0 1 1-2.8-2.8A1.7 1.7 0 0 0 4.6 15a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.2-2.9 2 2 0 1 1 2.8-2.8 1.7 1.7 0 0 0 2.9-1.2 2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2 2 2 0 1 1 2.8 2.8 1.7 1.7 0 0 0 1.2 2.9 2 2 0 1 1 0 4z"/>',
+    plug:      '<path d="M9 2v6"/><path d="M15 2v6"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v5"/>',
+    globe:     '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/>'
+  };
+
+  function buildMobileMenu() {
+    var body = $("mmBody");
+    if (!body) return;
+    body.innerHTML = "";
+
+    MOBILE_MENU_ITEMS.forEach(function (item) {
+      if (item.group) {
+        body.appendChild(el("div", { class: "mm-group-title", text: item.group }));
+        return;
+      }
+      var svgNS = "http://www.w3.org/2000/svg";
+      var svg = document.createElementNS(svgNS, "svg");
+      svg.setAttribute("viewBox", "0 0 24 24");
+      svg.setAttribute("fill", "none");
+      svg.setAttribute("stroke", "currentColor");
+      svg.setAttribute("stroke-width", "1.8");
+      svg.setAttribute("stroke-linecap", "round");
+      svg.setAttribute("stroke-linejoin", "round");
+      svg.innerHTML = MM_ICONS[item.icon] || MM_ICONS.info;
+
+      var btn = el("button", { class: "mm-item", "data-cmd": item.cmd }, [
+        svg,
+        el("span", { class: "mm-label", text: item.label })
+      ]);
+      btn.addEventListener("click", function () {
+        closeMobileMenu();
+        setTimeout(function () { runCommand(item.cmd); }, 130);
+      });
+      body.appendChild(btn);
+    });
+  }
+
+  /* ================================================================
+     22. Toolbar wiring
+     ================================================================ */
+  function initToolbar() {
+    $("tb-open").addEventListener("click", openLocalFile);
+    $("tb-url").addEventListener("click", openFromUrlDialog);
+    $("tb-save").addEventListener("click", downloadCurrent);
+    $("tb-print").addEventListener("click", printCurrent);
+
+    $("tb-prev").addEventListener("click", prevPage);
+    $("tb-next").addEventListener("click", nextPage);
+
+    $("tb-zoom-in").addEventListener("click", zoomIn);
+    $("tb-zoom-out").addEventListener("click", zoomOut);
+    $("tb-fit-width").addEventListener("click", function () { fitWidth(false); });
+    $("tb-fit-page").addEventListener("click", fitPage);
+
+    $("tb-rot-cw").addEventListener("click", function () {
+      state.rotation = (state.rotation + 90) % 360;
+      renderPage(state.pageNum);
+    });
+    $("tb-rot-ccw").addEventListener("click", function () {
+      state.rotation = (state.rotation - 90 + 360) % 360;
+      renderPage(state.pageNum);
+    });
+
+    $("tb-merge").addEventListener("click", toolMerge);
+    $("tb-split").addEventListener("click", toolSplit);
+    $("tb-compress").addEventListener("click", toolCompress);
+    $("tb-watermark").addEventListener("click", toolWatermark);
+    $("tb-ocr").addEventListener("click", toolOcr);
+    $("tb-pdf2img").addEventListener("click", toolPdfToImages);
+    $("tb-protect").addEventListener("click", toolProtect);
+    $("tb-proxy").addEventListener("click", openProxySettings);
+    $("tb-settings").addEventListener("click", openSettings);
+
+    // page input
+    var pageInput = $("pageInput");
+    pageInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        var v = parseInt(pageInput.value, 10);
+        if (!isNaN(v)) goToPage(v);
+        pageInput.blur();
+      }
+    });
+    pageInput.addEventListener("blur", function () {
+      pageInput.value = String(state.pageNum);
+    });
+
+    // zoom input
+    var zoomInput = $("zoomInput");
+    zoomInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        var v = parseFloat(zoomInput.value.replace("%", ""));
+        if (!isNaN(v)) setScale(v / 100);
+        zoomInput.blur();
+      }
+    });
+    zoomInput.addEventListener("blur", function () {
+      zoomInput.value = Math.round(state.scale * 100) + "%";
+    });
+
+    qsa(".tool-btn").forEach(function (b) {
+      b.addEventListener("click", function () { runCommand(b.getAttribute("data-cmd")); });
+    });
+
+    $("empty-open").addEventListener("click", openLocalFile);
+    $("empty-url").addEventListener("click", openFromUrlDialog);
+    $("empty-proxy").addEventListener("click", openProxySettings);
+
+    $("serverPill").addEventListener("click", openSettings);
+
+    qsa(".ptab").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        qsa(".ptab").forEach(function (t) { t.classList.remove("active"); });
+        tab.classList.add("active");
+        qsa(".tab-pane").forEach(function (p) { p.classList.remove("active"); });
+        var target = tab.getAttribute("data-tab");
+        $(target).classList.add("active");
+      });
+    });
+  }
+
+  /* ================================================================
+     23. Mobile chrome wiring
+     ================================================================ */
+  function initMobileChrome() {
+    var mtbMenu = $("mtbMenu");
+    var mtbProxy = $("mtbProxy");
+    var mtbMore = $("mtbMore");
+
+    if (mtbMenu) {
+      mtbMenu.addEventListener("click", function () {
+        if (document.body.classList.contains("drawer-open")) closeDrawer();
+        else openDrawer();
+      });
+    }
+
+    if (mtbProxy) {
+      mtbProxy.addEventListener("click", function () {
+        openProxySettings();
+      });
+    }
+
+    if (mtbMore) {
+      mtbMore.addEventListener("click", function (e) {
+        e.stopPropagation();
+        toggleMobileMenu();
+      });
+    }
+
+    var mmClose = $("mmClose");
+    if (mmClose) {
+      mmClose.addEventListener("click", function (e) {
+        e.stopPropagation();
+        closeMobileMenu();
+      });
+    }
+
+    var backdrop = $("drawerBackdrop");
+    if (backdrop) {
+      backdrop.addEventListener("click", closeAllOverlays);
+    }
+
+    var mnavPages = $("mnavPages");
+    var mnavTools = $("mnavTools");
+    var mnavSave = $("mnavSave");
+    var mnavMore = $("mnavMore");
+
+    if (mnavPages) {
+      mnavPages.addEventListener("click", function () {
+        if (document.body.classList.contains("drawer-open")) closeDrawer();
+        else openDrawer();
+        updateMnavActive("pages");
+      });
+    }
+
+    if (mnavTools) {
+      mnavTools.addEventListener("click", function () {
+        if (document.body.classList.contains("sheet-open")) closeSheet();
+        else openSheet();
+        updateMnavActive("tools");
+      });
+    }
+
+    if (mnavSave) {
+      mnavSave.addEventListener("click", function () {
+        closeAllOverlays();
+        downloadCurrent();
+        updateMnavActive("save");
+        setTimeout(function () { updateMnavActive(null); }, 400);
+      });
+    }
+
+    if (mnavMore) {
+      mnavMore.addEventListener("click", function () {
+        toggleMobileMenu();
+        updateMnavActive("more");
+      });
+    }
+
+    var fab = $("mobileFab");
+    if (fab) {
+      fab.addEventListener("click", function () {
+        closeAllOverlays();
+        openLocalFile();
+      });
+    }
+  }
+
+  function updateMnavActive(name) {
+    qsa(".mnav-item").forEach(function (b) {
+      b.classList.toggle("active", b.getAttribute("data-mnav") === name);
+    });
+  }
+
+  /* ================================================================
+     24. Drag & drop
+     ================================================================ */
+  function initDragDrop() {
+    var viewer = $("viewer");
+    var counter = 0;
+
+    ["dragenter", "dragover"].forEach(function (ev) {
+      document.addEventListener(ev, function (e) {
+        e.preventDefault();
+        if (ev === "dragenter") counter++;
+        viewer.classList.add("dragover");
+      });
+    });
+
+    ["dragleave", "drop"].forEach(function (ev) {
+      document.addEventListener(ev, function (e) {
+        e.preventDefault();
+        if (ev === "dragleave") {
+          counter--;
+          if (counter <= 0) { counter = 0; viewer.classList.remove("dragover"); }
+        }
+        if (ev === "drop") {
+          counter = 0;
+          viewer.classList.remove("dragover");
+        }
+      });
+    });
+
+    document.addEventListener("drop", function (e) {
+      e.preventDefault();
+      var dt = e.dataTransfer;
+      if (!dt) return;
+      var files = Array.prototype.slice.call(dt.files || []);
+      if (!files.length) return;
+      var pdf = files.find(function (f) {
+        return f.type === "application/pdf" || /\.pdf$/i.test(f.name);
+      });
+      if (pdf) readAndLoad(pdf);
+      else toast("Please drop a PDF file.", "warn");
+    });
+  }
+
+  /* ================================================================
+     25. Swipe gestures
+     ================================================================ */
+  function initSwipe() {
+    var viewer = $("viewer");
+    if (!viewer) return;
+    var startX = 0, startY = 0, startT = 0, tracking = false;
+
+    viewer.addEventListener("touchstart", function (e) {
+      if (!isMobile() || !state.pdfDoc) return;
+      if (e.touches.length !== 1) return;
+      var t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      startT = Date.now();
+      tracking = true;
+    }, { passive: true });
+
+    viewer.addEventListener("touchend", function (e) {
+      if (!tracking) return;
+      tracking = false;
+      if (!isMobile() || !state.pdfDoc) return;
+      if (!e.changedTouches || !e.changedTouches.length) return;
+      var t = e.changedTouches[0];
+      var dx = t.clientX - startX;
+      var dy = t.clientY - startY;
+      var dt = Date.now() - startT;
+
+      if (Math.abs(dx) < 60) return;
+      if (Math.abs(dy) > Math.abs(dx) * 0.7) return;
+      if (dt > 700) return;
+
+      if (dx < 0) nextPage();
+      else prevPage();
+    }, { passive: true });
+  }
+
+  /* ================================================================
+     26. Keyboard shortcuts
+     ================================================================ */
+  function initKeyboard() {
+    document.addEventListener("keydown", function (e) {
+      var tag = (e.target && e.target.tagName) || "";
+      var typing = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
+      var mod = e.ctrlKey || e.metaKey;
+
+      if (mod && e.key.toLowerCase() === "o") { e.preventDefault(); openLocalFile(); return; }
+      if (mod && e.key.toLowerCase() === "s") { e.preventDefault(); downloadCurrent(); return; }
+      if (mod && e.key.toLowerCase() === "p") { e.preventDefault(); printCurrent(); return; }
+      if (mod && (e.key === "+" || e.key === "=")) { e.preventDefault(); zoomIn(); return; }
+      if (mod && e.key === "-") { e.preventDefault(); zoomOut(); return; }
+      if (mod && e.key === "0") { e.preventDefault(); zoomReset(); return; }
+
+      if (typing) return;
+
+      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); nextPage(); }
+      if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); prevPage(); }
+      if (e.key === "Home") { e.preventDefault(); goToPage(1); }
+      if (e.key === "End" && state.pdfDoc) { e.preventDefault(); goToPage(state.pdfDoc.numPages); }
+
+      if (e.key === "Escape") {
+        closeAllOverlays();
+        closeAllMenus();
+      }
+    });
+  }
+
+  /* ================================================================
+     27. Resize handling
+     ================================================================ */
+  var resizeTimer = null;
+  var lastMobile = isMobile();
+
+  function initResize() {
+    window.addEventListener("resize", function () {
+      if (!state.pdfDoc) return;
+
+      var nowMobile = isMobile();
+      if (nowMobile !== lastMobile) {
+        lastMobile = nowMobile;
+        closeAllOverlays();
+        $("leftPanel").style.display = "";
+        $("rightPanel").style.display = "";
+      }
+
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (state.fitMode === "width") fitWidth(true).then(function () { renderPage(state.pageNum); });
+        else if (state.fitMode === "page") fitPage();
+        else renderPage(state.pageNum);
+      }, 180);
+    });
+  }
+
+  /* ================================================================
+     28. Touch guards
+     ================================================================ */
+  function initTouchGuards() {
+    ["menubar", "toolbar", "mobile-nav", "mobile-topbar"].forEach(function (cls) {
+      var n = qs("." + cls);
+      if (!n) return;
+      n.addEventListener("touchmove", function (e) {
+        if (e.target && e.target.tagName === "INPUT") return;
+        if (e.target && e.target.closest && e.target.closest(".toolbar")) return;
+        e.preventDefault();
+      }, { passive: false });
+    });
+  }
+
+  /* ================================================================
+     29. Boot
+     ================================================================ */
+  function boot() {
+    initMenus();
+    initToolbar();
+    initMobileChrome();
+    initDragDrop();
+    initSwipe();
+    initKeyboard();
+    initResize();
+    initTouchGuards();
+    buildMobileMenu();
+
+    resetViewer();
+    checkServer(true);
+    updateProxyStatusLabel();
+    setStatus("Ready — open a PDF or paste a URL");
+
+    // Inform about the auto-proxy on first load
+    var seen = localStorage.getItem("stirlingProxyNoticeSeen");
+    if (!seen) {
+      setTimeout(function () {
+        toast("Free CORS proxies are enabled — URL fetching works even when sites block cross-origin requests.", "ok", 6500);
+        localStorage.setItem("stirlingProxyNoticeSeen", "1");
+      }, 1200);
+    }
+
+    if (!state.serverUrl) {
+      setTimeout(function () {
+        toast("Tip: set your Stirling PDF server URL to enable merge, split, OCR, and more.", "warn", 6000);
+      }, 2400);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+
+})();
+</script>
+</body>
+</html>
