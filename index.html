@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>HEX — PDF Studio</title>
+<title>HEX PDF Studio - TTS</title>
 <style>
   /* ============================================================
      THEME
@@ -61,9 +61,6 @@
   ::-webkit-scrollbar-thumb{background:#4a4a52;border-radius:6px;border:3px solid transparent;background-clip:content-box;}
   ::-webkit-scrollbar-thumb:hover{background:#5e5e68;background-clip:content-box;border:3px solid transparent;}
 
-  /* ============================================================
-     APP SHELL
-     ============================================================ */
   #app{
     display:flex;
     flex-direction:column;
@@ -73,9 +70,6 @@
     overflow:hidden;
   }
 
-  /* ============================================================
-     DESKTOP MENU BAR
-     ============================================================ */
   .menubar{
     height:38px;
     background:var(--bar);
@@ -143,9 +137,6 @@
   .dot.on{background:var(--success);box-shadow:0 0 7px rgba(45,157,120,.85);}
   .dot.off{background:var(--danger);}
 
-  /* ============================================================
-     MOBILE TOP BAR
-     ============================================================ */
   .mobile-topbar{
     display:none;
     align-items:center;
@@ -200,9 +191,6 @@
     max-width:100%;
   }
 
-  /* ============================================================
-     TOOLBAR
-     ============================================================ */
   .toolbar{
     height:52px;background:var(--panel);border-bottom:1px solid var(--border);
     display:flex;align-items:center;gap:4px;padding:0 10px;flex:0 0 auto;
@@ -249,9 +237,6 @@
   }
   .page-box span{color:var(--text-dim2);font-size:11.5px;}
 
-  /* ============================================================
-     WORKSPACE
-     ============================================================ */
   .workspace{
     flex:1 1 auto;display:flex;min-height:0;background:#141416;position:relative;
   }
@@ -364,9 +349,6 @@
   .status-msg.err{color:var(--danger);}
   .status-msg.ok{color:var(--success);}
 
-  /* ============================================================
-     MOBILE BOTTOM NAV
-     ============================================================ */
   .mobile-nav{
     display:none;
     height:calc(var(--mobile-nav-h) + var(--safe-bottom));
@@ -523,9 +505,6 @@
   }
   .page-toast.show{opacity:1;}
 
-  /* ============================================================
-     MODAL
-     ============================================================ */
   .modal-backdrop{
     position:fixed;inset:0;background:rgba(0,0,0,.6);
     display:flex;align-items:center;justify-content:center;z-index:1000;
@@ -608,9 +587,6 @@
   .btn.ghost:hover{background:var(--bar-2);}
   .btn:disabled{opacity:.45;cursor:not-allowed;}
 
-  /* ============================================================
-     PROXY LIST
-     ============================================================ */
   .proxy-list{
     display:flex;flex-direction:column;gap:5px;
     background:#1d1d20;border:1px solid var(--border);border-radius:7px;
@@ -647,9 +623,6 @@
   }
   .proxy-badge .dot{background:var(--success);width:6px;height:6px;}
 
-  /* ============================================================
-     SPINNER / BUSY / TOASTS
-     ============================================================ */
   .spinner{
     width:18px;height:18px;border:2px solid rgba(255,255,255,.18);
     border-top-color:var(--accent);border-radius:50%;
@@ -694,9 +667,6 @@
   }
   #print-frame{position:fixed;inset:0;border:0;width:100%;height:100%;display:none;}
 
-  /* ============================================================
-     TABLET
-     ============================================================ */
   @media (max-width:1080px) and (min-width:821px){
     .left-panel{width:190px;}
     .right-panel{width:200px;}
@@ -705,13 +675,9 @@
     #doc-title{max-width:200px;}
   }
 
-  /* ============================================================
-     MOBILE
-     ============================================================ */
   @media (max-width:820px){
     .menubar{display:none;}
     .statusbar{display:none;}
-
     .mobile-topbar{display:flex;}
     .mobile-nav{display:flex;}
     .mobile-fab{display:grid;}
@@ -721,22 +687,14 @@
 
     .toolbar{
       height:var(--mobile-toolbar-h);
-      padding:0 6px;
-      gap:2px;
-      overflow-x:auto;
-      overflow-y:hidden;
+      padding:0 6px;gap:2px;
+      overflow-x:auto;overflow-y:hidden;
       -webkit-overflow-scrolling:touch;
-      scrollbar-width:none;
-      scroll-snap-type:x proximity;
+      scrollbar-width:none;scroll-snap-type:x proximity;
       border-bottom:1px solid var(--border);
     }
     .toolbar::-webkit-scrollbar{display:none;}
-    .tb-btn{
-      min-width:44px;
-      height:44px;
-      padding:0 6px;
-      scroll-snap-align:start;
-    }
+    .tb-btn{min-width:44px;height:44px;padding:0 6px;scroll-snap-align:start;}
     .tb-btn span{display:none;}
     .tb-btn svg{width:20px;height:20px;}
     .tb-sep{height:26px;margin:0 4px;}
@@ -746,171 +704,65 @@
     .page-box{height:36px;padding:0 9px;}
     .page-box input{width:44px;font-size:14px;}
 
-    .workspace{
-      position:relative;
-      flex:1 1 auto;
-      min-height:0;
-    }
-    .viewer{
-      padding:10px 8px 16px;
-      align-items:flex-start;
-      touch-action:pan-x pan-y;
-    }
-    .page-wrap{
-      border-radius:0;
-      box-shadow:0 2px 16px rgba(0,0,0,.7);
-      margin:0 auto;
-    }
+    .workspace{position:relative;flex:1 1 auto;min-height:0;}
+    .viewer{padding:10px 8px 16px;align-items:flex-start;touch-action:pan-x pan-y;}
+    .page-wrap{border-radius:0;box-shadow:0 2px 16px rgba(0,0,0,.7);margin:0 auto;}
 
     .left-panel{
-      position:fixed;
-      top:0;
-      bottom:0;
-      left:0;
-      width:82%;
-      max-width:330px;
-      z-index:200;
-      border-right:1px solid var(--border);
+      position:fixed;top:0;bottom:0;left:0;width:82%;max-width:330px;
+      z-index:200;border-right:1px solid var(--border);
       transform:translateX(-105%);
       transition:transform .3s cubic-bezier(.32,.72,0,1);
       box-shadow:6px 0 32px rgba(0,0,0,.6);
-      padding-top:var(--safe-top);
-      padding-bottom:var(--safe-bottom);
+      padding-top:var(--safe-top);padding-bottom:var(--safe-bottom);
       will-change:transform;
     }
-    body.drawer-open .left-panel{
-      transform:translateX(0);
-    }
+    body.drawer-open .left-panel{transform:translateX(0);}
     .panel-tabs{padding-top:4px;}
     .ptab{padding:13px 4px;font-size:13px;min-height:46px;}
     .tab-pane{padding:12px;}
-
-    #thumbs{
-      display:grid;
-      grid-template-columns:repeat(2, 1fr);
-      gap:8px;
-      padding:10px;
-    }
-    .thumb{
-      width:100%;
-      margin:0;
-      padding:6px;
-      border-radius:8px;
-    }
-    .thumb-canvas{
-      width:100%;
-      min-height:0;
-      aspect-ratio:1 / 1.3;
-      border-radius:3px;
-    }
+    #thumbs{display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;padding:10px;}
+    .thumb{width:100%;margin:0;padding:6px;border-radius:8px;}
+    .thumb-canvas{width:100%;min-height:0;aspect-ratio:1 / 1.3;border-radius:3px;}
     .thumb-num{font-size:12px;margin-top:6px;}
     .thumb.active{border-color:var(--accent);background:var(--accent-soft);}
-
     .outline-item{padding:11px 10px;font-size:13.5px;border-radius:8px;min-height:44px;display:flex;align-items:center;}
 
     .right-panel{
-      position:fixed;
-      left:0;
-      right:0;
-      bottom:0;
-      top:auto;
-      width:auto;
-      max-height:82vh;
-      z-index:200;
-      border-left:0;
-      border-top:1px solid var(--border);
-      border-radius:20px 20px 0 0;
+      position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;
+      max-height:82vh;z-index:200;border-left:0;
+      border-top:1px solid var(--border);border-radius:20px 20px 0 0;
       transform:translateY(105%);
       transition:transform .3s cubic-bezier(.32,.72,0,1);
       box-shadow:0 -10px 44px rgba(0,0,0,.7);
-      padding-bottom:var(--safe-bottom);
-      overscroll-behavior:contain;
+      padding-bottom:var(--safe-bottom);overscroll-behavior:contain;
       will-change:transform;
     }
-    body.sheet-open .right-panel{
-      transform:translateY(0);
-    }
+    body.sheet-open .right-panel{transform:translateY(0);}
     .right-panel::before{
-      content:"";
-      display:block;
-      width:42px;
-      height:4px;
-      border-radius:2px;
-      background:var(--border);
-      margin:10px auto 2px;
-      flex:0 0 auto;
+      content:"";display:block;width:42px;height:4px;border-radius:2px;
+      background:var(--border);margin:10px auto 2px;flex:0 0 auto;
     }
     .rp-section{padding:14px 14px 4px;}
     .rp-title{font-size:11px;margin-bottom:10px;}
-    .tool-btn{
-      padding:12px 12px;
-      font-size:14px;
-      min-height:48px;
-      border-radius:10px;
-      gap:14px;
-      margin-bottom:2px;
-    }
+    .tool-btn{padding:12px 12px;font-size:14px;min-height:48px;border-radius:10px;gap:14px;margin-bottom:2px;}
     .tool-btn svg{width:19px;height:19px;}
 
-    .modal-backdrop{
-      align-items:flex-end;
-      padding:0;
-    }
-    .modal,
-    .modal.wide{
-      width:100% !important;
-      max-width:100%;
-      max-height:92vh;
-      border-radius:20px 20px 0 0;
-      border-left:0;
-      border-right:0;
-      border-bottom:0;
+    .modal-backdrop{align-items:flex-end;padding:0;}
+    .modal,.modal.wide{
+      width:100% !important;max-width:100%;max-height:92vh;
+      border-radius:20px 20px 0 0;border-left:0;border-right:0;border-bottom:0;
       animation:sheetUp .28s cubic-bezier(.32,.72,0,1);
       padding-bottom:var(--safe-bottom);
     }
-    @keyframes sheetUp{
-      from{transform:translateY(100%);}
-      to{transform:translateY(0);}
-    }
-    .modal-head{
-      padding:16px 18px 14px;
-      font-size:15px;
-      border-radius:20px 20px 0 0;
-      position:relative;
-    }
-    .modal-head::before{
-      content:"";
-      position:absolute;
-      top:8px;
-      left:50%;
-      transform:translateX(-50%);
-      width:42px;
-      height:4px;
-      border-radius:2px;
-      background:var(--border);
-    }
+    @keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+    .modal-head{padding:16px 18px 14px;font-size:15px;border-radius:20px 20px 0 0;position:relative;}
+    .modal-head::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:42px;height:4px;border-radius:2px;background:var(--border);}
     .modal-head span{padding-top:6px;}
-    .modal-x{
-      width:36px;height:36px;
-      background:var(--bar);
-      margin-top:4px;
-    }
-    .modal-body{
-      padding:18px;
-      gap:16px;
-    }
-    .modal-foot{
-      padding:12px 16px 16px;
-      gap:10px;
-    }
-    .modal-foot .btn{
-      flex:1;
-      min-height:48px;
-      font-size:14.5px;
-      font-weight:600;
-      border-radius:10px;
-      padding:12px 14px;
-    }
+    .modal-x{width:36px;height:36px;background:var(--bar);margin-top:4px;}
+    .modal-body{padding:18px;gap:16px;}
+    .modal-foot{padding:12px 16px 16px;gap:10px;}
+    .modal-foot .btn{flex:1;min-height:48px;font-size:14.5px;font-weight:600;border-radius:10px;padding:12px 14px;}
 
     .field{gap:7px;}
     .field label{font-size:13px;font-weight:600;}
@@ -919,30 +771,17 @@
     .field input[type=number],
     .field input[type=password],
     .field select,
-    .field textarea{
-      font-size:16px !important;
-      padding:12px 14px;
-      min-height:48px;
-      border-radius:9px;
-    }
+    .field textarea{font-size:16px !important;padding:12px 14px;min-height:48px;border-radius:9px;}
     .field textarea{min-height:110px;font-size:15px !important;}
     .field input[type=range]{height:34px;}
     .row2,.row3{grid-template-columns:1fr;gap:14px;}
 
     .checkline{font-size:14px;padding:6px 0;min-height:40px;}
     .checkline input{width:22px;height:22px;}
-
     .file-drop{padding:26px 18px;font-size:14px;border-radius:12px;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;}
     .file-row{padding:9px 11px;font-size:13px;border-radius:8px;min-height:40px;}
     .file-list{max-height:200px;}
-
-    .btn{
-      min-height:46px;
-      padding:11px 16px;
-      font-size:14px;
-      border-radius:9px;
-    }
-
+    .btn{min-height:46px;padding:11px 16px;font-size:14px;border-radius:9px;}
     .proxy-row{padding:11px 10px;font-size:13px;min-height:44px;}
     .proxy-row .pr-test{padding:6px 12px;font-size:12px;min-height:34px;}
 
@@ -951,37 +790,16 @@
     .empty-state .big svg{width:42px;height:42px;}
     .empty-state h2{font-size:19px;}
     .empty-state p{font-size:13.5px;line-height:1.6;}
-    .empty-actions{
-      flex-direction:column;
-      width:100%;
-      max-width:300px;
-      gap:10px;
-      margin-top:10px;
-    }
+    .empty-actions{flex-direction:column;width:100%;max-width:300px;gap:10px;margin-top:10px;}
     .empty-actions .btn{width:100%;}
 
-    #toasts{
-      left:12px;
-      right:12px;
-      bottom:calc(var(--mobile-nav-h) + var(--safe-bottom) + 16px);
-      align-items:stretch;
-    }
-    .toast{
-      max-width:none;
-      font-size:13px;
-      padding:12px 15px;
-      border-radius:9px;
-    }
+    #toasts{left:12px;right:12px;bottom:calc(var(--mobile-nav-h) + var(--safe-bottom) + 16px);align-items:stretch;}
+    .toast{max-width:none;font-size:13px;padding:12px 15px;border-radius:9px;}
 
     .busy-overlay .box{padding:28px 32px;min-width:250px;border-radius:14px;}
     .busy-overlay .txt{font-size:13.5px;}
 
-    .panel-body,
-    .right-panel,
-    .modal-body{
-      -webkit-overflow-scrolling:touch;
-      overscroll-behavior:contain;
-    }
+    .panel-body,.right-panel,.modal-body{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
   }
 
   @media (max-width:380px){
@@ -1001,10 +819,7 @@
     .mtb-btn{width:38px;height:38px;}
     .mnav-item svg{width:20px;height:20px;}
     .mnav-item span{font-size:9px;}
-    .mobile-fab{
-      width:46px;height:46px;
-      bottom:calc(var(--mobile-nav-h) + var(--safe-bottom) + 10px);
-    }
+    .mobile-fab{width:46px;height:46px;bottom:calc(var(--mobile-nav-h) + var(--safe-bottom) + 10px);}
     .mobile-fab svg{width:22px;height:22px;}
     .right-panel{max-height:88vh;}
     .modal{max-height:96vh;}
@@ -1024,6 +839,717 @@
 
   @media (prefers-reduced-motion:reduce){
     *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+  }
+
+  /* ============================================================
+     HEX TTS — TEXT LAYER + WORD HIGHLIGHT
+     ============================================================ */
+  .textLayer{
+    position:absolute;
+    left:0;top:0;
+    overflow:hidden;
+    opacity:1;
+    line-height:1;
+    z-index:2;
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-select:none;
+  }
+  .textLayer .pdf-word{
+    position:absolute;
+    color:transparent;
+    white-space:pre;
+    cursor:pointer;
+    transform-origin:0 0;
+    pointer-events:auto;
+    border-radius:2px;
+    transition:background-color .12s ease, box-shadow .12s ease;
+    -webkit-user-select:none;
+    user-select:none;
+  }
+  .textLayer .pdf-word:hover{
+    background:rgba(20,115,230,.16);
+  }
+  .textLayer .pdf-word.word-highlight{
+    background:rgba(20,115,230,.55) !important;
+    box-shadow:0 0 0 2px rgba(20,115,230,.75);
+    color:transparent !important;
+  }
+  .textLayer .pdf-word.sentence-highlight{
+    background:rgba(20,115,230,.16);
+    color:transparent !important;
+  }
+  body.tts-reading .textLayer .pdf-word{
+    cursor:pointer;
+  }
+
+  /* ============================================================
+     HEX TTS — PLAYBACK DOCK
+     ============================================================ */
+  .tts-dock{
+    position:fixed;
+    bottom:calc(22px + var(--safe-bottom));
+    left:50%;
+    transform:translateX(-50%) translateY(8px);
+    z-index:60;
+    display:none;
+    align-items:center;
+    gap:10px;
+    background:linear-gradient(180deg,#2c2c31,#232327);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:8px 10px 8px 8px;
+    box-shadow:0 10px 34px rgba(0,0,0,.6), 0 2px 6px rgba(0,0,0,.4);
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    max-width:min(720px, calc(100vw - 32px));
+    opacity:0;
+    transition:opacity .22s ease, transform .22s ease;
+    pointer-events:none;
+  }
+  .tts-dock.visible{
+    display:flex;
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+    pointer-events:auto;
+  }
+  .tts-dock .play-btn{
+    width:44px;height:44px;flex:0 0 auto;
+    border-radius:50%;
+    background:linear-gradient(145deg,#1e82f5,#0d5fd1);
+    border:0;color:#fff;
+    display:grid;place-items:center;
+    cursor:pointer;
+    box-shadow:0 3px 10px rgba(20,115,230,.45);
+    transition:transform .12s, background .15s;
+  }
+  .tts-dock .play-btn:active{transform:scale(.93);}
+  .tts-dock .play-btn svg{width:18px;height:18px;fill:currentColor;}
+  .tts-dock .dock-info{
+    flex:1 1 auto;
+    min-width:0;
+    display:flex;flex-direction:column;gap:3px;
+    padding:0 4px;
+  }
+  .tts-dock .dock-status{
+    font-size:11.5px;color:var(--text-dim);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    letter-spacing:.15px;
+  }
+  .tts-dock .dock-status.playing{color:var(--accent);}
+  .tts-dock .dock-status.paused{color:var(--warn);}
+  .tts-dock .dock-status.idle{color:var(--text-dim2);}
+  .tts-dock .dock-progress{
+    height:3px;border-radius:2px;background:rgba(255,255,255,.08);
+    overflow:hidden;position:relative;
+  }
+  .tts-dock .dock-progress-fill{
+    position:absolute;left:0;top:0;bottom:0;
+    background:var(--accent);
+    border-radius:2px;
+    width:0;
+    transition:width .18s ease;
+  }
+  .tts-dock .dock-progress-text{
+    font-size:10.5px;color:var(--text-dim2);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .tts-dock .dock-progress-text:empty{display:none;}
+  .tts-dock .dock-btn{
+    width:36px;height:36px;flex:0 0 auto;
+    border-radius:9px;
+    background:transparent;
+    border:1px solid transparent;
+    color:var(--text-dim);
+    display:grid;place-items:center;
+    cursor:pointer;
+    transition:background .12s, color .12s, border-color .12s;
+    font-size:11px;font-weight:600;
+  }
+  .tts-dock .dock-btn:hover{background:var(--bar-2);color:#fff;border-color:var(--border);}
+  .tts-dock .dock-btn:active{transform:scale(.94);}
+  .tts-dock .dock-btn svg{width:17px;height:17px;}
+  .tts-dock .dock-btn.speed-btn{
+    width:auto;min-width:44px;padding:0 8px;
+    font-size:11.5px;
+    letter-spacing:.3px;
+  }
+  .tts-dock .dock-stop{
+    color:var(--danger);
+  }
+  .tts-dock .dock-waveform{
+    display:none;
+    align-items:flex-end;
+    gap:2px;
+    height:22px;
+    margin-left:2px;
+    padding-right:2px;
+  }
+  .tts-dock .dock-waveform span{
+    display:block;
+    width:2px;
+    background:var(--accent);
+    border-radius:2px;
+    animation:ttsWave 1s ease-in-out infinite;
+  }
+  .tts-dock .dock-waveform span:nth-child(1){height:6px; animation-delay:0s;}
+  .tts-dock .dock-waveform span:nth-child(2){height:14px; animation-delay:.15s;}
+  .tts-dock .dock-waveform span:nth-child(3){height:9px; animation-delay:.3s;}
+  .tts-dock .dock-waveform span:nth-child(4){height:18px; animation-delay:.45s;}
+  .tts-dock .dock-waveform span:nth-child(5){height:11px; animation-delay:.6s;}
+  @keyframes ttsWave{
+    0%,100%{transform:scaleY(.4);}
+    50%{transform:scaleY(1);}
+  }
+
+  @media (max-width:820px){
+    .tts-dock{
+      bottom:calc(var(--mobile-nav-h) + var(--safe-bottom) + 12px);
+      left:8px;
+      right:calc(78px + var(--safe-right));
+      transform:translateY(8px);
+      max-width:none;
+      padding:6px 8px 6px 6px;
+      gap:6px;
+      border-radius:12px;
+    }
+    .tts-dock.visible{
+      transform:translateY(0);
+    }
+    .tts-dock .play-btn{width:40px;height:40px;}
+    .tts-dock .dock-btn{width:32px;height:32px;}
+    .tts-dock .dock-btn.speed-btn{min-width:38px;padding:0 6px;font-size:11px;}
+    .tts-dock .dock-progress-text{font-size:10px;}
+    .tts-dock .dock-status{font-size:11px;}
+  }
+
+  /* ============================================================
+     HEX TTS — SPEED MENU
+     ============================================================ */
+  .tts-speed-menu{
+    position:fixed;
+    z-index:170;
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+    padding:6px;
+    display:none;
+    flex-direction:column;
+    gap:1px;
+    min-width:110px;
+  }
+  .tts-speed-menu.open{display:flex;}
+  .tts-speed-menu .sp-item{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:8px 12px;
+    border:0;background:transparent;
+    color:var(--text);
+    cursor:pointer;
+    font-size:12.5px;
+    border-radius:6px;
+    text-align:left;
+    min-height:36px;
+  }
+  .tts-speed-menu .sp-item:hover{background:var(--bar-2);}
+  .tts-speed-menu .sp-item.active{color:var(--accent);font-weight:600;}
+  .tts-speed-menu .sp-item .tick{color:var(--accent);font-size:11px;}
+
+  /* ============================================================
+     HEX TTS — VOICE PICKER
+     ============================================================ */
+  .vp-backdrop{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:220;
+    display:none;
+    opacity:0;
+    transition:opacity .22s ease;
+    -webkit-backdrop-filter:blur(2px);
+    backdrop-filter:blur(2px);
+  }
+  .vp-backdrop.open{display:block;opacity:1;}
+
+  .vp-modal{
+    position:fixed;
+    z-index:230;
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow:0 14px 44px rgba(0,0,0,.7);
+    display:none;
+    flex-direction:column;
+    top:50%;left:50%;
+    transform:translate(-50%,-48%) scale(.97);
+    opacity:0;
+    transition:opacity .18s ease, transform .18s ease;
+    width:min(480px, calc(100vw - 24px));
+    max-height:min(78vh, 640px);
+    overflow:hidden;
+  }
+  .vp-modal.open{
+    display:flex;
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+  }
+  .vp-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 16px 12px;
+    border-bottom:1px solid var(--border);
+    font-size:14px;font-weight:700;
+    flex:0 0 auto;
+  }
+  .vp-head h3{margin:0;font-size:14.5px;}
+  .vp-close{
+    width:32px;height:32px;border-radius:50%;
+    background:var(--bar);border:0;color:var(--text-dim);
+    cursor:pointer;font-size:14px;
+    display:grid;place-items:center;
+  }
+  .vp-close:hover{background:var(--danger);color:#fff;}
+  .vp-search{
+    padding:10px 14px 6px;
+    flex:0 0 auto;
+  }
+  .vp-search input{
+    width:100%;padding:10px 12px;
+    background:#1d1d20;border:1px solid var(--border);border-radius:9px;
+    color:var(--text);font-size:13px;outline:none;
+  }
+  .vp-search input:focus{border-color:var(--accent);}
+  .vp-filters{
+    display:flex;gap:6px;padding:6px 14px;
+    flex:0 0 auto;
+  }
+  .vp-filters button{
+    flex:1;
+    background:transparent;border:1px solid var(--border);
+    border-radius:7px;padding:7px 6px;
+    color:var(--text-dim);
+    cursor:pointer;font-size:11.5px;font-weight:500;
+    transition:.12s;
+  }
+  .vp-filters button.active{
+    background:var(--accent-soft);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  .vp-count{
+    padding:6px 16px 4px;
+    font-size:11px;color:var(--text-dim2);
+    flex:0 0 auto;
+  }
+  .vp-list{
+    flex:1 1 auto;overflow-y:auto;
+    padding:0 8px 12px;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+  }
+  .vp-item{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 10px;
+    border-radius:9px;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:background .1s, border-color .1s;
+    margin-bottom:2px;
+  }
+  .vp-item:hover{background:var(--bar-2);}
+  .vp-item.selected{
+    background:var(--accent-soft);
+    border-color:var(--accent);
+  }
+  .vp-item:focus{outline:none;border-color:var(--accent);}
+  .vp-check{
+    width:18px;height:18px;flex:0 0 auto;
+    border-radius:50%;border:1.5px solid var(--border);
+    display:grid;place-items:center;
+    color:var(--accent);
+  }
+  .vp-item.selected .vp-check{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  .vp-info{flex:1 1 auto;min-width:0;}
+  .vp-name{
+    font-size:13px;color:var(--text);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    font-weight:500;
+  }
+  .vp-meta{
+    display:flex;align-items:center;gap:7px;
+    margin-top:3px;
+    font-size:10.5px;color:var(--text-dim);
+    flex-wrap:wrap;
+  }
+  .vp-meta .vp-lang{color:var(--text-dim);}
+  .vp-meta .vp-gender{
+    padding:1px 6px;border-radius:8px;
+    background:rgba(255,255,255,.06);
+    font-size:9.5px;
+    letter-spacing:.2px;
+  }
+  .vp-meta .vp-gender.female{color:#f0a0c8;}
+  .vp-meta .vp-gender.male{color:#8ec1f5;}
+  .vp-meta .vp-gender.unknown{color:var(--text-dim2);}
+  .vp-meta .vp-local{opacity:.7;}
+  .vp-preview{
+    width:32px;height:32px;flex:0 0 auto;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:transparent;
+    color:var(--text-dim);
+    cursor:pointer;
+    display:grid;place-items:center;
+    transition:.12s;
+  }
+  .vp-preview:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .vp-preview:active{transform:scale(.92);}
+  .vp-empty{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:10px;
+    padding:36px 20px;
+    text-align:center;
+    color:var(--text-dim2);
+  }
+  .vp-empty p{margin:0;font-size:13px;}
+  .vp-empty small{font-size:11px;line-height:1.5;max-width:280px;}
+
+  @media (max-width:820px){
+    .vp-modal{
+      top:auto;bottom:0;left:0;right:0;
+      transform:translateY(105%);
+      width:100%;max-height:88vh;
+      border-radius:20px 20px 0 0;
+      border-left:0;border-right:0;border-bottom:0;
+      padding-bottom:var(--safe-bottom);
+    }
+    .vp-modal.open{
+      transform:translateY(0);
+    }
+    .vp-head{padding:18px 18px 14px;position:relative;}
+    .vp-head::before{
+      content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);
+      width:42px;height:4px;border-radius:2px;background:var(--border);
+    }
+    .vp-head h3{padding-top:8px;}
+    .vp-close{width:36px;height:36px;background:var(--bar);margin-top:4px;}
+    .vp-filters button{min-height:38px;font-size:12.5px;}
+    .vp-item{padding:12px 12px;min-height:52px;}
+    .vp-name{font-size:14px;}
+    .vp-meta{font-size:11.5px;}
+    .vp-preview{width:38px;height:38px;}
+    .vp-search input{font-size:16px !important;padding:12px 14px;}
+  }
+
+  /* ============================================================
+     HEX TTS — DICTIONARY POPUP
+     ============================================================ */
+  .dict-popup{
+    position:fixed;
+    z-index:240;
+    width:min(340px, calc(100vw - 20px));
+    max-height:min(440px, 60vh);
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:12px;
+    box-shadow:0 14px 44px rgba(0,0,0,.7);
+    display:none;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .dict-popup.open{display:flex;}
+  .dict-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 12px;
+    border-bottom:1px solid var(--border);
+    background:var(--bar);
+    flex:0 0 auto;
+  }
+  .dict-head .dict-title{
+    font-size:10.5px;font-weight:700;letter-spacing:.9px;
+    text-transform:uppercase;color:var(--text-dim2);
+  }
+  .dict-close{
+    width:26px;height:26px;border-radius:50%;
+    background:transparent;border:0;color:var(--text-dim);
+    cursor:pointer;font-size:12px;
+    display:grid;place-items:center;
+  }
+  .dict-close:hover{background:var(--danger);color:#fff;}
+  .dict-body{
+    padding:12px 14px 16px;
+    overflow-y:auto;
+    font-size:13px;
+    line-height:1.55;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+  }
+  .dict-word-row{
+    display:flex;align-items:baseline;gap:9px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .dict-word{
+    margin:0;font-size:18px;font-weight:700;
+    color:#fff;letter-spacing:-.2px;
+  }
+  .dict-phonetic{
+    font-size:12px;color:var(--text-dim);
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+  .dict-audio{
+    margin-left:auto;
+    width:28px;height:28px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:transparent;
+    color:var(--text-dim);
+    cursor:pointer;
+    display:grid;place-items:center;
+  }
+  .dict-audio:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .dict-meaning{margin-bottom:10px;}
+  .dict-meaning:last-child{margin-bottom:0;}
+  .dict-pos{
+    display:inline-block;
+    font-size:10.5px;font-weight:700;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    margin-bottom:5px;
+    padding:2px 6px;
+    background:var(--accent-soft);
+    border-radius:4px;
+  }
+  .dict-item{
+    font-size:12.5px;
+    color:var(--text);
+    padding-left:16px;
+    position:relative;
+    margin-bottom:5px;
+  }
+  .dict-item .num{
+    position:absolute;left:0;
+    color:var(--text-dim2);
+    font-size:11px;
+  }
+  .dict-example{
+    font-size:12px;
+    color:var(--text-dim);
+    font-style:italic;
+    margin-top:3px;
+    padding-left:8px;
+    border-left:2px solid var(--border-soft);
+  }
+  .dict-loading{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:10px;padding:24px 10px;
+  }
+  .dict-error{
+    color:var(--text-dim);
+    font-size:12.5px;
+    line-height:1.6;
+    padding:12px 4px;
+    white-space:pre-wrap;
+  }
+  .dict-hint{
+    margin-top:12px;
+    padding-top:10px;
+    border-top:1px solid var(--border-soft);
+    font-size:11px;color:var(--text-dim2);
+    line-height:1.5;
+  }
+  @media (max-width:820px){
+    .dict-popup{
+      width:calc(100vw - 16px);
+      max-height:70vh;
+    }
+    .dict-body{font-size:13.5px;padding:14px 16px 20px;}
+    .dict-word{font-size:20px;}
+  }
+
+  /* ============================================================
+     HEX — FULLSCREEN READING MODE
+     ============================================================ */
+  body.fullscreen-mode .menubar,
+  body.fullscreen-mode .mobile-topbar,
+  body.fullscreen-mode .toolbar,
+  body.fullscreen-mode .left-panel,
+  body.fullscreen-mode .right-panel,
+  body.fullscreen-mode .statusbar,
+  body.fullscreen-mode .mobile-nav,
+  body.fullscreen-mode .mobile-fab,
+  body.fullscreen-mode .page-toast{
+    display:none !important;
+  }
+  body.fullscreen-mode .workspace{
+    position:fixed;
+    inset:0;
+    z-index:8000;
+    width:100vw;
+    height:100dvh;
+  }
+  body.fullscreen-mode .viewer{
+    padding:0;
+    background:#0b0b0d;
+  }
+  body.fullscreen-mode .page-wrap{
+    border-radius:0;
+    box-shadow:0 0 0 1px rgba(255,255,255,.05);
+  }
+
+  .fs-exit-btn{
+    position:fixed;
+    top:calc(16px + env(safe-area-inset-top, 0px));
+    right:calc(16px + env(safe-area-inset-right, 0px));
+    z-index:8100;
+    width:44px;height:44px;
+    border-radius:50%;
+    background:rgba(20,20,22,.82);
+    border:1px solid var(--border);
+    color:#fff;
+    display:none;
+    place-items:center;
+    cursor:pointer;
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    box-shadow:0 4px 14px rgba(0,0,0,.45);
+    transition:transform .15s ease, background .15s ease;
+  }
+  .fs-exit-btn:hover{background:rgba(20,115,230,.9);}
+  .fs-exit-btn:active{transform:scale(.92);}
+  .fs-exit-btn svg{width:20px;height:20px;}
+  body.fullscreen-mode .fs-exit-btn{display:grid;}
+
+  .fs-overlay-controls{
+    position:fixed;
+    inset:0;
+    z-index:8090;
+    pointer-events:none;
+    display:none;
+  }
+  body.fullscreen-mode .fs-overlay-controls{display:block;}
+
+  .fs-page-nav{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:52px;height:72px;
+    border-radius:12px;
+    background:rgba(20,20,22,.75);
+    border:1px solid var(--border);
+    color:#fff;
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    opacity:0;
+    transition:opacity .25s ease, background .15s ease;
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    pointer-events:auto;
+    font-size:28px;
+    line-height:1;
+    font-weight:300;
+    user-select:none;
+  }
+  .fs-page-nav:hover{background:rgba(20,115,230,.85);opacity:1 !important;}
+  .fs-page-nav:disabled{opacity:0 !important;cursor:not-allowed;}
+  body.fullscreen-mode .fs-overlay-controls:hover .fs-page-nav{opacity:.75;}
+  .fs-page-nav.prev{left:20px;}
+  .fs-page-nav.next{right:20px;}
+
+  .fs-page-indicator{
+    position:absolute;
+    bottom:calc(20px + env(safe-area-inset-bottom, 0px));
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(20,20,22,.85);
+    border:1px solid var(--border);
+    color:#fff;
+    padding:6px 18px;
+    border-radius:20px;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.4px;
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    opacity:0;
+    transition:opacity .25s ease;
+    pointer-events:none;
+    font-variant-numeric:tabular-nums;
+  }
+  body.fullscreen-mode .fs-overlay-controls:hover .fs-page-indicator{opacity:1;}
+
+  .fs-toast{
+    position:absolute;
+    top:calc(20px + env(safe-area-inset-top, 0px));
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(20,20,22,.9);
+    border:1px solid var(--border);
+    color:#fff;
+    padding:8px 18px;
+    border-radius:20px;
+    font-size:12.5px;
+    font-weight:600;
+    opacity:0;
+    pointer-events:none;
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+  }
+
+  /* ============================================================
+     HEX TTS — HLS STREAMING PLAYER
+     ============================================================ */
+  .tts-dock.hls-mode .dock-progress,
+  .tts-dock.hls-mode .dock-progress-text,
+  .tts-dock.hls-mode .dock-waveform{
+    display:none !important;
+  }
+  .tts-hls-bar{
+    display:none;
+    align-items:center;
+    gap:8px;
+    padding:3px 0;
+    width:100%;
+  }
+  .tts-dock.hls-mode .tts-hls-bar{display:flex;}
+  .tts-hls-bar .hls-time{
+    font-size:10.5px;
+    color:var(--text-dim);
+    font-variant-numeric:tabular-nums;
+    min-width:34px;
+    text-align:center;
+    letter-spacing:.2px;
+  }
+  .tts-hls-bar .hls-track{
+    flex:1 1 auto;
+    height:4px;
+    background:rgba(255,255,255,.1);
+    border-radius:2px;
+    position:relative;
+    cursor:pointer;
+    overflow:hidden;
+  }
+  .tts-hls-bar .hls-fill{
+    position:absolute;
+    left:0;top:0;bottom:0;
+    background:var(--accent);
+    border-radius:2px;
+    width:0;
+    transition:width .15s linear;
+  }
+  .tts-dock.hls-mode .dock-status.playing::before{
+    content:"◉ ";
+    color:var(--success);
+  }
+  @media (max-width:820px){
+    .tts-hls-bar .hls-time{font-size:10px;min-width:30px;}
+    .fs-page-nav{width:44px;height:60px;font-size:22px;}
+    .fs-page-nav.prev{left:10px;}
+    .fs-page-nav.next{right:10px;}
   }
 </style>
 </head>
@@ -1102,6 +1628,8 @@
           <div class="dd-item" data-cmd="fit-page">Fit Page</div>
           <div class="dd-item" data-cmd="zoom-reset">Actual Size (100%)</div>
           <div class="dd-sep"></div>
+          <div class="dd-item" data-cmd="toggle-fullscreen">Full Screen Mode<span class="dd-key">F11</span></div>
+          <div class="dd-sep"></div>
           <div class="dd-item" data-cmd="toggle-left">Toggle Pages Panel</div>
           <div class="dd-item" data-cmd="toggle-right">Toggle Tools Panel</div>
         </div>
@@ -1133,6 +1661,7 @@
         <div class="dropdown">
           <div class="dd-item" data-cmd="settings">Server Settings…</div>
           <div class="dd-item" data-cmd="proxy-settings">CORS Proxy…</div>
+          <div class="dd-item" data-cmd="tts-settings">TTS Settings (HLS)…</div>
           <div class="dd-item" data-cmd="check-server">Test Server Connection</div>
           <div class="dd-sep"></div>
           <div class="dd-item" data-cmd="about">About HEX — PDF Studio</div>
@@ -1219,6 +1748,14 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
           <rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6v8H9z"/>
         </svg><span>Fit P</span>
+      </button>
+      <button class="tb-btn" id="tb-fullscreen" title="Full Screen Mode (F11)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9V5a2 2 0 0 1 2-2h4"/>
+          <path d="M21 9V5a2 2 0 0 0-2-2h-4"/>
+          <path d="M3 15v4a2 2 0 0 0 2 2h4"/>
+          <path d="M21 15v4a2 2 0 0 1-2 2h-4"/>
+        </svg><span>Full</span>
       </button>
     </div>
 
@@ -1495,6 +2032,23 @@
   </svg>
 </button>
 
+<!-- ============================================================
+     HEX — FULLSCREEN CONTROLS
+     ============================================================ -->
+<button class="fs-exit-btn" id="fsExitBtn" aria-label="Exit fullscreen" title="Exit Full Screen (Esc)">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 3v3a2 2 0 0 1-2 2H3"/>
+    <path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
+    <path d="M3 16h3a2 2 0 0 1 2 2v3"/>
+    <path d="M16 21v-3a2 2 0 0 1 2-2h3"/>
+  </svg>
+</button>
+<div class="fs-overlay-controls" id="fsOverlay">
+  <button class="fs-page-nav prev" id="fsPrevBtn" aria-label="Previous page">‹</button>
+  <button class="fs-page-nav next" id="fsNextBtn" aria-label="Next page">›</button>
+  <div class="fs-page-indicator" id="fsPageIndicator">1 / 1</div>
+</div>
+
 <div class="drawer-backdrop" id="drawerBackdrop"></div>
 
 <div class="mobile-menu" id="mobileMenu">
@@ -1512,18 +2066,86 @@
 <div id="toasts"></div>
 <iframe id="print-frame"></iframe>
 
+<!-- ============================================================
+     HEX TTS — PLAYBACK DOCK
+     ============================================================ -->
+<div class="tts-dock" id="ttsDock" aria-hidden="true">
+  <button class="play-btn" id="ttsPlayBtn" aria-label="Play / Pause">
+    <svg id="ttsPlayIcon" viewBox="0 0 24 24">
+      <polygon points="6 3 20 12 6 21 6 3"/>
+    </svg>
+  </button>
+  <div class="dock-info">
+    <div class="dock-status idle" id="ttsStatus">Click any word to play</div>
+    <div class="tts-hls-bar" id="ttsHlsBar">
+      <span class="hls-time" id="ttsHlsCur">0:00</span>
+      <div class="hls-track" id="ttsHlsTrack"><div class="hls-fill" id="ttsHlsFill"></div></div>
+      <span class="hls-time" id="ttsHlsDur">0:00</span>
+    </div>
+    <div class="dock-progress"><div class="dock-progress-fill" id="ttsProgressFill"></div></div>
+    <div class="dock-progress-text" id="ttsProgressText"></div>
+  </div>
+  <button class="dock-btn speed-btn" id="ttsSpeedBtn" aria-label="Playback speed">
+    <span id="ttsSpeedLabel">1×</span>
+  </button>
+  <button class="dock-btn" id="ttsVoiceBtn" aria-label="Voice">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </svg>
+  </button>
+  <button class="dock-btn dock-stop" id="ttsStopBtn" aria-label="Stop" style="display:none;">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <rect x="6" y="6" width="12" height="12" rx="1.5"/>
+    </svg>
+  </button>
+  <div class="dock-waveform" id="ttsWaveform" style="display:none;">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<!-- Speed Menu -->
+<div class="tts-speed-menu" id="ttsSpeedMenu"></div>
+
+<!-- Voice Picker -->
+<div class="vp-backdrop" id="voicePickerBackdrop"></div>
+<div class="vp-modal" id="voicePicker" role="dialog" aria-label="Choose voice">
+  <div class="vp-head">
+    <h3>Voice</h3>
+    <button class="vp-close" id="vpClose" aria-label="Close">✕</button>
+  </div>
+  <div class="vp-search">
+    <input type="text" id="vpSearch" placeholder="Search voices (e.g. English US, female, Google)…" autocomplete="off" />
+  </div>
+  <div class="vp-filters">
+    <button data-gender="all" class="active">All</button>
+    <button data-gender="female">Female</button>
+    <button data-gender="male">Male</button>
+  </div>
+  <div class="vp-count" id="vpCount">Loading voices…</div>
+  <div class="vp-list" id="vpList"></div>
+</div>
+
+<!-- Dictionary Popup -->
+<div class="dict-popup" id="dictPopup" role="dialog" aria-label="Dictionary">
+  <div class="dict-head">
+    <span class="dict-title">Dictionary</span>
+    <button class="dict-close" id="dictClose" aria-label="Close">✕</button>
+  </div>
+  <div class="dict-body" id="dictBody"></div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
 <script>
 /* ============================================================================
-   AcroStirling — Adobe-style PDF front-end for Stirling PDF
+   HEX PDF Studio — Adobe-style PDF front-end for Stirling PDF
    Free unlimited CORS proxy support (auto-fallback)
    ============================================================================ */
 (function () {
   "use strict";
 
-  /* ================================================================
-     0. PDF.js bootstrap
-     ================================================================ */
   var pdfjsLib = window.pdfjsLib;
   if (!pdfjsLib) {
     document.body.innerHTML =
@@ -1534,61 +2156,15 @@
   pdfjsLib.GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-  /* ================================================================
-     1. FREE CORS PROXIES
-     ----------------------------------------------------------------
-     These are public, signup-free, unlimited-use CORS proxies.
-     When 'Auto' mode is active, we try direct fetch first, then
-     rotate through every proxy in this list until one succeeds.
-     ================================================================ */
   var CORS_PROXIES = [
-    {
-      id: "allorigins",
-      name: "allorigins.win",
-      template: "https://api.allorigins.win/raw?url={url}",
-      description: "Free, unlimited, no signup required",
-      free: true
-    },
-    {
-      id: "corseu",
-      name: "cors.eu.org",
-      template: "https://cors.eu.org/{url}",
-      description: "Free public CORS proxy",
-      free: true
-    },
-    {
-      id: "codetabs",
-      name: "codetabs.com",
-      template: "https://api.codetabs.com/v1/proxy?quest={url}",
-      description: "Free, no rate limit for reasonable use",
-      free: true
-    },
-    {
-      id: "corsproxy",
-      name: "corsproxy.io",
-      template: "https://corsproxy.io/?url={url}",
-      description: "Free tier, no signup for basic use",
-      free: true
-    },
-    {
-      id: "thingproxy",
-      name: "thingproxy",
-      template: "https://thingproxy.freeboard.io/fetch/{url}",
-      description: "Free public proxy",
-      free: true
-    },
-    {
-      id: "isomorphic",
-      name: "isomorphic-git.org",
-      template: "https://cors.isomorphic-git.org/{url}",
-      description: "Free proxy maintained by isomorphic-git",
-      free: true
-    }
+    { id: "allorigins", name: "allorigins.win", template: "https://api.allorigins.win/raw?url={url}", description: "Free, unlimited, no signup required", free: true },
+    { id: "corseu", name: "cors.eu.org", template: "https://cors.eu.org/{url}", description: "Free public CORS proxy", free: true },
+    { id: "codetabs", name: "codetabs.com", template: "https://api.codetabs.com/v1/proxy?quest={url}", description: "Free, no rate limit for reasonable use", free: true },
+    { id: "corsproxy", name: "corsproxy.io", template: "https://corsproxy.io/?url={url}", description: "Free tier, no signup for basic use", free: true },
+    { id: "thingproxy", name: "thingproxy", template: "https://thingproxy.freeboard.io/fetch/{url}", description: "Free public proxy", free: true },
+    { id: "isomorphic", name: "isomorphic-git.org", template: "https://cors.isomorphic-git.org/{url}", description: "Free proxy maintained by isomorphic-git", free: true }
   ];
 
-  /* ================================================================
-     2. Global state
-     ================================================================ */
   var state = {
     pdfDoc: null,
     pdfBytes: null,
@@ -1600,21 +2176,15 @@
     renderTask: null,
     renderToken: 0,
     serverUrl: localStorage.getItem("stirlingServerUrl") || "http://localhost:8080",
-
-    // CORS proxy settings — persisted
-    corsMode: localStorage.getItem("stirlingCorsMode") || "auto", // auto | direct | custom
+    corsMode: localStorage.getItem("stirlingCorsMode") || "auto",
     corsProxy: localStorage.getItem("stirlingCorsProxy") || "",
     lastUsedProxy: localStorage.getItem("stirlingLastProxy") || "",
-
     busy: false
   };
 
   var thumbObserver = null;
   var isMobile = function () { return window.matchMedia("(max-width:820px)").matches; };
 
-  /* ================================================================
-     3. DOM helpers
-     ================================================================ */
   function $(id) { return document.getElementById(id); }
   function qs(sel, root) { return (root || document).querySelector(sel); }
   function qsa(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -1648,9 +2218,6 @@
     return (b / 1073741824).toFixed(2) + " GB";
   }
 
-  /* ================================================================
-     4. Toasts / status
-     ================================================================ */
   function toast(msg, type, ms) {
     var t = el("div", { class: "toast " + (type || ""), text: msg });
     $("toasts").appendChild(t);
@@ -1681,9 +2248,6 @@
     el.textContent = "Proxy: " + label;
   }
 
-  /* ================================================================
-     5. Busy overlay
-     ================================================================ */
   function showBusy(text) {
     if (state.busy) return;
     state.busy = true;
@@ -1705,9 +2269,6 @@
     if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
   }
 
-  /* ================================================================
-     6. Modal system
-     ================================================================ */
   var modalEscHandler = null;
 
   function closeModal() {
@@ -1721,19 +2282,12 @@
   function showModal(opts) {
     closeModal();
     var root = $("modalRoot");
-
     var bodyNode = el("div", { class: "modal-body" });
     if (opts.bodyNode) bodyNode.appendChild(opts.bodyNode);
     else if (opts.bodyHTML) bodyNode.innerHTML = opts.bodyHTML;
 
-    var okBtn = el("button", {
-      class: "btn primary",
-      text: opts.okText || "Apply"
-    });
-    var cancelBtn = el("button", {
-      class: "btn ghost",
-      text: opts.cancelText || "Cancel"
-    });
+    var okBtn = el("button", { class: "btn primary", text: opts.okText || "Apply" });
+    var cancelBtn = el("button", { class: "btn ghost", text: opts.cancelText || "Cancel" });
 
     var head = el("div", { class: "modal-head" }, [
       el("span", { text: opts.title || "" }),
@@ -1783,6 +2337,11 @@
 
     return { modal: modal, body: bodyNode, ok: okBtn, cancel: cancelBtn };
   }
+
+  // Expose modal builder for TTS module
+  window.HEXShowModal = showModal;
+  window.HEXCloseModal = closeModal;
+  window.HEXToast = toast;
 
   function field(labelText, inputHTML, hint) {
     var f = el("div", { class: "field" });
@@ -1853,15 +2412,10 @@
     };
   }
 
-  /* ================================================================
-     7. FREE CORS PROXY ENGINE
-     ================================================================ */
-
   function applyProxyTemplate(tpl, url) {
     return tpl.replace("{url}", encodeURIComponent(url));
   }
 
-  /** Single fetch with timeout. */
   function fetchOnce(url, timeoutMs) {
     var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
     var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, timeoutMs || 25000);
@@ -1882,10 +2436,6 @@
     });
   }
 
-  /**
-   * Quick reachability test — tries to HEAD or GET a tiny resource.
-   * Uses a 5-second timeout so the UI stays snappy.
-   */
   function testProxy(proxy, testUrl) {
     if (!testUrl) {
       testUrl = "https://raw.githubusercontent.com/mozilla/pdf.js/master/README.md";
@@ -1894,16 +2444,6 @@
     return fetchOnce(target, 6000).then(function () { return true; });
   }
 
-  /**
-   * MAIN fetch function with auto-fallback.
-   *
-   * Modes:
-   *   auto   → try direct first, then rotate through every free proxy
-   *   direct → no proxy, direct fetch only
-   *   custom → use user-supplied proxy URL only
-   *
-   * Returns { buffer: ArrayBuffer, via: string, url: string }
-   */
   function fetchRemote(url, onProgress) {
     if (state.corsMode === "direct") {
       if (onProgress) onProgress("Fetching directly (no proxy)…");
@@ -1931,17 +2471,12 @@
       });
     }
 
-    /* ----- AUTO MODE ----- */
-    // Build attempt list: direct first, then each free proxy in order.
-    // If we have a "last used" proxy, give it priority (skip direct).
     var attempts = [];
-
     var lastId = state.lastUsedProxy;
     var preferred = null;
     for (var i = 0; i < CORS_PROXIES.length; i++) {
       if (CORS_PROXIES[i].name === lastId) { preferred = CORS_PROXIES[i]; break; }
     }
-
     if (preferred) {
       attempts.push({
         name: preferred.name,
@@ -1949,9 +2484,7 @@
         via: preferred.name + " (cached)"
       });
     }
-
     attempts.push({ name: "Direct", url: url, via: "Direct (no proxy)" });
-
     CORS_PROXIES.forEach(function (p) {
       if (preferred && p.id === preferred.id) return;
       attempts.push({
@@ -1962,7 +2495,6 @@
     });
 
     var idx = 0;
-    var lastErr = null;
     var errors = [];
 
     function attemptNext() {
@@ -1980,7 +2512,6 @@
         updateProxyStatusLabel();
         return { buffer: buf, via: a.via, url: a.url };
       }).catch(function (err) {
-        lastErr = err;
         errors.push({ name: a.name, error: err.message || String(err) });
         return attemptNext();
       });
@@ -1989,25 +2520,17 @@
     return attemptNext();
   }
 
-  /* ================================================================
-     8. Server helpers
-     ================================================================ */
   function serverBase() {
     var u = (state.serverUrl || "").trim();
     if (!u) return "";
     return u.replace(/\/+$/, "");
   }
-
-  function apiUrl(path) {
-    return serverBase() + path;
-  }
-
+  function apiUrl(path) { return serverBase() + path; }
   function currentFile() {
     if (!state.pdfBytes) return null;
     var copy = new Uint8Array(state.pdfBytes);
     return new File([copy], state.fileName || "document.pdf", { type: "application/pdf" });
   }
-
   function stirlingPost(path, formData, opts) {
     opts = opts || {};
     var url = apiUrl(path);
@@ -2058,8 +2581,7 @@
     var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 6000);
 
     return fetch(apiUrl("/api/v1/info/status"), {
-      method: "GET",
-      mode: "cors",
+      method: "GET", mode: "cors",
       signal: ctrl ? ctrl.signal : undefined
     }).then(function (res) {
       clearTimeout(timer);
@@ -2082,9 +2604,6 @@
     });
   }
 
-  /* ================================================================
-     9. Document loading
-     ================================================================ */
   function resetViewer() {
     state.pdfDoc = null;
     state.pdfBytes = null;
@@ -2109,6 +2628,8 @@
     if (ssz) ssz.textContent = "Size: —";
     setToolbarEnabled(false);
     setMobileNavEnabled(false);
+    updateFullscreenUI();
+    window.dispatchEvent(new CustomEvent("hex:docClosed"));
   }
 
   function setMobileNavEnabled(on) {
@@ -2117,11 +2638,9 @@
   }
 
   function setToolbarEnabled(on) {
-    [
-      "tb-save", "tb-print", "tb-prev", "tb-next", "tb-rot-cw", "tb-rot-ccw",
-      "tb-select", "tb-split", "tb-compress", "tb-watermark", "tb-ocr",
-      "tb-pdf2img", "tb-protect"
-    ].forEach(function (id) {
+    ["tb-save", "tb-print", "tb-prev", "tb-next", "tb-rot-cw", "tb-rot-ccw",
+     "tb-select", "tb-split", "tb-compress", "tb-watermark", "tb-ocr",
+     "tb-pdf2img", "tb-protect"].forEach(function (id) {
       var b = $(id);
       if (b) b.disabled = !on;
     });
@@ -2137,7 +2656,6 @@
     state.rotation = 0;
 
     var forPdfJs = new Uint8Array(bytes);
-
     setStatus("Parsing document…");
 
     return pdfjsLib.getDocument({
@@ -2146,6 +2664,16 @@
       cMapPacked: true
     }).promise.then(function (doc) {
       state.pdfDoc = doc;
+
+      /* ===== HEX TTS hook: expose document to the reading module ===== */
+      window.HEXStudio = window.HEXStudio || {};
+      window.HEXStudio.getPdfDoc = function () { return state.pdfDoc; };
+      window.HEXStudio.getPdfBytes = function () { return state.pdfBytes; };
+      window.HEXStudio.getFileName = function () { return state.fileName; };
+      window.dispatchEvent(new CustomEvent("hex:docLoaded", {
+        detail: { numPages: doc.numPages, name: state.fileName }
+      }));
+
       document.body.classList.remove("no-doc");
       $("pageCount").textContent = String(doc.numPages);
       $("pageInput").value = "1";
@@ -2211,15 +2739,9 @@
     reader.readAsArrayBuffer(file);
   }
 
-  /* ---------------------------------------------------------------
-     Open from URL — uses the free CORS proxy engine
-     --------------------------------------------------------------- */
   function openFromUrlDialog() {
     closeMobileMenu();
-
     var body = el("div");
-
-    // URL field
     var urlField = el("div", { class: "field" }, [
       el("label", { text: "PDF URL" }),
       el("input", {
@@ -2230,7 +2752,6 @@
     ]);
     body.appendChild(urlField);
 
-    // Proxy mode quick picker
     var proxyPicker = el("div", { class: "field" }, [
       el("label", { text: "Fetch via" }),
       el("select", { id: "urlProxyMode" }, [
@@ -2242,7 +2763,6 @@
     ]);
     body.appendChild(proxyPicker);
 
-    // Custom proxy input (hidden unless custom mode selected)
     var customWrap = el("div", { class: "field", style: "display:none" }, [
       el("label", { text: "Custom proxy URL template" }),
       el("input", {
@@ -2254,14 +2774,12 @@
     ]);
     body.appendChild(customWrap);
 
-    // Optional filename
     var nameField = el("div", { class: "field" }, [
       el("label", { text: "Save as (optional)" }),
       el("input", { type: "text", id: "urlName", placeholder: "document.pdf" })
     ]);
     body.appendChild(nameField);
 
-    // Current proxy badge
     var badgeRow = el("div", { style: "display:flex;align-items:center;gap:8px;flex-wrap:wrap;" });
     badgeRow.appendChild(el("span", { class: "hint", text: "Active proxy:" }));
     var badge = el("span", { class: "proxy-badge", id: "urlProxyBadge" });
@@ -2270,7 +2788,6 @@
     badgeRow.appendChild(badge);
     body.appendChild(badgeRow);
 
-    // Wire the mode picker
     setTimeout(function () {
       var sel = qs("#urlProxyMode", body);
       var cw = qs("#urlCustomProxy", body).parentNode;
@@ -2297,7 +2814,6 @@
         var mode = qs("#urlProxyMode", root).value;
         var custom = qs("#urlCustomProxy", root).value.trim();
 
-        // Persist mode change
         state.corsMode = mode;
         localStorage.setItem("stirlingCorsMode", mode);
         if (mode === "custom") {
@@ -2367,7 +2883,6 @@
         var fd = new FormData();
         fd.append("fileInput", new File([new Blob([])], "placeholder.pdf"));
         fd.append("filePath", p);
-
         showBusy("Requesting file from server…");
         return stirlingPost("/api/v1/general/load-from-path", fd)
           .then(function (res) { return res.blob(); })
@@ -2387,9 +2902,6 @@
     });
   }
 
-  /* ================================================================
-     10. Rendering
-     ================================================================ */
   function renderPage(num) {
     if (!state.pdfDoc) return Promise.resolve();
     num = Math.max(1, Math.min(state.pdfDoc.numPages, num));
@@ -2404,7 +2916,6 @@
 
     return state.pdfDoc.getPage(num).then(function (page) {
       if (token !== state.renderToken) return null;
-
       var viewport = page.getViewport({ scale: state.scale, rotation: state.rotation });
       var canvas = $("pdf-canvas");
       var ctx = canvas.getContext("2d", { alpha: false });
@@ -2434,7 +2945,18 @@
         $("zoomInput").value = Math.round(state.scale * 100) + "%";
         updateActiveThumb();
         showPageToast();
+        updateFullscreenUI();
         setStatus("Page " + num + " of " + state.pdfDoc.numPages);
+
+        /* ===== HEX TTS hook: let the reading module rebuild its text layer ===== */
+        window.dispatchEvent(new CustomEvent("hex:pageRendered", {
+          detail: {
+            pageNum: num,
+            viewport: viewport,
+            scale: state.scale,
+            rotation: state.rotation
+          }
+        }));
       }).catch(function (err) {
         if (err && err.name === "RenderingCancelledException") return;
         console.error(err);
@@ -2448,7 +2970,6 @@
     if (n === state.pageNum) return;
     renderPage(n);
   }
-
   function nextPage() { goToPage(state.pageNum + 1); }
   function prevPage() { goToPage(state.pageNum - 1); }
 
@@ -2460,9 +2981,7 @@
     t.textContent = state.pageNum + " / " + state.pdfDoc.numPages;
     t.classList.add("show");
     clearTimeout(pageToastTimer);
-    pageToastTimer = setTimeout(function () {
-      t.classList.remove("show");
-    }, 1400);
+    pageToastTimer = setTimeout(function () { t.classList.remove("show"); }, 1400);
   }
 
   function setScale(s, keepFit) {
@@ -2471,7 +2990,6 @@
     if (!keepFit) state.fitMode = null;
     renderPage(state.pageNum);
   }
-
   function zoomIn() { setScale(state.scale * 1.2); }
   function zoomOut() { setScale(state.scale / 1.2); }
   function zoomReset() { setScale(1); }
@@ -2503,9 +3021,6 @@
     });
   }
 
-  /* ================================================================
-     11. Thumbnails
-     ================================================================ */
   function buildThumbnails() {
     var wrap = $("thumbs");
     wrap.innerHTML = "";
@@ -2513,7 +3028,6 @@
     if (!state.pdfDoc) return;
 
     var total = state.pdfDoc.numPages;
-
     if (total > 400) {
       wrap.appendChild(el("div", {
         class: "hint",
@@ -2575,10 +3089,7 @@
         transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null,
         background: "#ffffff"
       }).promise.then(function () {
-        if (holder) {
-          holder.innerHTML = "";
-          holder.appendChild(canvas);
-        }
+        if (holder) { holder.innerHTML = ""; holder.appendChild(canvas); }
       });
     }).catch(function () {});
   }
@@ -2594,9 +3105,6 @@
     }
   }
 
-  /* ================================================================
-     12. Outline
-     ================================================================ */
   function buildOutline() {
     var pane = $("outline");
     pane.innerHTML = "";
@@ -2624,7 +3132,6 @@
             });
           });
           container.appendChild(node);
-
           if (item.items && item.items.length) {
             var sub = el("div", { class: "outline-children" });
             renderItems(item.items, sub);
@@ -2652,9 +3159,6 @@
     });
   }
 
-  /* ================================================================
-     13. Download / print
-     ================================================================ */
   function downloadBlob(blob, filename) {
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
@@ -2685,9 +3189,7 @@
       try {
         frame.contentWindow.focus();
         frame.contentWindow.print();
-      } catch (e) {
-        window.open(url, "_blank");
-      }
+      } catch (e) { window.open(url, "_blank"); }
       setTimeout(function () {
         frame.style.display = "none";
         URL.revokeObjectURL(url);
@@ -2695,9 +3197,6 @@
     };
   }
 
-  /* ================================================================
-     14. Server tools
-     ================================================================ */
   function requireDoc() {
     if (!state.pdfBytes) {
       toast("Open a PDF first.", "warn");
@@ -2720,18 +3219,14 @@
   function resultDialog(blob, suggestedName, opts) {
     opts = opts || {};
     var isPdf = /pdf/i.test(blob.type) || /\.pdf$/i.test(suggestedName || "");
-
     var body = el("div");
     body.appendChild(el("div", {
       class: "hint",
-      text: "The server returned " + fmtBytes(blob.size) + " (" +
-            (blob.type || "application/octet-stream") + ")."
+      text: "The server returned " + fmtBytes(blob.size) + " (" + (blob.type || "application/octet-stream") + ")."
     }));
-
     if (!isPdf) {
       body.appendChild(el("div", {
-        class: "hint",
-        style: "color:var(--warn)",
+        class: "hint", style: "color:var(--warn)",
         text: "This result is not a PDF, so it cannot be opened in the viewer — download it instead."
       }));
     }
@@ -2742,10 +3237,7 @@
       okText: isPdf ? "Open in Viewer" : "Download",
       cancelText: "Download",
       onOk: function () {
-        if (!isPdf) {
-          downloadBlob(blob, suggestedName);
-          return true;
-        }
+        if (!isPdf) { downloadBlob(blob, suggestedName); return true; }
         return blob.arrayBuffer().then(function (buf) {
           return loadPdfFromBuffer(buf, suggestedName);
         }).catch(function (e) {
@@ -2757,7 +3249,6 @@
     });
   }
 
-  /* -------- MERGE -------- */
   function toolMerge() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
@@ -2774,7 +3265,6 @@
     body.appendChild(orderBox);
 
     var local = { files: [] };
-
     function renderOrder() {
       orderBox.innerHTML = "";
       local.files.forEach(function (f, i) {
@@ -2788,18 +3278,14 @@
         up.addEventListener("click", function (e) {
           e.stopPropagation();
           if (i > 0) {
-            var tmp = local.files[i - 1];
-            local.files[i - 1] = local.files[i];
-            local.files[i] = tmp;
+            var tmp = local.files[i - 1]; local.files[i - 1] = local.files[i]; local.files[i] = tmp;
             renderOrder();
           }
         });
         dn.addEventListener("click", function (e) {
           e.stopPropagation();
           if (i < local.files.length - 1) {
-            var tmp = local.files[i + 1];
-            local.files[i + 1] = local.files[i];
-            local.files[i] = tmp;
+            var tmp = local.files[i + 1]; local.files[i + 1] = local.files[i]; local.files[i] = tmp;
             renderOrder();
           }
         });
@@ -2821,22 +3307,15 @@
     });
 
     showModal({
-      title: "Merge PDFs",
-      bodyNode: body,
-      okText: "Merge",
-      wide: true,
+      title: "Merge PDFs", bodyNode: body, okText: "Merge", wide: true,
       onOk: function () {
         var files = local.files.slice();
         if (qs("#mergeIncludeCurrent", body).checked && currentFile()) {
           files.unshift(currentFile());
         }
-        if (files.length < 2) {
-          toast("Select at least two PDFs to merge.", "warn");
-          return false;
-        }
+        if (files.length < 2) { toast("Select at least two PDFs to merge.", "warn"); return false; }
         var fd = new FormData();
         files.forEach(function (f) { fd.append("fileInput", f, f.name); });
-
         showBusy("Merging " + files.length + " files…");
         return stirlingPost("/api/v1/general/merge-pdfs", fd)
           .then(function (res) { return res.blob(); })
@@ -2854,17 +3333,14 @@
     });
   }
 
-  /* -------- SPLIT -------- */
   function toolSplit() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
     if (!requireDoc()) return;
-
     var body = el("div");
     body.appendChild(el("div", {
       class: "hint",
-      text: "Enter page numbers and/or ranges separated by commas, e.g. 1,3,5-8. " +
-            "Each group becomes its own PDF (returned as a ZIP when more than one group is produced)."
+      text: "Enter page numbers and/or ranges separated by commas, e.g. 1,3,5-8."
     }));
     body.appendChild(field("Pages to extract",
       '<input type="text" id="splitPages" placeholder="1,3,5-8" value="1" />'));
@@ -2893,15 +3369,12 @@
     }, 10);
 
     showModal({
-      title: "Split PDF",
-      bodyNode: body,
-      okText: "Split",
+      title: "Split PDF", bodyNode: body, okText: "Split",
       onOk: function () {
         var mode = qs("#splitMode", body).value;
         var fd = new FormData();
         fd.append("fileInput", currentFile());
         var endpoint = "/api/v1/general/split-pages";
-
         if (mode === "every") {
           endpoint = "/api/v1/general/split-pdfs";
           fd.append("splitType", "SPLIT_BY_SIZE");
@@ -2915,7 +3388,6 @@
           if (!pages) { toast("Enter page numbers.", "warn"); return false; }
           fd.append("pageNumbers", pages);
         }
-
         showBusy("Splitting document…");
         return stirlingPost(endpoint, fd)
           .then(function (res) { return res.blob(); })
@@ -2933,22 +3405,18 @@
     });
   }
 
-  /* -------- EXTRACT -------- */
   function toolExtract() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
     if (!requireDoc()) return;
     var body = el("div");
     body.appendChild(el("div", {
-      class: "hint",
-      text: "Create a new PDF containing only the pages you list."
+      class: "hint", text: "Create a new PDF containing only the pages you list."
     }));
     body.appendChild(field("Pages to keep", '<input type="text" id="extractPages" placeholder="1,4,7-9" />'));
 
     showModal({
-      title: "Extract Pages",
-      bodyNode: body,
-      okText: "Extract",
+      title: "Extract Pages", bodyNode: body, okText: "Extract",
       onOk: function () {
         var pages = qs("#extractPages", body).value.trim();
         if (!pages) { toast("Enter page numbers.", "warn"); return false; }
@@ -2972,22 +3440,18 @@
     });
   }
 
-  /* -------- REMOVE PAGES -------- */
   function toolRemovePages() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
     if (!requireDoc()) return;
     var body = el("div");
     body.appendChild(el("div", {
-      class: "hint",
-      text: "Delete the listed pages from the document. Use commas and ranges, e.g. 2,5-7."
+      class: "hint", text: "Delete the listed pages from the document. Use commas and ranges, e.g. 2,5-7."
     }));
     body.appendChild(field("Pages to delete", '<input type="text" id="removePages" placeholder="2,5-7" />'));
 
     showModal({
-      title: "Delete Pages",
-      bodyNode: body,
-      okText: "Delete",
+      title: "Delete Pages", bodyNode: body, okText: "Delete",
       onOk: function () {
         var pages = qs("#removePages", body).value.trim();
         if (!pages) { toast("Enter page numbers.", "warn"); return false; }
@@ -3011,22 +3475,18 @@
     });
   }
 
-  /* -------- REORDER -------- */
   function toolRearrange() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
     if (!requireDoc()) return;
     var body = el("div");
     body.appendChild(el("div", {
-      class: "hint",
-      text: "Supply the full page order. Example: for a 5 page file, '5,4,3,2,1' reverses it."
+      class: "hint", text: "Supply the full page order. Example: for a 5 page file, '5,4,3,2,1' reverses it."
     }));
     body.appendChild(field("New page order", '<input type="text" id="reorderPages" placeholder="3,1,2,4" />'));
 
     showModal({
-      title: "Reorder Pages",
-      bodyNode: body,
-      okText: "Apply Order",
+      title: "Reorder Pages", bodyNode: body, okText: "Apply Order",
       onOk: function () {
         var pages = qs("#reorderPages", body).value.trim();
         if (!pages) { toast("Enter the new order.", "warn"); return false; }
@@ -3050,7 +3510,6 @@
     });
   }
 
-  /* -------- ROTATE -------- */
   function toolRotate() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
@@ -3064,9 +3523,7 @@
       '</select>'));
 
     showModal({
-      title: "Rotate Pages",
-      bodyNode: body,
-      okText: "Rotate",
+      title: "Rotate Pages", bodyNode: body, okText: "Rotate",
       onOk: function () {
         var fd = new FormData();
         fd.append("fileInput", currentFile());
@@ -3088,15 +3545,13 @@
     });
   }
 
-  /* -------- COMPRESS -------- */
   function toolCompress() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
     if (!requireDoc()) return;
     var body = el("div");
     body.appendChild(el("div", {
-      class: "hint",
-      text: "Higher optimization levels shrink the file more but reduce image quality."
+      class: "hint", text: "Higher optimization levels shrink the file more but reduce image quality."
     }));
     body.appendChild(field("Optimization level (1 = best quality, 9 = smallest)",
       '<input type="range" id="compressLevel" min="1" max="9" value="5" />' +
@@ -3109,15 +3564,12 @@
     }, 10);
 
     showModal({
-      title: "Compress PDF",
-      bodyNode: body,
-      okText: "Compress",
+      title: "Compress PDF", bodyNode: body, okText: "Compress",
       onOk: function () {
         var fd = new FormData();
         fd.append("fileInput", currentFile());
         fd.append("optimizeLevel", qs("#compressLevel", body).value);
         var before = state.pdfBytes ? state.pdfBytes.length : 0;
-
         showBusy("Compressing…");
         return stirlingPost("/api/v1/misc/compress-pdf", fd)
           .then(function (res) { return res.blob(); })
@@ -3138,7 +3590,6 @@
     });
   }
 
-  /* -------- WATERMARK -------- */
   function toolWatermark() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
@@ -3162,10 +3613,7 @@
     body.appendChild(row2);
 
     showModal({
-      title: "Add Watermark",
-      bodyNode: body,
-      okText: "Add Watermark",
-      wide: true,
+      title: "Add Watermark", bodyNode: body, okText: "Add Watermark", wide: true,
       onOk: function () {
         var text = qs("#wmText", body).value.trim();
         if (!text) { toast("Enter watermark text.", "warn"); return false; }
@@ -3197,7 +3645,6 @@
     });
   }
 
-  /* -------- PAGE NUMBERS -------- */
   function toolPageNumbers() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
@@ -3227,10 +3674,7 @@
       '<input type="text" id="pnPages" placeholder="1-10" />'));
 
     showModal({
-      title: "Add Page Numbers",
-      bodyNode: body,
-      okText: "Add Numbers",
-      wide: true,
+      title: "Add Page Numbers", bodyNode: body, okText: "Add Numbers", wide: true,
       onOk: function () {
         var fd = new FormData();
         fd.append("fileInput", currentFile());
@@ -3259,7 +3703,6 @@
     });
   }
 
-  /* -------- PROTECT -------- */
   function toolProtect() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
@@ -3274,9 +3717,7 @@
       '</select>'));
 
     showModal({
-      title: "Password Protect",
-      bodyNode: body,
-      okText: "Protect",
+      title: "Password Protect", bodyNode: body, okText: "Protect",
       onOk: function () {
         var p1 = qs("#protPass", body).value;
         var p2 = qs("#protPass2", body).value;
@@ -3303,7 +3744,6 @@
     });
   }
 
-  /* -------- UNLOCK -------- */
   function toolUnlock() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
@@ -3312,9 +3752,7 @@
     body.appendChild(field("Current password", '<input type="password" id="unlockPass" placeholder="••••••••" />'));
 
     showModal({
-      title: "Remove Password",
-      bodyNode: body,
-      okText: "Unlock",
+      title: "Remove Password", bodyNode: body, okText: "Unlock",
       onOk: function () {
         var p = qs("#unlockPass", body).value;
         var fd = new FormData();
@@ -3337,7 +3775,6 @@
     });
   }
 
-  /* -------- PDF → IMAGES -------- */
   function toolPdfToImages() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
@@ -3365,10 +3802,7 @@
     body.appendChild(row2);
 
     showModal({
-      title: "PDF → Images",
-      bodyNode: body,
-      okText: "Convert",
-      wide: true,
+      title: "PDF → Images", bodyNode: body, okText: "Convert", wide: true,
       onOk: function () {
         var fmt = qs("#imgFmt", body).value;
         var fd = new FormData();
@@ -3395,14 +3829,12 @@
     });
   }
 
-  /* -------- IMAGES → PDF -------- */
   function toolImagesToPdf() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
     var body = el("div");
     body.appendChild(el("div", {
-      class: "hint",
-      text: "Select one or more images. They are placed in the order shown."
+      class: "hint", text: "Select one or more images. They are placed in the order shown."
     }));
     var host = el("div", { html: fileDropHTML("i2pFiles", true, "image/*") });
     body.appendChild(host);
@@ -3414,12 +3846,11 @@
     function render() {
       orderBox.innerHTML = "";
       files.forEach(function (f, i) {
-        var row = el("div", { class: "file-row" }, [
+        orderBox.appendChild(el("div", { class: "file-row" }, [
           el("span", { text: String(i + 1) + "." }),
           el("span", { class: "nm", text: f.name }),
           el("span", { class: "sz", text: fmtBytes(f.size) })
-        ]);
-        orderBox.appendChild(row);
+        ]));
       });
     }
 
@@ -3438,10 +3869,7 @@
     body.appendChild(row);
 
     showModal({
-      title: "Images → PDF",
-      bodyNode: body,
-      okText: "Create PDF",
-      wide: true,
+      title: "Images → PDF", bodyNode: body, okText: "Create PDF", wide: true,
       onOk: function () {
         if (!files.length) { toast("Select at least one image.", "warn"); return false; }
         var fd = new FormData();
@@ -3465,7 +3893,6 @@
     });
   }
 
-  /* -------- OCR -------- */
   function toolOcr() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
@@ -3484,9 +3911,7 @@
     ]));
 
     showModal({
-      title: "OCR PDF",
-      bodyNode: body,
-      okText: "Run OCR",
+      title: "OCR PDF", bodyNode: body, okText: "Run OCR",
       onOk: function () {
         var fd = new FormData();
         fd.append("fileInput", currentFile());
@@ -3510,7 +3935,6 @@
     });
   }
 
-  /* -------- EXTRACT TEXT -------- */
   function toolExtractText() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
@@ -3524,7 +3948,6 @@
       .then(function (res) { return res.text(); })
       .then(function (text) {
         hideBusy();
-
         var body = el("div");
         var ta = el("textarea", {
           id: "extractedText",
@@ -3534,10 +3957,7 @@
         ta.value = text || "(no text returned)";
         body.appendChild(ta);
 
-        var info = el("div", {
-          class: "hint",
-          text: "Characters: " + (text ? text.length : 0)
-        });
+        var info = el("div", { class: "hint", text: "Characters: " + (text ? text.length : 0) });
         body.appendChild(info);
 
         var copyBtn = el("button", { class: "btn", text: "Copy to clipboard", style: "align-self:flex-start;" });
@@ -3554,11 +3974,7 @@
         body.appendChild(copyBtn);
 
         showModal({
-          title: "Extracted Text",
-          bodyNode: body,
-          okText: "Save as .txt",
-          cancelText: "Close",
-          wide: true,
+          title: "Extracted Text", bodyNode: body, okText: "Save as .txt", cancelText: "Close", wide: true,
           onOk: function () {
             var blob = new Blob([ta.value], { type: "text/plain;charset=utf-8" });
             downloadBlob(blob, (state.fileName || "document").replace(/\.pdf$/i, "") + ".txt");
@@ -3572,7 +3988,6 @@
       });
   }
 
-  /* -------- METADATA -------- */
   function toolMetadata() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
@@ -3615,10 +4030,7 @@
       }, 10);
 
       showModal({
-        title: "Document Properties",
-        bodyNode: body,
-        okText: "Save Metadata",
-        wide: true,
+        title: "Document Properties", bodyNode: body, okText: "Save Metadata", wide: true,
         onOk: function () {
           var fd = new FormData();
           fd.append("fileInput", currentFile());
@@ -3649,24 +4061,18 @@
     });
   }
 
-  /* ================================================================
-     15. CORS PROXY SETTINGS DIALOG
-     ================================================================ */
   function openProxySettings() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
 
     var body = el("div");
-
     body.appendChild(el("div", {
       class: "hint",
       text: "Fetching PDFs from other websites is normally blocked by the browser's " +
             "CORS security policy. Auto mode transparently retries the request through " +
-            "several free public CORS proxies until one works — no signup, no API key, " +
-            "no cost."
+            "several free public CORS proxies until one works — no signup, no API key, no cost."
     }));
 
-    // Mode selector
     var modeField = el("div", { class: "field" }, [
       el("label", { text: "Fetching mode" }),
       el("select", { id: "pxMode" }, [
@@ -3677,7 +4083,6 @@
     ]);
     body.appendChild(modeField);
 
-    // Custom proxy input (hidden unless custom mode)
     var customWrap = el("div", { class: "field", style: "display:none" }, [
       el("label", { text: "Custom proxy URL template" }),
       el("input", {
@@ -3689,7 +4094,6 @@
     ]);
     body.appendChild(customWrap);
 
-    // Built-in proxy list with test buttons
     body.appendChild(el("label", { text: "Built-in free proxies (used in Auto mode)" }));
     var listWrap = el("div", { class: "proxy-list", id: "pxList" });
 
@@ -3710,17 +4114,11 @@
         testProxy(proxy).then(function () {
           dot.className = "pr-dot ok";
           testBtn.textContent = "OK";
-          setTimeout(function () {
-            testBtn.disabled = false;
-            testBtn.textContent = "Test";
-          }, 2500);
+          setTimeout(function () { testBtn.disabled = false; testBtn.textContent = "Test"; }, 2500);
         }).catch(function () {
           dot.className = "pr-dot fail";
           testBtn.textContent = "Fail";
-          setTimeout(function () {
-            testBtn.disabled = false;
-            testBtn.textContent = "Test";
-          }, 2500);
+          setTimeout(function () { testBtn.disabled = false; testBtn.textContent = "Test"; }, 2500);
         });
       });
 
@@ -3729,13 +4127,11 @@
     body.appendChild(listWrap);
 
     body.appendChild(el("div", {
-      class: "hint",
-      style: "margin-top:6px;",
+      class: "hint", style: "margin-top:6px;",
       text: "Tip: If every proxy fails, try a different network or use the 'Open from server' " +
             "option — Stirling PDF can fetch files directly from its own filesystem."
     }));
 
-    // Wire UI
     setTimeout(function () {
       var sel = qs("#pxMode", body);
       var custom = qs("#pxCustom", body);
@@ -3751,27 +4147,20 @@
     }, 10);
 
     showModal({
-      title: "CORS Proxy Settings",
-      bodyNode: body,
-      okText: "Save",
-      wide: true,
+      title: "CORS Proxy Settings", bodyNode: body, okText: "Save", wide: true,
       onOk: function () {
         var mode = qs("#pxMode", body).value;
         var custom = qs("#pxCustom", body).value.trim();
-
         if (mode === "custom" && !custom) {
           toast("Enter a custom proxy URL or choose Auto mode.", "warn");
           return false;
         }
-
         state.corsMode = mode;
         localStorage.setItem("stirlingCorsMode", mode);
-
         if (mode === "custom") {
           state.corsProxy = custom;
           localStorage.setItem("stirlingCorsProxy", custom);
         }
-
         updateProxyStatusLabel();
         toast("Proxy settings saved (mode: " + mode + ").", "ok");
         return true;
@@ -3779,15 +4168,11 @@
     });
   }
 
-  /* ================================================================
-     16. SERVER SETTINGS DIALOG
-     ================================================================ */
   function openSettings() {
     closeMobileMenu();
     if (isMobile()) closeSheet();
 
     var body = el("div");
-
     body.appendChild(el("div", {
       class: "hint",
       text: "Point this client at your running Stirling PDF instance. " +
@@ -3798,7 +4183,6 @@
       '<input type="text" id="setServer" placeholder="http://localhost:8080" autocapitalize="off" spellcheck="false" inputmode="url" />',
       "Example: http://localhost:8080 or https://pdf.mycompany.com"));
 
-    // Server test
     var testRow = el("div", { style: "display:flex;gap:9px;align-items:center;margin-top:4px;flex-wrap:wrap;" });
     var testBtn = el("button", { class: "btn", text: "Test connection" });
     var testOut = el("span", { class: "hint", text: "" });
@@ -3806,7 +4190,6 @@
     testRow.appendChild(testOut);
     body.appendChild(testRow);
 
-    // Proxy quick link
     var proxyRow = el("div", {
       style: "display:flex;align-items:center;gap:10px;padding:10px 12px;background:#1d1d20;border:1px solid var(--border);border-radius:8px;margin-top:6px;"
     });
@@ -3822,7 +4205,6 @@
     proxyRow.appendChild(openProxyBtn);
     body.appendChild(proxyRow);
 
-    // Endpoint reference
     var endpoints = el("details", { style: "margin-top:6px;" });
     endpoints.appendChild(el("summary", {
       text: "Endpoint reference",
@@ -3882,10 +4264,7 @@
     });
 
     showModal({
-      title: "Server Settings",
-      bodyNode: body,
-      okText: "Save",
-      wide: true,
+      title: "Server Settings", bodyNode: body, okText: "Save", wide: true,
       onOk: function () {
         var url = qs("#setServer", body).value.trim().replace(/\/+$/, "");
         state.serverUrl = url;
@@ -3897,35 +4276,200 @@
     });
   }
 
-  /* ================================================================
-     17. ABOUT
-     ================================================================ */
   function showAbout() {
     closeMobileMenu();
     var body = el("div");
     body.appendChild(el("div", {
-      class: "hint",
-      style: "line-height:1.8;",
+      class: "hint", style: "line-height:1.8;",
       html:
         "<b>HEX — PDF Studio</b> — an Adobe Acrobat–style front-end for " +
         "<a href='https://hexsleuth.github.io/PDF-TTS-Reader/' target='_blank' rel='noopener' style='color:var(--accent)'>PDF-TTS-Reader</a>.<br><br>" +
         "Rendering by PDF.js 3.11.174.<br>" +
         "URL fetching uses free public CORS proxies with automatic fallback.<br>" +
+        "TTS via Web Speech API with optional HLS streaming audio.<br>" +
         "Server operations are proxied to your own Stirling PDF instance.<br><br>" +
         "<b>Privacy:</b> files never leave your machine unless you explicitly invoke a server tool."
     }));
     showModal({
-      title: "About",
-      bodyNode: body,
-      okText: "Close",
-      cancelText: "",
+      title: "About", bodyNode: body, okText: "Close", cancelText: "",
       onOk: function () { return true; }
     });
   }
 
-  /* ================================================================
-     18. COMMAND ROUTER
-     ================================================================ */
+  /* ============================================================
+     FULLSCREEN READING MODE
+     ============================================================ */
+  var wakeLockRef = null;
+
+  function updateFullscreenUI() {
+    var indicator = $("fsPageIndicator");
+    if (indicator) {
+      if (state.pdfDoc) indicator.textContent = state.pageNum + " / " + state.pdfDoc.numPages;
+      else indicator.textContent = "No document";
+    }
+    var prevBtn = $("fsPrevBtn");
+    var nextBtn = $("fsNextBtn");
+    if (prevBtn) prevBtn.disabled = !state.pdfDoc || state.pageNum <= 1;
+    if (nextBtn) nextBtn.disabled = !state.pdfDoc || state.pageNum >= (state.pdfDoc ? state.pdfDoc.numPages : 1);
+  }
+
+  function enterFullscreenMode() {
+    if (!state.pdfDoc) {
+      toast("Open a PDF first to enter full-screen reading mode.", "warn", 3000);
+      return;
+    }
+    document.body.classList.add("fullscreen-mode");
+    var rootEl = document.documentElement;
+    try {
+      if (rootEl.requestFullscreen) {
+        rootEl.requestFullscreen().catch(function () { /* CSS fallback still works */ });
+      } else if (rootEl.webkitRequestFullscreen) {
+        rootEl.webkitRequestFullscreen();
+      }
+    } catch (e) {}
+    updateFullscreenUI();
+    // Best effort: keep screen awake while reading
+    if (navigator.wakeLock && navigator.wakeLock.request) {
+      navigator.wakeLock.request("screen").then(function (l) {
+        wakeLockRef = l;
+        l.addEventListener("release", function () { wakeLockRef = null; });
+      }).catch(function () {});
+    }
+    toast("Full Screen Mode — press Esc or F11 to exit.", "ok", 3200);
+  }
+
+  function exitFullscreenMode() {
+    document.body.classList.remove("fullscreen-mode");
+    try {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(function () {});
+      } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    } catch (e) {}
+    if (wakeLockRef && typeof wakeLockRef.release === "function") {
+      wakeLockRef.release().catch(function () {});
+      wakeLockRef = null;
+    }
+    updateFullscreenUI();
+  }
+
+  function toggleFullscreen() {
+    if (document.body.classList.contains("fullscreen-mode")) exitFullscreenMode();
+    else enterFullscreenMode();
+  }
+
+  function wireFullscreenControls() {
+    var exitBtn = $("fsExitBtn");
+    if (exitBtn) exitBtn.addEventListener("click", exitFullscreenMode);
+
+    var prevBtn = $("fsPrevBtn");
+    if (prevBtn) prevBtn.addEventListener("click", function () { prevPage(); });
+    var nextBtn = $("fsNextBtn");
+    if (nextBtn) nextBtn.addEventListener("click", function () { nextPage(); });
+
+    var tbFs = $("tb-fullscreen");
+    if (tbFs) tbFs.addEventListener("click", toggleFullscreen);
+
+    document.addEventListener("fullscreenchange", function () {
+      if (!document.fullscreenElement) {
+        document.body.classList.remove("fullscreen-mode");
+        if (wakeLockRef && typeof wakeLockRef.release === "function") {
+          wakeLockRef.release().catch(function () {});
+          wakeLockRef = null;
+        }
+      }
+      updateFullscreenUI();
+    });
+    document.addEventListener("webkitfullscreenchange", function () {
+      if (!document.webkitFullscreenElement) {
+        document.body.classList.remove("fullscreen-mode");
+      }
+      updateFullscreenUI();
+    });
+  }
+
+  /* ============================================================
+     TTS SETTINGS (HLS)
+     ============================================================ */
+  function openTtsSettings() {
+    closeMobileMenu();
+    if (isMobile()) closeSheet();
+
+    var cfg = window.HEXTtsConfig ? window.HEXTtsConfig() : { engine: "browser", hlsUrl: "" };
+
+    var body = el("div");
+    body.appendChild(el("div", {
+      class: "hint",
+      text: "Choose how HEX reads your PDFs aloud. The default (Browser) uses the built-in Web Speech API. " +
+            "HLS mode streams pre-generated audio from a server that returns HTTP Live Streaming playlists."
+    }));
+
+    var engineField = el("div", { class: "field" }, [
+      el("label", { text: "TTS Playback Engine" }),
+      el("select", { id: "ttsEngine" }, [
+        el("option", { value: "browser", text: "Browser — Web Speech Synthesis (default)" }),
+        el("option", { value: "hls",     text: "HLS — stream audio from a URL template" })
+      ])
+    ]);
+    body.appendChild(engineField);
+
+    var hlsWrap = el("div", { class: "field", style: "display:none" }, [
+      el("label", { text: "HLS URL template" }),
+      el("input", {
+        type: "text", id: "ttsHlsUrl",
+        placeholder: "https://tts.example.com/audio/{page}.m3u8",
+        autocapitalize: "off", spellcheck: "false", inputmode: "url"
+      }),
+      el("div", {
+        class: "hint",
+        text: "Use {page} where the current page number should go (e.g. .../page-{page}.m3u8), " +
+              "or leave it out for a single continuous stream for the whole document."
+      })
+    ]);
+    body.appendChild(hlsWrap);
+
+    body.appendChild(el("div", {
+      class: "hint",
+      style: "background:#1d1d20;padding:10px 12px;border-radius:6px;border:1px solid var(--border);line-height:1.6;",
+      html:
+        "<b style='color:var(--text);'>How HLS mode works</b><br>" +
+        "• The Play button in the TTS dock streams the HLS URL for the current page.<br>" +
+        "• Page changes automatically advance the stream (when {page} is used).<br>" +
+        "• Word-level highlighting falls back to timer estimation.<br>" +
+        "• If HLS fails or is unavailable, Browser mode can be re-selected at any time."
+    }));
+
+    setTimeout(function () {
+      var sel = qs("#ttsEngine", body);
+      var urlInput = qs("#ttsHlsUrl", body);
+      var w = hlsWrap;
+      sel.value = cfg.engine || "browser";
+      urlInput.value = cfg.hlsUrl || "";
+      w.style.display = sel.value === "hls" ? "flex" : "none";
+      sel.addEventListener("change", function () {
+        w.style.display = sel.value === "hls" ? "flex" : "none";
+      });
+    }, 10);
+
+    showModal({
+      title: "TTS Settings — HLS Playback", bodyNode: body, okText: "Save", wide: true,
+      onOk: function () {
+        var engine = qs("#ttsEngine", body).value;
+        var hlsUrl = qs("#ttsHlsUrl", body).value.trim();
+        if (engine === "hls" && !hlsUrl) {
+          toast("Enter an HLS URL template or switch back to Browser mode.", "warn");
+          return false;
+        }
+        if (window.HEXSetTtsConfig) {
+          window.HEXSetTtsConfig({ engine: engine, hlsUrl: hlsUrl });
+        }
+        toast("TTS settings saved (engine: " + engine + ").", "ok");
+        return true;
+      }
+    });
+  }
+
   var COMMANDS = {
     "open-file": openLocalFile,
     "open-url": openFromUrlDialog,
@@ -3952,6 +4496,7 @@
     "zoom-reset": zoomReset,
     "fit-width": function () { fitWidth(false); },
     "fit-page": fitPage,
+    "toggle-fullscreen": toggleFullscreen,
     "toggle-left": function () {
       var p = $("leftPanel");
       if (isMobile()) { toggleDrawer(); return; }
@@ -3980,6 +4525,7 @@
     "tool-metadata": toolMetadata,
     "settings": openSettings,
     "proxy-settings": openProxySettings,
+    "tts-settings": openTtsSettings,
     "check-server": function () { checkServer(false); },
     "about": showAbout,
     "stirling-docs": function () {
@@ -3998,9 +4544,6 @@
     closeAllMenus();
   }
 
-  /* ================================================================
-     19. Menu wiring (desktop)
-     ================================================================ */
   function closeAllMenus() {
     qsa(".menu").forEach(function (m) { m.classList.remove("open"); });
   }
@@ -4021,9 +4564,7 @@
         }
       });
     });
-
     document.addEventListener("click", function () { closeAllMenus(); });
-
     qsa(".dd-item").forEach(function (item) {
       item.addEventListener("click", function (e) {
         e.stopPropagation();
@@ -4032,9 +4573,6 @@
     });
   }
 
-  /* ================================================================
-     20. Overlay helpers
-     ================================================================ */
   function openDrawer() {
     closeSheet();
     closeMobileMenu();
@@ -4080,9 +4618,6 @@
     closeMobileMenu();
   }
 
-  /* ================================================================
-     21. Mobile menu content
-     ================================================================ */
   var MOBILE_MENU_ITEMS = [
     { group: "File" },
     { label: "Open from device",   cmd: "open-file",   icon: "file" },
@@ -4093,6 +4628,7 @@
     { label: "Close document",     cmd: "close-doc",   icon: "x" },
 
     { group: "View" },
+    { label: "Full Screen Mode",   cmd: "toggle-fullscreen", icon: "expand" },
     { label: "Zoom in",            cmd: "zoom-in",     icon: "plus" },
     { label: "Zoom out",           cmd: "zoom-out",    icon: "minus" },
     { label: "Fit width",          cmd: "fit-width",   icon: "fitw" },
@@ -4120,6 +4656,7 @@
     { label: "Document properties",cmd: "tool-metadata",    icon: "info" },
 
     { group: "App" },
+    { label: "TTS Settings (HLS)", cmd: "tts-settings",     icon: "hls" },
     { label: "CORS Proxy settings",cmd: "proxy-settings",   icon: "globe" },
     { label: "Server settings",    cmd: "settings",         icon: "gear" },
     { label: "Test connection",    cmd: "check-server",     icon: "plug" },
@@ -4158,7 +4695,9 @@
     info:      '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>',
     gear:      '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9 2 2 0 1 1-2.8 2.8 1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2 2 2 0 1 1-2.8-2.8A1.7 1.7 0 0 0 4.6 15a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.2-2.9 2 2 0 1 1 2.8-2.8 1.7 1.7 0 0 0 2.9-1.2 2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2 2 2 0 1 1 2.8 2.8 1.7 1.7 0 0 0 1.2 2.9 2 2 0 1 1 0 4z"/>',
     plug:      '<path d="M9 2v6"/><path d="M15 2v6"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v5"/>',
-    globe:     '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/>'
+    globe:     '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/>',
+    expand:    '<path d="M3 9V5a2 2 0 0 1 2-2h4"/><path d="M21 9V5a2 2 0 0 0-2-2h-4"/><path d="M3 15v4a2 2 0 0 0 2 2h4"/><path d="M21 15v4a2 2 0 0 1-2 2h-4"/>',
+    hls:       '<path d="M5 12a7 7 0 0 1 14 0"/><path d="M8 12a4 4 0 0 1 8 0"/><path d="M12 16v5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>'
   };
 
   function buildMobileMenu() {
@@ -4193,9 +4732,6 @@
     });
   }
 
-  /* ================================================================
-     22. Toolbar wiring
-     ================================================================ */
   function initToolbar() {
     $("tb-open").addEventListener("click", openLocalFile);
     $("tb-url").addEventListener("click", openFromUrlDialog);
@@ -4228,8 +4764,8 @@
     $("tb-protect").addEventListener("click", toolProtect);
     $("tb-proxy").addEventListener("click", openProxySettings);
     $("tb-settings").addEventListener("click", openSettings);
+    $("tb-fullscreen").addEventListener("click", toggleFullscreen);
 
-    // page input
     var pageInput = $("pageInput");
     pageInput.addEventListener("keydown", function (e) {
       if (e.key === "Enter") {
@@ -4242,7 +4778,6 @@
       pageInput.value = String(state.pageNum);
     });
 
-    // zoom input
     var zoomInput = $("zoomInput");
     zoomInput.addEventListener("keydown", function (e) {
       if (e.key === "Enter") {
@@ -4276,9 +4811,6 @@
     });
   }
 
-  /* ================================================================
-     23. Mobile chrome wiring
-     ================================================================ */
   function initMobileChrome() {
     var mtbMenu = $("mtbMenu");
     var mtbProxy = $("mtbProxy");
@@ -4290,20 +4822,15 @@
         else openDrawer();
       });
     }
-
     if (mtbProxy) {
-      mtbProxy.addEventListener("click", function () {
-        openProxySettings();
-      });
+      mtbProxy.addEventListener("click", function () { openProxySettings(); });
     }
-
     if (mtbMore) {
       mtbMore.addEventListener("click", function (e) {
         e.stopPropagation();
         toggleMobileMenu();
       });
     }
-
     var mmClose = $("mmClose");
     if (mmClose) {
       mmClose.addEventListener("click", function (e) {
@@ -4311,11 +4838,8 @@
         closeMobileMenu();
       });
     }
-
     var backdrop = $("drawerBackdrop");
-    if (backdrop) {
-      backdrop.addEventListener("click", closeAllOverlays);
-    }
+    if (backdrop) backdrop.addEventListener("click", closeAllOverlays);
 
     var mnavPages = $("mnavPages");
     var mnavTools = $("mnavTools");
@@ -4329,7 +4853,6 @@
         updateMnavActive("pages");
       });
     }
-
     if (mnavTools) {
       mnavTools.addEventListener("click", function () {
         if (document.body.classList.contains("sheet-open")) closeSheet();
@@ -4337,7 +4860,6 @@
         updateMnavActive("tools");
       });
     }
-
     if (mnavSave) {
       mnavSave.addEventListener("click", function () {
         closeAllOverlays();
@@ -4346,14 +4868,12 @@
         setTimeout(function () { updateMnavActive(null); }, 400);
       });
     }
-
     if (mnavMore) {
       mnavMore.addEventListener("click", function () {
         toggleMobileMenu();
         updateMnavActive("more");
       });
     }
-
     var fab = $("mobileFab");
     if (fab) {
       fab.addEventListener("click", function () {
@@ -4369,9 +4889,6 @@
     });
   }
 
-  /* ================================================================
-     24. Drag & drop
-     ================================================================ */
   function initDragDrop() {
     var viewer = $("viewer");
     var counter = 0;
@@ -4412,9 +4929,6 @@
     });
   }
 
-  /* ================================================================
-     25. Swipe gestures
-     ================================================================ */
   function initSwipe() {
     var viewer = $("viewer");
     if (!viewer) return;
@@ -4439,19 +4953,14 @@
       var dx = t.clientX - startX;
       var dy = t.clientY - startY;
       var dt = Date.now() - startT;
-
       if (Math.abs(dx) < 60) return;
       if (Math.abs(dy) > Math.abs(dx) * 0.7) return;
       if (dt > 700) return;
-
       if (dx < 0) nextPage();
       else prevPage();
     }, { passive: true });
   }
 
-  /* ================================================================
-     26. Keyboard shortcuts
-     ================================================================ */
   function initKeyboard() {
     document.addEventListener("keydown", function (e) {
       var tag = (e.target && e.target.tagName) || "";
@@ -4465,6 +4974,18 @@
       if (mod && e.key === "-") { e.preventDefault(); zoomOut(); return; }
       if (mod && e.key === "0") { e.preventDefault(); zoomReset(); return; }
 
+      // Fullscreen shortcut (F11 / Ctrl+Shift+F)
+      if (e.key === "F11") {
+        e.preventDefault();
+        toggleFullscreen();
+        return;
+      }
+      if (mod && e.shiftKey && e.key.toLowerCase() === "f") {
+        e.preventDefault();
+        toggleFullscreen();
+        return;
+      }
+
       if (typing) return;
 
       if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); nextPage(); }
@@ -4473,22 +4994,21 @@
       if (e.key === "End" && state.pdfDoc) { e.preventDefault(); goToPage(state.pdfDoc.numPages); }
 
       if (e.key === "Escape") {
+        if (document.body.classList.contains("fullscreen-mode")) {
+          exitFullscreenMode();
+        }
         closeAllOverlays();
         closeAllMenus();
       }
     });
   }
 
-  /* ================================================================
-     27. Resize handling
-     ================================================================ */
   var resizeTimer = null;
   var lastMobile = isMobile();
 
   function initResize() {
     window.addEventListener("resize", function () {
       if (!state.pdfDoc) return;
-
       var nowMobile = isMobile();
       if (nowMobile !== lastMobile) {
         lastMobile = nowMobile;
@@ -4496,7 +5016,6 @@
         $("leftPanel").style.display = "";
         $("rightPanel").style.display = "";
       }
-
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function () {
         if (state.fitMode === "width") fitWidth(true).then(function () { renderPage(state.pageNum); });
@@ -4506,9 +5025,6 @@
     });
   }
 
-  /* ================================================================
-     28. Touch guards
-     ================================================================ */
   function initTouchGuards() {
     ["menubar", "toolbar", "mobile-nav", "mobile-topbar"].forEach(function (cls) {
       var n = qs("." + cls);
@@ -4521,9 +5037,6 @@
     });
   }
 
-  /* ================================================================
-     29. Boot
-     ================================================================ */
   function boot() {
     initMenus();
     initToolbar();
@@ -4534,13 +5047,14 @@
     initResize();
     initTouchGuards();
     buildMobileMenu();
+    wireFullscreenControls();
 
     resetViewer();
     checkServer(true);
     updateProxyStatusLabel();
+    updateFullscreenUI();
     setStatus("Ready — open a PDF or paste a URL");
 
-    // Inform about the auto-proxy on first load
     var seen = localStorage.getItem("stirlingProxyNoticeSeen");
     if (!seen) {
       setTimeout(function () {
@@ -4548,7 +5062,6 @@
         localStorage.setItem("stirlingProxyNoticeSeen", "1");
       }, 1200);
     }
-
     if (!state.serverUrl) {
       setTimeout(function () {
         toast("Tip: set your Stirling PDF server URL to enable merge, split, OCR, and more.", "warn", 6000);
@@ -4565,6 +5078,1835 @@
 })();
 </script>
 
+<!-- ============================================================================
+     HEX TTS — Speech Engine, Text Layer, Voice Picker, Dictionary
+     Adds auto-detected "read from any word" playback to HEX — PDF Studio
+     Now with HLS streaming playback support + Music Note Notifications.
+     ============================================================================ -->
+<script>
+(function () {
+  "use strict";
+
+  /* ============================================================
+     CONSTANTS
+     ============================================================ */
+  var CHUNK_SIZE = 40;
+  var WATCHDOG_INTERVAL = 1000;
+  var STORAGE_KEY_VOICE = "hex-tts-voice";
+  var STORAGE_KEY_ENGINE = "hex-tts-engine";
+  var STORAGE_KEY_HLS_URL = "hex-tts-hls-url";
+  var DICT_API = "https://api.dictionaryapi.dev/api/v2/entries/en";
+  var SPEED_OPTIONS = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0];
+
+  /* ============================================================
+     STATE
+     ============================================================ */
+  var state = {
+    pdfData: null,          // { allWords, pages, totalWordCount, estimatedReadTime }
+    idMap: null,            // Map wordId -> global index
+    currentWordIndex: -1,
+    currentPage: 1,
+    highlightMode: "word",  // 'word' | 'sentence'
+    userScrolledAway: false,
+    extracting: false,
+    extractPromise: null,
+    lastRenderedPage: 0
+  };
+
+  var speech = {
+    status: "idle",         // idle | playing | paused
+    rate: 1.0,
+    gen: 0,
+    shouldContinue: false,
+    utterance: null,
+    subChunks: [],
+    currentSubChunk: 0,
+    timer: null,
+    watchdog: null,
+    pauseTimer: null,
+    boundaryWorked: false,
+    lastStatus: "idle",     // For transition detection (music note notification)
+    notifiedTrack: null     // Dedup key for notifications
+  };
+
+  // HLS engine configuration
+  var hlsConfig = {
+    engine: "browser",             // 'browser' | 'hls'
+    urlTemplate: "",               // e.g. "https://tts.example.com/page/{page}.m3u8"
+    hlsInstance: null,
+    audio: null,
+    hlsWordsEstimator: null,
+    hlsWordCursor: 0,
+    hlsWordsPerPage: null,
+    _currentHlsPage: 0
+  };
+
+  var voicesState = {
+    voices: [],
+    selectedVoice: null,
+    isLoading: true,
+    searchQuery: "",
+    genderFilter: "all"
+  };
+
+  var dict = {
+    cache: new Map(),
+    abortController: null
+  };
+
+  /* ============================================================
+     DOM CACHE
+     ============================================================ */
+  var dom = {};
+  function cacheDom() {
+    dom.pdfViewer = document.getElementById("viewer");
+    dom.pageWrap = document.getElementById("pageWrap");
+    dom.ttsDock = document.getElementById("ttsDock");
+    dom.ttsPlayBtn = document.getElementById("ttsPlayBtn");
+    dom.ttsPlayIcon = document.getElementById("ttsPlayIcon");
+    dom.ttsStatus = document.getElementById("ttsStatus");
+    dom.ttsStopBtn = document.getElementById("ttsStopBtn");
+    dom.ttsSpeedBtn = document.getElementById("ttsSpeedBtn");
+    dom.ttsSpeedLabel = document.getElementById("ttsSpeedLabel");
+    dom.ttsVoiceBtn = document.getElementById("ttsVoiceBtn");
+    dom.ttsProgressFill = document.getElementById("ttsProgressFill");
+    dom.ttsProgressText = document.getElementById("ttsProgressText");
+    dom.ttsWaveform = document.getElementById("ttsWaveform");
+    dom.ttsSpeedMenu = document.getElementById("ttsSpeedMenu");
+    dom.ttsHlsBar = document.getElementById("ttsHlsBar");
+    dom.ttsHlsCur = document.getElementById("ttsHlsCur");
+    dom.ttsHlsDur = document.getElementById("ttsHlsDur");
+    dom.ttsHlsFill = document.getElementById("ttsHlsFill");
+    dom.ttsHlsTrack = document.getElementById("ttsHlsTrack");
+    dom.voicePicker = document.getElementById("voicePicker");
+    dom.voicePickerBackdrop = document.getElementById("voicePickerBackdrop");
+    dom.vpClose = document.getElementById("vpClose");
+    dom.vpList = document.getElementById("vpList");
+    dom.vpSearch = document.getElementById("vpSearch");
+    dom.vpCount = document.getElementById("vpCount");
+    dom.dictPopup = document.getElementById("dictPopup");
+    dom.dictBody = document.getElementById("dictBody");
+    dom.dictClose = document.getElementById("dictClose");
+    dom.currentPageNum = document.getElementById("pageInput");
+  }
+
+  /* ============================================================
+     UTILS
+     ============================================================ */
+  function clamp(v, mn, mx) { return Math.max(mn, Math.min(mx, v)); }
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c];
+    });
+  }
+
+  function toast(msg, kind, dur) {
+    var t = document.createElement("div");
+    t.className = "toast " + (kind || "");
+    t.textContent = msg;
+    var host = document.getElementById("toasts");
+    if (!host) return;
+    host.appendChild(t);
+    setTimeout(function () {
+      t.style.transition = "opacity .25s, transform .25s";
+      t.style.opacity = "0";
+      t.style.transform = "translateX(20px)";
+      setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 260);
+    }, dur || 3200);
+  }
+
+  function formatClock(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    var m = Math.floor(sec / 60);
+    var s = Math.floor(sec % 60);
+    return m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  /* ============================================================
+     MUSIC NOTE NOTIFICATION
+     ============================================================ */
+  // ── Show Music Note Notification ──
+  function showMusicNotification(track) {
+    try {
+      if (!('Notification' in window)) {
+        console.warn('Notifications API not supported');
+        return;
+      }
+      if (Notification.permission === 'denied') {
+        console.warn('Notification permission denied');
+        return;
+      }
+      if (Notification.permission === 'granted') {
+        const title = track.name || 'Now Playing';
+        const options = {
+          body: `🎵 ${track.formatDesc || 'Audio'} · ${track.format ? track.format.toUpperCase() : ''}`,
+          icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%234b6bfb"/><text x="50" y="60" text-anchor="middle" font-size="50" fill="white">🎵</text></svg>',
+          badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%234b6bfb"/><text x="50" y="60" text-anchor="middle" font-size="50" fill="white">🎵</text></svg>',
+          tag: 'hex-music-playing',
+          renotify: true,
+          silent: false,
+          vibrate: [200, 100, 200],
+          requireInteraction: false,
+          data: { trackId: track.id, trackName: track.name }
+        };
+        const notification = new Notification(title, options);
+        setTimeout(() => notification.close(), 4000);
+      } else if (Notification.permission === 'default') {
+        Notification.requestPermission().then(perm => {
+          if (perm === 'granted') {
+            showMusicNotification(track);
+          }
+        });
+      }
+    } catch (e) { console.warn('Notification error:', e); }
+  }
+
+  function buildTrackInfo() {
+    var fileName = 'Document';
+    try {
+      if (window.HEXStudio && window.HEXStudio.getFileName) {
+        fileName = window.HEXStudio.getFileName() || 'Document';
+      }
+    } catch (e) {}
+    var pageNum = state.lastRenderedPage || 1;
+    var totalPages = (state.pdfData && state.pdfData.pages) ? state.pdfData.pages.length : 1;
+    var isHls = hlsConfig.engine === 'hls';
+    return {
+      id: 'hex-tts:' + fileName + ':' + pageNum,
+      name: 'Reading: ' + fileName + ' — Page ' + pageNum + ' of ' + totalPages,
+      format: isHls ? 'hls' : 'tts',
+      formatDesc: isHls ? 'HLS Audio Stream' : 'Text-to-Speech'
+    };
+  }
+
+  function firePlaybackNotification() {
+    if (!('Notification' in window)) return;
+    var track = buildTrackInfo();
+    if (speech.notifiedTrack === track.id) return;
+    speech.notifiedTrack = track.id;
+    showMusicNotification(track);
+  }
+
+  /* ============================================================
+     VOICE HELPERS
+     ============================================================ */
+  var FEMALE_KEYWORDS = ["female","woman","girl","feminine","zira","hazel","heera","priya","kalpana","hemant","susan","linda","catherine","tracy","huihui","hanhan","irina","paulina","sabina","helena","hortense","julie","caroline","hedda","katja","haruka","sayaka","ayumi","samantha","karen","moira","tessa","fiona","victoria","allison","ava","nicky","kate","serena","joana","luciana","monica","mei-jia","sin-ji","ting-ting","milena","laura","alva","kanya","lekha","sara","ellen","mariska","yelda","zosia","alice","anna","clara","elena","emma","eva","isabella","jenny","lisa","maria","natasha","nina","olivia","sophia","stella"];
+  var MALE_KEYWORDS = ["male","man","boy","masculine","david","mark","richard","george","sean","james","ravi","frank","cosimo","pablo","claude","guillaume","stefan","andika","ichiro","naayf","pattara","zhiwei","kangkang","danny","alex","daniel","fred","junior","ralph","tom","thomas","luca","jorge","diego","yuri","maged","tarik","xander","adam","brian","chris","eric","ivan","jack","kevin","michael","oliver","peter","robert","ryan","william"];
+
+  function guessGender(name) {
+    var l = String(name || "").toLowerCase();
+    for (var i = 0; i < FEMALE_KEYWORDS.length; i++) if (l.indexOf(FEMALE_KEYWORDS[i]) !== -1) return "female";
+    for (var j = 0; j < MALE_KEYWORDS.length; j++) if (l.indexOf(MALE_KEYWORDS[j]) !== -1) return "male";
+    return "unknown";
+  }
+
+  function getLangDisplay(code) {
+    try {
+      var dn = new Intl.DisplayNames(["en"], { type: "language" });
+      var n = dn.of(code);
+      if (n) return n;
+    } catch (e) {}
+    var fallbacks = {
+      "en-US":"English (United States)","en-GB":"English (United Kingdom)","en-AU":"English (Australia)","en-IN":"English (India)","en-CA":"English (Canada)","en-ZA":"English (South Africa)","en-IE":"English (Ireland)","en-NZ":"English (New Zealand)","en-SG":"English (Singapore)","hi-IN":"Hindi (India)","es-ES":"Spanish (Spain)","es-MX":"Spanish (Mexico)","fr-FR":"French (France)","de-DE":"German (Germany)","it-IT":"Italian (Italy)","pt-BR":"Portuguese (Brazil)","pt-PT":"Portuguese (Portugal)","ja-JP":"Japanese (Japan)","ko-KR":"Korean (Korea)","zh-CN":"Chinese (China)","zh-TW":"Chinese (Taiwan)","ar-SA":"Arabic (Saudi Arabia)","ru-RU":"Russian (Russia)","nl-NL":"Dutch (Netherlands)"
+    };
+    return fallbacks[code] || code;
+  }
+
+  var ALIASES = {
+    "us":["united states","american","en-us"],"usa":["united states","american","en-us"],
+    "uk":["united kingdom","british","en-gb","great britain"],"gb":["united kingdom","british","en-gb","great britain"],
+    "ind":["india","indian","hindi","en-in"],"aus":["australia","australian","en-au"],"can":["canada","canadian","en-ca"],
+    "nz":["new zealand","en-nz"],"fr":["france","french","fr-fr"],"de":["germany","german","de-de"],
+    "es":["spain","spanish","es-es"],"it":["italy","italian","it-it"],"jp":["japan","japanese","ja-jp"],
+    "kr":["korea","korean","ko-kr"],"cn":["china","chinese","zh-cn"],"br":["brazil","brazilian","portuguese","pt-br"],
+    "ru":["russia","russian","ru-ru"],"ar":["arabic","ar-sa"],"nl":["netherlands","dutch","nl-nl"],
+    "fem":["female","woman","girl"],"mal":["male","man","boy"],"f":["female"],"m":["male"],
+    "eng":["english","en-"],"hin":["hindi","hi-"],"spa":["spanish","es-"],"fre":["french","fr-"],
+    "ger":["german","de-"],"ita":["italian","it-"],"por":["portuguese","pt-"],"chi":["chinese","zh-"],
+    "jap":["japanese","ja-"],"kor":["korean","ko-"],"ara":["arabic","ar-"],"rus":["russian","ru-"],
+    "dut":["dutch","nl-"],"nat":["natural","neural"],"online":["online","remote","network"],
+    "local":["local","offline"],"ms":["microsoft"],"goog":["google"]
+  };
+
+  function tokenMatchScore(token, target) {
+    var lt = token.toLowerCase();
+    var ltg = target.toLowerCase();
+    if (ltg === lt) return 100;
+    if (ltg.indexOf(lt) === 0) return 80;
+    var words = ltg.split(/[\s\-_(),./]+/);
+    for (var i = 0; i < words.length; i++) if (words[i].indexOf(lt) === 0) return 60;
+    if (ltg.indexOf(lt) !== -1) return 40;
+    return 0;
+  }
+
+  function expandToken(token) {
+    var lower = token.toLowerCase();
+    var out = [lower];
+    Object.keys(ALIASES).forEach(function (k) {
+      if (k === lower || k.indexOf(lower) === 0) {
+        ALIASES[k].forEach(function (v) { out.push(v); });
+      }
+    });
+    var seen = {};
+    return out.filter(function (v) {
+      if (seen[v]) return false;
+      seen[v] = true;
+      return true;
+    });
+  }
+
+  function scoreVoiceMatch(voice, query) {
+    var t = query.trim();
+    if (!t) return 100;
+    var tokens = t.split(/\s+/).filter(function (x) { return !!x; });
+    if (!tokens.length) return 100;
+    var text = [voice.name, voice.lang, voice.langDisplay, voice.country, voice.gender,
+                voice.isLocal ? "local offline" : "online remote"].join(" ");
+    var total = 0;
+    for (var i = 0; i < tokens.length; i++) {
+      var expanded = expandToken(tokens[i]);
+      var best = 0;
+      for (var j = 0; j < expanded.length; j++) {
+        best = Math.max(best, tokenMatchScore(expanded[j], text));
+      }
+      if (best === 0) return 0;
+      total += best;
+    }
+    return total / tokens.length;
+  }
+
+  function searchVoices(voices, query) {
+    if (!query.trim()) return voices;
+    return voices.map(function (v) { return { v: v, score: scoreVoiceMatch(v, query) }; })
+      .filter(function (x) { return x.score > 0; })
+      .sort(function (a, b) { return b.score - a.score; })
+      .map(function (x) { return x.v; });
+  }
+
+  function filterByGender(voices, gender) {
+    if (gender === "all") return voices;
+    return voices.filter(function (v) { return v.gender === gender; });
+  }
+
+  function loadVoices() {
+    if (!window.speechSynthesis) return;
+    var synth = window.speechSynthesis;
+    function fill() {
+      var raw = synth.getVoices() || [];
+      if (!raw.length) return;
+      voicesState.voices = raw.map(function (v) {
+        return {
+          voice: v,
+          name: v.name,
+          lang: v.lang,
+          langDisplay: getLangDisplay(v.lang),
+          country: (v.lang.split("-")[1] || "").toUpperCase(),
+          gender: guessGender(v.name),
+          isLocal: v.localService
+        };
+      }).sort(function (a, b) {
+        if (a.isLocal && !b.isLocal) return -1;
+        if (!a.isLocal && b.isLocal) return 1;
+        if (a.lang < b.lang) return -1;
+        if (a.lang > b.lang) return 1;
+        return a.name.localeCompare(b.name);
+      });
+      voicesState.isLoading = false;
+      var saved = null;
+      try { saved = localStorage.getItem(STORAGE_KEY_VOICE); } catch (e) {}
+      var sel = saved ? voicesState.voices.filter(function (v) { return v.name === saved; })[0] : null;
+      if (!sel) {
+        sel = voicesState.voices.filter(function (v) { return v.lang.indexOf("en-") === 0 && v.isLocal; })[0]
+           || voicesState.voices.filter(function (v) { return v.lang.indexOf("en-") === 0; })[0]
+           || voicesState.voices[0] || null;
+      }
+      if (sel) selectVoice(sel, true);
+      renderVoiceList();
+    }
+    fill();
+    synth.addEventListener("voiceschanged", fill);
+  }
+
+  function selectVoice(v, silent) {
+    if (!v) return;
+    voicesState.selectedVoice = v;
+    try { localStorage.setItem(STORAGE_KEY_VOICE, v.name); } catch (e) {}
+    renderVoiceList();
+    if (!silent) toast("Voice: " + v.name, "ok", 2000);
+  }
+
+  function previewVoice(v) {
+    if (!window.speechSynthesis) return;
+    try { window.speechSynthesis.cancel(); } catch (e) {}
+    var u = new SpeechSynthesisUtterance("Hello! This is a preview of my voice. How does that sound?");
+    u.voice = v.voice;
+    u.rate = 1.0;
+    u.pitch = 1.0;
+    u.volume = 1.0;
+    window.speechSynthesis.speak(u);
+  }
+
+  /* ============================================================
+     VOICE PICKER UI
+     ============================================================ */
+  function openVoicePicker() {
+    if (!dom.voicePicker) return;
+    dom.voicePicker.classList.add("open");
+    dom.voicePickerBackdrop.classList.add("open");
+    renderVoiceList();
+  }
+  function closeVoicePicker() {
+    if (!dom.voicePicker) return;
+    dom.voicePicker.classList.remove("open");
+    dom.voicePickerBackdrop.classList.remove("open");
+  }
+
+  function renderVoiceList() {
+    if (!dom.vpList) return;
+    var q = voicesState.searchQuery;
+    var g = voicesState.genderFilter;
+    var all = voicesState.voices;
+    var filtered = searchVoices(all, q);
+    filtered = filterByGender(filtered, g);
+
+    if (dom.vpCount) {
+      dom.vpCount.textContent = filtered.length + " voice" + (filtered.length === 1 ? "" : "s") + " found";
+    }
+    dom.vpList.innerHTML = "";
+
+    if (voicesState.isLoading) {
+      var sk = document.createElement("div");
+      sk.className = "vp-empty";
+      sk.innerHTML = '<div class="spinner" style="width:22px;height:22px;"></div><p>Loading system voices…</p>';
+      dom.vpList.appendChild(sk);
+      return;
+    }
+    if (!all.length) {
+      dom.vpList.innerHTML =
+        '<div class="vp-empty">' +
+        '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>' +
+        '<p>No voices found</p>' +
+        '<small>Try using Google Chrome or Microsoft Edge for the best voice selection.</small>' +
+        '</div>';
+      return;
+    }
+    if (!filtered.length) {
+      dom.vpList.innerHTML =
+        '<div class="vp-empty">' +
+        '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
+        '<p>No matches</p>' +
+        '<small>Try different search terms like "English", "US", or "female".</small>' +
+        '</div>';
+      return;
+    }
+
+    filtered.forEach(function (v) {
+      var isSel = voicesState.selectedVoice && voicesState.selectedVoice.name === v.name;
+      var item = document.createElement("div");
+      item.className = "vp-item" + (isSel ? " selected" : "");
+      item.setAttribute("role", "option");
+      item.setAttribute("aria-selected", isSel ? "true" : "false");
+      item.tabIndex = 0;
+
+      var genderClass = v.gender === "female" ? "female" : (v.gender === "male" ? "male" : "unknown");
+      var genderLabel = v.gender === "female" ? "♀ Female" : (v.gender === "male" ? "♂ Male" : "❓ Unknown");
+
+      item.innerHTML =
+        '<div class="vp-check">' + (isSel ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : '') + '</div>' +
+        '<div class="vp-info">' +
+        '<div class="vp-name">' + escapeHtml(v.name) + '</div>' +
+        '<div class="vp-meta">' +
+        '<span class="vp-lang">' + escapeHtml(v.langDisplay) + '</span>' +
+        '<span class="vp-gender ' + genderClass + '">' + genderLabel + '</span>' +
+        '<span class="vp-local">' + (v.isLocal ? '💻' : '☁️') + '</span>' +
+        '</div></div>' +
+        '<button class="vp-preview" aria-label="Preview" title="Preview voice">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>' +
+        '</button>';
+
+      item.addEventListener("click", function (e) {
+        if (e.target.closest(".vp-preview")) return;
+        selectVoice(v, false);
+      });
+      item.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          selectVoice(v, false);
+        }
+      });
+      item.querySelector(".vp-preview").addEventListener("click", function (e) {
+        e.stopPropagation();
+        previewVoice(v);
+      });
+      dom.vpList.appendChild(item);
+    });
+  }
+
+  /* ============================================================
+     DICTIONARY
+     ============================================================ */
+  function cleanForLookup(w) {
+    return String(w).replace(/[^a-zA-Z'-]/g, "").toLowerCase().trim();
+  }
+
+  function positionPopup(position) {
+    var popup = dom.dictPopup;
+    if (!popup) return;
+    popup.classList.add("open");
+    var w = Math.min(340, window.innerWidth - 20);
+    var h = Math.min(440, window.innerHeight * 0.6);
+    var pad = 8;
+    var left = position.x;
+    var top = position.y + 12;
+    if (left + w > window.innerWidth - pad) left = window.innerWidth - w - pad;
+    if (left < pad) left = pad;
+    if (top + h > window.innerHeight - pad) top = position.y - h - 12;
+    if (top < pad) top = pad;
+    popup.style.left = left + "px";
+    popup.style.top = top + "px";
+  }
+
+  function showDefinitionLoading(word, position) {
+    positionPopup(position);
+    dom.dictBody.innerHTML =
+      '<div class="dict-loading">' +
+      '<div class="spinner"></div>' +
+      '<span style="font-size:12.5px;color:var(--text-dim);">Looking up "' + escapeHtml(word) + '"…</span>' +
+      '</div>';
+  }
+
+  function showDefinitionError(word, message, position) {
+    positionPopup(position);
+    dom.dictBody.innerHTML = '<div class="dict-error">' + escapeHtml(message) + '</div>';
+  }
+
+  function showDefinitionResult(result, position) {
+    positionPopup(position);
+    var audio = result.phonetics && result.phonetics.filter(function (p) { return p.audio; })[0];
+    var html = '';
+    html += '<div class="dict-word-row">';
+    html += '<h3 class="dict-word">' + escapeHtml(result.word) + '</h3>';
+    if (result.phonetic) html += '<span class="dict-phonetic">' + escapeHtml(result.phonetic) + '</span>';
+    if (audio) {
+      html += '<button class="dict-audio" data-audio="' + escapeHtml(audio.audio) + '" aria-label="Play pronunciation">' +
+              '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>' +
+              '</button>';
+    }
+    html += '</div>';
+
+    result.meanings.forEach(function (m) {
+      html += '<div class="dict-meaning">';
+      html += '<div class="dict-pos">' + escapeHtml(m.partOfSpeech) + '</div>';
+      m.definitions.forEach(function (d, i) {
+        html += '<div class="dict-item"><span class="num">' + (i + 1) + '.</span>' + escapeHtml(d.definition);
+        if (d.example) html += '<div class="dict-example">"' + escapeHtml(d.example) + '"</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    });
+
+    html += '<div class="dict-hint">💡 Right-click any word in the PDF for instant definitions.</div>';
+
+    dom.dictBody.innerHTML = html;
+    var audioBtn = dom.dictBody.querySelector(".dict-audio");
+    if (audioBtn) {
+      audioBtn.addEventListener("click", function () {
+        try { new Audio(audioBtn.dataset.audio).play(); } catch (e) {}
+      });
+    }
+  }
+
+  function closeDefinition() {
+    if (!dom.dictPopup) return;
+    dom.dictPopup.classList.remove("open");
+    if (dict.abortController) {
+      dict.abortController.abort();
+      dict.abortController = null;
+    }
+  }
+
+  function handleWordRightClick(word, position) {
+    var cleaned = cleanForLookup(word.originalText);
+    if (cleaned.length < 2) {
+      showDefinitionError(cleaned || word.originalText, "This word is too short to look up.", position);
+      return;
+    }
+    showDefinitionLoading(cleaned, position);
+
+    if (dict.abortController) dict.abortController.abort();
+    var controller = new AbortController();
+    dict.abortController = controller;
+
+    if (dict.cache.has(cleaned)) {
+      var cached = dict.cache.get(cleaned);
+      if (cached) showDefinitionResult(cached, position);
+      else showDefinitionError(cleaned, 'No definition found for "' + cleaned + '".', position);
+      return;
+    }
+
+    fetch(DICT_API + "/" + encodeURIComponent(cleaned), { signal: controller.signal })
+      .then(function (res) {
+        if (!res.ok) {
+          if (res.status === 404) {
+            dict.cache.set(cleaned, null);
+            showDefinitionError(cleaned, 'No definition found for "' + cleaned + '".', position);
+            return;
+          }
+          throw new Error("HTTP " + res.status);
+        }
+        return res.json();
+      })
+      .then(function (data) {
+        if (!data) return;
+        if (!Array.isArray(data) || !data.length) {
+          dict.cache.set(cleaned, null);
+          showDefinitionError(cleaned, 'No definition found for "' + cleaned + '".', position);
+          return;
+        }
+        var entry = data[0];
+        var result = {
+          word: entry.word || cleaned,
+          phonetic: entry.phonetic,
+          phonetics: entry.phonetics || [],
+          meanings: (entry.meanings || []).slice(0, 3).map(function (m) {
+            return {
+              partOfSpeech: m.partOfSpeech || "unknown",
+              definitions: (m.definitions || []).slice(0, 2).map(function (d) {
+                return { definition: d.definition || "", example: d.example };
+              })
+            };
+          })
+        };
+        dict.cache.set(cleaned, result);
+        showDefinitionResult(result, position);
+      })
+      .catch(function (err) {
+        if (err.name === "AbortError") return;
+        var offline = err instanceof TypeError && String(err.message).indexOf("fetch") !== -1;
+        var msg = offline
+          ? "🌐 You appear to be offline.\n\nWord definitions require an internet connection."
+          : "⚠️ Could not fetch definition. Please check your internet and try again.";
+        showDefinitionError(cleaned, msg, position);
+      });
+  }
+
+  /* ============================================================
+     TEXT EXTRACTION
+     ============================================================ */
+  function extractAllPages() {
+    if (state.extractPromise) return state.extractPromise;
+    var pdfDoc = window.HEXStudio && window.HEXStudio.getPdfDoc && window.HEXStudio.getPdfDoc();
+    if (!pdfDoc) return Promise.resolve(null);
+    state.extracting = true;
+
+    var allWords = [];
+    var pages = [];
+    var globalIdx = 0;
+    var idMap = new Map();
+
+    state.extractPromise = (async function () {
+      for (var p = 1; p <= pdfDoc.numPages; p++) {
+        var page = await pdfDoc.getPage(p);
+        var textContent = await page.getTextContent();
+        var pageData = { items: textContent.items || [], words: [] };
+
+        textContent.items.forEach(function (item, itemIdx) {
+          if (!item || !item.str) return;
+          var str = item.str;
+          if (!str.trim()) return;
+          var transform = item.transform || [1, 0, 0, 1, 0, 0];
+          var itemWidth = typeof item.width === "number" ? item.width : 0;
+          var re = /\S+/g;
+          var m;
+          while ((m = re.exec(str)) !== null) {
+            var raw = m[0];
+            var cleanedText = raw.replace(/^[^A-Za-z0-9]+|[^A-Za-z0-9]+$/g, "");
+            if (!cleanedText) cleanedText = raw;
+            var w = {
+              id: "hexw-" + globalIdx,
+              gIndex: globalIdx,
+              pageIndex: p - 1,
+              itemIdx: itemIdx,
+              charStart: m.index,
+              charEnd: m.index + raw.length,
+              originalText: raw,
+              spokenText: raw.replace(/[^\x00-\x7F]/g, ""),
+              text: raw
+            };
+            if (!w.spokenText.trim()) w.spokenText = raw;
+            allWords.push(w);
+            pageData.words.push(w);
+            idMap.set(w.id, globalIdx);
+            globalIdx++;
+          }
+        });
+
+        pages.push(pageData);
+        if (p % 3 === 0) await new Promise(function (r) { setTimeout(r, 0); });
+      }
+
+      var totalWords = allWords.length;
+      var estimatedReadTime = Math.max(1, Math.round(totalWords / 200));
+
+      state.pdfData = {
+        allWords: allWords,
+        pages: pages,
+        totalWordCount: totalWords,
+        estimatedReadTime: estimatedReadTime
+      };
+      state.idMap = idMap;
+      state.extracting = false;
+      return state.pdfData;
+    })().catch(function (err) {
+      console.error("HEX TTS extraction failed", err);
+      state.extracting = false;
+      return null;
+    });
+
+    return state.extractPromise;
+  }
+
+  /* ============================================================
+     TEXT LAYER RENDERING
+     ============================================================ */
+  function rebuildTextLayerForPage(pageNum, viewport) {
+    if (!state.pdfData || !viewport) return;
+    var pageData = state.pdfData.pages[pageNum - 1];
+    if (!pageData) return;
+
+    var wrap = dom.pageWrap;
+    if (!wrap) return;
+
+    var layer = wrap.querySelector(".textLayer");
+    if (!layer) {
+      layer = document.createElement("div");
+      layer.className = "textLayer";
+      wrap.appendChild(layer);
+    }
+
+    var canvas = document.getElementById("pdf-canvas");
+    if (!canvas) return;
+    layer.style.width = (canvas.clientWidth || viewport.width) + "px";
+    layer.style.height = (canvas.clientHeight || viewport.height) + "px";
+
+    layer.innerHTML = "";
+
+    var frag = document.createDocumentFragment();
+    var items = pageData.items;
+
+    pageData.words.forEach(function (word) {
+      var item = items[word.itemIdx];
+      if (!item) return;
+      var str = item.str || "";
+      var totalLen = str.length;
+      if (totalLen === 0) return;
+
+      var tx = item.transform || [1, 0, 0, 1, 0, 0];
+      var itemWidth = typeof item.width === "number" ? item.width : 0;
+      if (!itemWidth) return;
+
+      var charStart = word.charStart;
+      var charLen = Math.max(1, word.charEnd - charStart);
+
+      var xPdf = tx[4] + (charStart / totalLen) * itemWidth;
+      var widthPdf = (charLen / totalLen) * itemWidth;
+      var yBaselinePdf = tx[5];
+      var fontHeightPdf = Math.hypot(tx[2], tx[3]) || (item.height || 12);
+
+      var p1, p2, p3, p4;
+      try {
+        p1 = viewport.convertToViewportPoint(xPdf, yBaselinePdf);
+        p2 = viewport.convertToViewportPoint(xPdf + widthPdf, yBaselinePdf);
+        p3 = viewport.convertToViewportPoint(xPdf, yBaselinePdf + fontHeightPdf);
+        p4 = viewport.convertToViewportPoint(xPdf + widthPdf, yBaselinePdf + fontHeightPdf);
+      } catch (e) { return; }
+
+      var minX = Math.min(p1[0], p2[0], p3[0], p4[0]);
+      var maxX = Math.max(p1[0], p2[0], p3[0], p4[0]);
+      var minY = Math.min(p1[1], p2[1], p3[1], p4[1]);
+      var maxY = Math.max(p1[1], p2[1], p3[1], p4[1]);
+
+      var left = minX;
+      var top = minY;
+      var width = Math.max(2, maxX - minX);
+      var height = Math.max(4, maxY - minY);
+
+      var span = document.createElement("span");
+      span.className = "pdf-word";
+      span.id = word.id;
+      span.textContent = word.text;
+      span.style.left = left + "px";
+      span.style.top = top + "px";
+      span.style.width = width + "px";
+      span.style.height = height + "px";
+      span.style.fontSize = height + "px";
+      span.style.lineHeight = height + "px";
+      span.dataset.wid = word.id;
+
+      frag.appendChild(span);
+    });
+
+    layer.appendChild(frag);
+    attachWordListeners(layer);
+
+    if (speech.status !== "idle" && state.currentWordIndex >= 0) {
+      var active = state.pdfData.allWords[state.currentWordIndex];
+      if (active && active.pageIndex === pageNum - 1) {
+        var el = document.getElementById(active.id);
+        if (el) el.classList.add("word-highlight");
+      }
+    }
+  }
+
+  function attachWordListeners(layer) {
+    var spans = layer.querySelectorAll(".pdf-word");
+    spans.forEach(function (span) {
+      span.addEventListener("click", function (e) {
+        e.preventDefault();
+        var wid = span.dataset.wid;
+        var idx = state.idMap ? state.idMap.get(wid) : -1;
+        if (idx == null || idx < 0) return;
+        handleWordClick(idx);
+      });
+      span.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var wid = span.dataset.wid;
+        var idx = state.idMap ? state.idMap.get(wid) : -1;
+        if (idx == null || idx < 0 || !state.pdfData) return;
+        var word = state.pdfData.allWords[idx];
+        if (!word) return;
+        handleWordRightClick(word, { x: e.clientX, y: e.clientY });
+      });
+    });
+  }
+
+  /* ============================================================
+     PLAYBACK ENGINE
+     ============================================================ */
+  function findNearestSpeakableWord(allWords, idx) {
+    if (!allWords || !allWords.length) return 0;
+    if (idx < 0) idx = 0;
+    if (idx >= allWords.length) idx = allWords.length - 1;
+    for (var i = idx; i < allWords.length; i++) {
+      if (allWords[i].spokenText && allWords[i].spokenText.trim()) return i;
+    }
+    for (var j = idx - 1; j >= 0; j--) {
+      if (allWords[j].spokenText && allWords[j].spokenText.trim()) return j;
+    }
+    return 0;
+  }
+
+  function analyzePauses(words, startIdx, rate) {
+    var subChunks = [];
+    var current = null;
+
+    words.forEach(function (w, i) {
+      if (!current) {
+        current = {
+          text: "",
+          wordIndices: [],
+          rateMultiplier: 1,
+          pitchOffset: 0,
+          volumeMultiplier: 1,
+          pauseAfter: 0
+        };
+      }
+      var spoken = (w.spokenText || w.text || "").trim();
+      if (!spoken) return;
+      current.text += (current.text ? " " : "") + spoken;
+      current.wordIndices.push(startIdx + i);
+
+      var lastChar = (w.originalText || "").slice(-1);
+      var pause = 0;
+      if (lastChar === "." || lastChar === "?" || lastChar === "!") pause = 320;
+      else if (lastChar === "," || lastChar === ";" || lastChar === ":") pause = 150;
+
+      if (pause > 0) {
+        current.pauseAfter = pause / Math.max(0.5, rate);
+        subChunks.push(current);
+        current = null;
+      }
+    });
+
+    if (current) subChunks.push(current);
+    return { subChunks: subChunks.length ? subChunks : [{ text: "", wordIndices: [], rateMultiplier: 1, pitchOffset: 0, volumeMultiplier: 1, pauseAfter: 0 }] };
+  }
+
+  function handleWordClick(globalIndex) {
+    clearTimeout(handleWordClick._t);
+    handleWordClick._t = setTimeout(function () {
+      playFromWord(globalIndex);
+    }, 180);
+  }
+
+  function playFromWord(globalIndex) {
+    if (hlsConfig.engine === "hls") {
+      // In HLS mode, start streaming for the page containing this word
+      if (!state.pdfData) return;
+      var word = state.pdfData.allWords[globalIndex];
+      var pageNum = word ? word.pageIndex + 1 : (state.lastRenderedPage || 1);
+      startHlsForPage(pageNum);
+      return;
+    }
+
+    if (!state.pdfData) {
+      toast("Preparing document…", "ok", 1500);
+      return;
+    }
+    if (!voicesState.selectedVoice) {
+      toast("No voice available. Try Chrome or Edge.", "warn", 4000);
+      return;
+    }
+    stopSpeech(true);
+    var speakIdx = findNearestSpeakableWord(state.pdfData.allWords, globalIndex);
+    speech.gen++;
+    var gen = speech.gen;
+    speech.status = "playing";
+    speech.shouldContinue = true;
+    state.currentWordIndex = speakIdx;
+    updatePlayUI();
+    updateProgressUI();
+    var allWords = state.pdfData.allWords;
+    var voice = voicesState.selectedVoice;
+    setTimeout(function () {
+      if (gen !== speech.gen) return;
+      readingLoop(speakIdx, allWords, voice, gen);
+    }, 60);
+  }
+
+  async function readingLoop(startIdx, allWords, voice, gen) {
+    var currentStart = startIdx;
+    while (currentStart < allWords.length && speech.shouldContinue && gen === speech.gen) {
+      if (speech.status === "idle") break;
+      var result = await speakChunk(currentStart, allWords, voice, gen);
+      if (result === "cancelled" || gen !== speech.gen) break;
+      currentStart += CHUNK_SIZE;
+      if (currentStart < allWords.length && speech.shouldContinue && gen === speech.gen) {
+        await new Promise(function (r) { setTimeout(r, 30); });
+      }
+    }
+    if (currentStart >= allWords.length && speech.status === "playing" && gen === speech.gen) {
+      finishReading();
+    }
+  }
+
+  async function speakChunk(chunkStart, allWords, voice, gen) {
+    var chunkEnd = Math.min(chunkStart + CHUNK_SIZE, allWords.length);
+    var chunkWords = allWords.slice(chunkStart, chunkEnd);
+    var analysis = analyzePauses(chunkWords, chunkStart, speech.rate);
+    speech.subChunks = analysis.subChunks;
+    speech.currentSubChunk = 0;
+
+    for (var i = 0; i < analysis.subChunks.length; i++) {
+      if (speech.status === "idle" || gen !== speech.gen || !speech.shouldContinue) return "cancelled";
+      if (speech.status === "paused") return "cancelled";
+      speech.currentSubChunk = i;
+      var result = await speakSubChunk(analysis.subChunks[i], voice, gen);
+      if (result === "cancelled" || gen !== speech.gen) return "cancelled";
+    }
+    return "ended";
+  }
+
+  function speakSubChunk(subChunk, voice, gen) {
+    return new Promise(function (resolve) {
+      if (gen !== speech.gen) return resolve("cancelled");
+      if (!subChunk.text || !subChunk.text.trim()) return resolve("ended");
+
+      var synth = window.speechSynthesis;
+      if (!synth) return resolve("ended");
+
+      var u = new SpeechSynthesisUtterance(subChunk.text);
+      u.voice = voice.voice;
+      u.rate = clamp(speech.rate * subChunk.rateMultiplier, 0.1, 10);
+      u.pitch = clamp(1.0 + subChunk.pitchOffset, 0, 2);
+      u.volume = clamp(subChunk.volumeMultiplier, 0, 1);
+      speech.utterance = u;
+      speech.boundaryWorked = false;
+
+      var wordIndices = subChunk.wordIndices || [];
+      var tokens = subChunk.text.split(" ");
+      var wordRanges = [];
+      var charOffset = 0;
+      var limit = Math.min(tokens.length, wordIndices.length);
+      for (var i = 0; i < limit; i++) {
+        wordRanges.push({ start: charOffset, end: charOffset + tokens[i].length, wordIndex: wordIndices[i] });
+        charOffset += tokens[i].length + 1;
+      }
+
+      u.onstart = function () {
+        if (gen !== speech.gen) return;
+        if (wordIndices.length > 0) {
+          state.currentWordIndex = wordIndices[0];
+          highlightCurrentWord();
+        }
+        var wait = Math.max(500, 500 / speech.rate);
+        setTimeout(function () {
+          if (!speech.boundaryWorked && speech.status === "playing" && gen === speech.gen) {
+            startTimerFallback(wordIndices, 1, gen);
+          }
+        }, wait);
+      };
+
+      u.onboundary = function (e) {
+        if (gen !== speech.gen) return;
+        if (e.name !== "word") return;
+        if (speech.status !== "playing") return;
+        if (speech.timer) { clearTimeout(speech.timer); speech.timer = null; }
+        speech.boundaryWorked = true;
+        var charIdx = e.charIndex;
+        var match = null;
+        for (var i = 0; i < wordRanges.length; i++) {
+          var r = wordRanges[i];
+          if (charIdx >= r.start && charIdx < r.end + 2) { match = r; break; }
+        }
+        if (!match && wordRanges.length) {
+          match = wordRanges.reduce(function (prev, cur) {
+            return Math.abs(cur.start - charIdx) < Math.abs(prev.start - charIdx) ? cur : prev;
+          });
+        }
+        if (match) {
+          state.currentWordIndex = match.wordIndex;
+          highlightCurrentWord();
+        }
+      };
+
+      u.onend = function () {
+        if (gen !== speech.gen) return;
+        if (speech.timer) { clearTimeout(speech.timer); speech.timer = null; }
+        speech.utterance = null;
+        if (wordIndices.length > 0) {
+          state.currentWordIndex = wordIndices[wordIndices.length - 1];
+          highlightCurrentWord();
+        }
+        if (subChunk.pauseAfter > 0 && speech.status === "playing" && gen === speech.gen) {
+          speech.pauseTimer = setTimeout(function () {
+            speech.pauseTimer = null;
+            resolve("ended");
+          }, subChunk.pauseAfter);
+        } else {
+          resolve("ended");
+        }
+      };
+
+      u.onerror = function (e) {
+        if (gen !== speech.gen) return;
+        if (speech.timer) { clearTimeout(speech.timer); speech.timer = null; }
+        speech.utterance = null;
+        if (e.error === "canceled" || e.error === "interrupted") resolve("cancelled");
+        else resolve("ended");
+      };
+
+      synth.speak(u);
+
+      if (speech.watchdog) clearInterval(speech.watchdog);
+      speech.watchdog = setInterval(function () {
+        if (speech.status !== "playing" || gen !== speech.gen) return;
+        if (synth.speaking || synth.pending) return;
+        clearInterval(speech.watchdog);
+        speech.watchdog = null;
+        if (speech.pauseTimer) return;
+        speech.utterance = null;
+        resolve("ended");
+      }, WATCHDOG_INTERVAL);
+    });
+  }
+
+  function startTimerFallback(wordIndices, startIdx, gen) {
+    if (speech.timer) clearTimeout(speech.timer);
+    var cps = 12.5 * speech.rate;
+    var idx = startIdx;
+    var next = function () {
+      if (idx >= wordIndices.length || speech.status !== "playing" || gen !== speech.gen) return;
+      state.currentWordIndex = wordIndices[idx];
+      highlightCurrentWord();
+      var word = state.pdfData ? state.pdfData.allWords[wordIndices[idx]] : null;
+      var chars = word ? (word.spokenText || word.text || "").length : 4;
+      var dur = Math.max((chars / cps) * 1000, 80);
+      idx++;
+      speech.timer = setTimeout(next, dur);
+    };
+    next();
+  }
+
+  function pauseSpeech() {
+    if (hlsConfig.engine === "hls") {
+      if (hlsConfig.audio && !hlsConfig.audio.paused) {
+        hlsConfig.audio.pause();
+        speech.status = "paused";
+        updatePlayUI();
+      }
+      return;
+    }
+    if (speech.status !== "playing") return;
+    try { window.speechSynthesis.pause(); } catch (e) {}
+    if (speech.timer) { clearTimeout(speech.timer); speech.timer = null; }
+    speech.status = "paused";
+    updatePlayUI();
+    updateProgressUI();
+  }
+
+  function resumeSpeech() {
+    if (hlsConfig.engine === "hls") {
+      if (hlsConfig.audio) {
+        hlsConfig.audio.play().catch(function (e) {
+          toast("HLS play failed: " + e.message, "err");
+        });
+        speech.status = "playing";
+        updatePlayUI();
+      }
+      return;
+    }
+    if (speech.status !== "paused") return;
+    speech.status = "playing";
+    if (window.speechSynthesis.paused && speech.utterance) {
+      try { window.speechSynthesis.resume(); } catch (e) {}
+      updatePlayUI();
+      updateProgressUI();
+      return;
+    }
+    var idx = state.currentWordIndex;
+    if (idx >= 0 && state.pdfData) {
+      speech.gen++;
+      var gen = speech.gen;
+      speech.shouldContinue = true;
+      readingLoop(idx, state.pdfData.allWords, voicesState.selectedVoice, gen);
+    }
+    updatePlayUI();
+    updateProgressUI();
+  }
+
+  function stopSpeech(silent) {
+    // Always tear down HLS too
+    destroyHls(true);
+
+    speech.gen++;
+    speech.shouldContinue = false;
+    try { window.speechSynthesis.cancel(); } catch (e) {}
+    if (speech.timer) { clearTimeout(speech.timer); speech.timer = null; }
+    if (speech.watchdog) { clearInterval(speech.watchdog); speech.watchdog = null; }
+    if (speech.pauseTimer) { clearTimeout(speech.pauseTimer); speech.pauseTimer = null; }
+    speech.status = "idle";
+    speech.utterance = null;
+    speech.subChunks = [];
+    speech.notifiedTrack = null;
+    state.currentWordIndex = -1;
+    clearAllHighlights();
+    updatePlayUI();
+    updateProgressUI();
+    if (!silent) {
+      // no toast for user-invoked stop
+    }
+  }
+
+  function finishReading() {
+    speech.status = "idle";
+    speech.shouldContinue = false;
+    state.currentWordIndex = -1;
+    clearAllHighlights();
+    updatePlayUI();
+    updateProgressUI();
+    toast("Reading complete!", "ok", 3500);
+  }
+
+  function togglePlayPause() {
+    if (hlsConfig.engine === "hls" && hlsConfig.urlTemplate) {
+      if (speech.status === "playing") {
+        pauseSpeech();
+        return;
+      }
+      if (speech.status === "paused" && hlsConfig.audio) {
+        resumeSpeech();
+        return;
+      }
+      // Start fresh
+      var pageNum = state.lastRenderedPage || 1;
+      startHlsForPage(pageNum);
+      return;
+    }
+
+    if (speech.status === "playing") pauseSpeech();
+    else if (speech.status === "paused") resumeSpeech();
+    else {
+      if (state.pdfData) {
+        var pageIdx = state.lastRenderedPage - 1;
+        var found = -1;
+        for (var i = 0; i < state.pdfData.allWords.length; i++) {
+          if (state.pdfData.allWords[i].pageIndex === pageIdx) { found = i; break; }
+        }
+        if (found >= 0) playFromWord(found);
+        else if (state.pdfData.allWords.length) playFromWord(0);
+      } else {
+        toast("Click any word in the PDF to start reading", "ok", 3000);
+      }
+    }
+  }
+
+  /* ============================================================
+     HLS PLAYBACK ENGINE
+     ============================================================ */
+  function buildHlsUrl(pageNum) {
+    var tpl = hlsConfig.urlTemplate || "";
+    if (!tpl) return "";
+    if (tpl.indexOf("{page}") !== -1) {
+      return tpl.split("{page}").join(String(pageNum));
+    }
+    return tpl;
+  }
+
+  function destroyHls(silent) {
+    if (hlsConfig.audio) {
+      try { hlsConfig.audio.pause(); } catch (e) {}
+      try {
+        hlsConfig.audio.removeAttribute("src");
+        hlsConfig.audio.load();
+      } catch (e) {}
+    }
+    if (hlsConfig.hlsInstance) {
+      try { hlsConfig.hlsInstance.destroy(); } catch (e) {}
+      hlsConfig.hlsInstance = null;
+    }
+    if (hlsConfig.hlsWordsEstimator) {
+      clearInterval(hlsConfig.hlsWordsEstimator);
+      hlsConfig.hlsWordsEstimator = null;
+    }
+    if (!silent) {
+      speech.status = "idle";
+      updatePlayUI();
+    }
+  }
+
+  function ensureHlsAudio() {
+    if (hlsConfig.audio) return hlsConfig.audio;
+    var audio = new Audio();
+    audio.preload = "auto";
+    audio.crossOrigin = "anonymous";
+
+    audio.addEventListener("play", function () {
+      speech.status = "playing";
+      updatePlayUI();
+    });
+    audio.addEventListener("pause", function () {
+      if (speech.status === "playing") {
+        speech.status = "paused";
+        updatePlayUI();
+      }
+    });
+    audio.addEventListener("playing", function () {
+      speech.status = "playing";
+      updatePlayUI();
+    });
+    audio.addEventListener("ended", function () {
+      speech.status = "idle";
+      updatePlayUI();
+      updateProgressUI();
+    });
+    audio.addEventListener("timeupdate", function () {
+      updateHlsProgress();
+    });
+    audio.addEventListener("loadedmetadata", function () {
+      if (dom.ttsHlsDur) dom.ttsHlsDur.textContent = formatClock(audio.duration);
+      updateHlsProgress();
+    });
+    audio.addEventListener("error", function () {
+      toast("HLS audio playback error.", "err", 4000);
+      speech.status = "idle";
+      updatePlayUI();
+    });
+
+    hlsConfig.audio = audio;
+    return audio;
+  }
+
+  function updateHlsProgress() {
+    var audio = hlsConfig.audio;
+    if (!audio) return;
+    var dur = audio.duration;
+    var cur = audio.currentTime;
+    if (dom.ttsHlsCur) dom.ttsHlsCur.textContent = formatClock(cur);
+    if (dom.ttsHlsDur) dom.ttsHlsDur.textContent = isFinite(dur) && dur > 0 ? formatClock(dur) : "--:--";
+    if (dom.ttsHlsFill) {
+      var pct = (isFinite(dur) && dur > 0) ? (cur / dur) * 100 : 0;
+      dom.ttsHlsFill.style.width = pct + "%";
+    }
+  }
+
+  function startHlsForPage(pageNum) {
+    if (!hlsConfig.urlTemplate) {
+      toast("No HLS URL template configured. Open Help → TTS Settings.", "warn", 5000);
+      return;
+    }
+    var url = buildHlsUrl(pageNum);
+    if (!url) {
+      toast("HLS URL is empty.", "warn");
+      return;
+    }
+
+    hlsConfig._currentHlsPage = pageNum;
+
+    var audio = ensureHlsAudio();
+
+    // Tear down previous stream
+    if (hlsConfig.hlsInstance) {
+      try { hlsConfig.hlsInstance.destroy(); } catch (e) {}
+      hlsConfig.hlsInstance = null;
+    }
+    try {
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+    } catch (e) {}
+
+    speech.status = "playing";
+    speech.shouldContinue = true;
+    speech.gen++;
+    var gen = speech.gen;
+
+    updatePlayUI();
+    if (dom.ttsHlsCur) dom.ttsHlsCur.textContent = "0:00";
+    if (dom.ttsHlsFill) dom.ttsHlsFill.style.width = "0%";
+
+    // Fire music note notification for the new HLS page/stream
+    setTimeout(function () {
+      if (gen === speech.gen && (speech.status === "playing" || speech.status === "paused")) {
+        firePlaybackNotification();
+      }
+    }, 250);
+
+    var HlsCtor = window.Hls;
+    var isSafariNative = !!audio.canPlayType("application/vnd.apple.mpegurl");
+
+    function beginNativeFallback() {
+      audio.src = url;
+      audio.play().then(function () {
+        setStatusHlsStreaming(pageNum);
+      }).catch(function (e) {
+        toast("HLS play failed: " + e.message, "err", 5000);
+        speech.status = "idle";
+        updatePlayUI();
+      });
+    }
+
+    if (HlsCtor && HlsCtor.isSupported && HlsCtor.isSupported()) {
+      try {
+        var hls = new HlsCtor({
+          enableWorker: true,
+          lowLatencyMode: false,
+          backBufferLength: 30
+        });
+        hlsConfig.hlsInstance = hls;
+        hls.loadSource(url);
+        hls.attachMedia(audio);
+        hls.on(HlsCtor.Events.MANIFEST_PARSED, function () {
+          if (gen !== speech.gen) return;
+          audio.play().then(function () {
+            setStatusHlsStreaming(pageNum);
+          }).catch(function (e) {
+            toast("HLS play failed: " + e.message, "err", 5000);
+            speech.status = "idle";
+            updatePlayUI();
+          });
+        });
+        hls.on(HlsCtor.Events.ERROR, function (evt, data) {
+          if (gen !== speech.gen) return;
+          if (data && data.fatal) {
+            var msg = data.type + (data.details ? " (" + data.details + ")" : "");
+            toast("HLS error: " + msg, "err", 5000);
+            destroyHls(false);
+          }
+        });
+      } catch (e) {
+        toast("HLS init failed: " + e.message, "err");
+        if (isSafariNative) beginNativeFallback();
+        else { speech.status = "idle"; updatePlayUI(); }
+      }
+    } else if (isSafariNative) {
+      beginNativeFallback();
+    } else {
+      toast("HLS is not supported in this browser.", "err", 5000);
+      speech.status = "idle";
+      updatePlayUI();
+    }
+
+    // Best-effort word following: advance highlight using audio time + page word rate
+    startHlsWordEstimator(pageNum, gen);
+  }
+
+  function setStatusHlsStreaming(pageNum) {
+    if (dom.ttsStatus) {
+      dom.ttsStatus.textContent = "HLS · Page " + pageNum;
+      dom.ttsStatus.className = "dock-status playing";
+    }
+  }
+
+  function startHlsWordEstimator(pageNum, gen) {
+    if (hlsConfig.hlsWordsEstimator) {
+      clearInterval(hlsConfig.hlsWordsEstimator);
+      hlsConfig.hlsWordsEstimator = null;
+    }
+    if (!state.pdfData) return;
+
+    var pageWords = state.pdfData.pages[pageNum - 1] ? state.pdfData.pages[pageNum - 1].words : [];
+    if (!pageWords.length) return;
+
+    hlsConfig.hlsWordCursor = 0;
+    hlsConfig.hlsWordsPerPage = pageWords.length;
+
+    hlsConfig.hlsWordsEstimator = setInterval(function () {
+      if (gen !== speech.gen) return;
+      var audio = hlsConfig.audio;
+      if (!audio || audio.paused || !isFinite(audio.duration) || audio.duration <= 0) return;
+
+      var progress = audio.currentTime / audio.duration;
+      var targetIdx = Math.min(pageWords.length - 1, Math.floor(progress * pageWords.length));
+      if (targetIdx === hlsConfig.hlsWordCursor) return;
+
+      hlsConfig.hlsWordCursor = targetIdx;
+      var w = pageWords[targetIdx];
+      if (w) {
+        state.currentWordIndex = w.gIndex;
+        highlightCurrentWord();
+      }
+    }, 250);
+  }
+
+  function updatePlayUI() {
+    if (!dom.ttsDock) return;
+    var icon = dom.ttsPlayIcon;
+    var status = dom.ttsStatus;
+    var isHls = hlsConfig.engine === "hls";
+
+    if (isHls) {
+      dom.ttsDock.classList.add("hls-mode");
+    } else {
+      dom.ttsDock.classList.remove("hls-mode");
+    }
+
+    if (speech.status === "playing") {
+      if (icon) icon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+      if (status && !isHls) { status.textContent = "Reading…"; status.className = "dock-status playing"; }
+      if (isHls && status && !status.textContent.match(/^HLS/)) {
+        status.textContent = "HLS stream"; status.className = "dock-status playing";
+      }
+      if (dom.ttsStopBtn) dom.ttsStopBtn.style.display = "grid";
+      if (dom.ttsWaveform && !isHls) dom.ttsWaveform.style.display = "flex";
+      if (isHls) { if (dom.ttsWaveform) dom.ttsWaveform.style.display = "none"; }
+    } else if (speech.status === "paused") {
+      if (icon) icon.innerHTML = '<polygon points="6 3 20 12 6 21 6 3"/>';
+      if (status) { status.textContent = "Paused"; status.className = "dock-status paused"; }
+      if (dom.ttsStopBtn) dom.ttsStopBtn.style.display = "grid";
+      if (dom.ttsWaveform) dom.ttsWaveform.style.display = "none";
+    } else {
+      if (icon) icon.innerHTML = '<polygon points="6 3 20 12 6 21 6 3"/>';
+      if (status) {
+        status.textContent = isHls ? "HLS ready — press play" : "Click any word to play";
+        status.className = "dock-status idle";
+      }
+      if (dom.ttsStopBtn) dom.ttsStopBtn.style.display = "none";
+      if (dom.ttsWaveform) dom.ttsWaveform.style.display = "none";
+    }
+    if (dom.ttsSpeedLabel) {
+      dom.ttsSpeedLabel.textContent = isHls
+        ? (hlsConfig.audio ? (hlsConfig.audio.playbackRate || 1).toFixed(2).replace(/\.?0+$/, "") + "×" : "1×")
+        : speech.rate.toFixed(2).replace(/\.?0+$/, "") + "×";
+    }
+
+    // ── Music Note Notification: fire on transition to "playing" ──
+    if (speech.status === "playing" && speech.lastStatus !== "playing") {
+      firePlaybackNotification();
+    }
+    speech.lastStatus = speech.status;
+  }
+
+  function updateProgressUI() {
+    if (hlsConfig.engine === "hls") {
+      if (dom.ttsProgressFill) dom.ttsProgressFill.style.width = "0%";
+      if (dom.ttsProgressText) dom.ttsProgressText.textContent = "";
+      return;
+    }
+    if (!dom.ttsProgressFill || !dom.ttsProgressText) return;
+    if (state.currentWordIndex >= 0 && state.pdfData && state.pdfData.allWords.length) {
+      var total = state.pdfData.allWords.length;
+      var pct = Math.round((state.currentWordIndex / total) * 100);
+      dom.ttsProgressFill.style.width = pct + "%";
+      dom.ttsProgressText.textContent = (state.currentWordIndex + 1).toLocaleString() + " / " + total.toLocaleString() + " words · " + pct + "%";
+    } else {
+      dom.ttsProgressFill.style.width = "0%";
+      dom.ttsProgressText.textContent = "";
+    }
+  }
+
+  function clearAllHighlights() {
+    document.querySelectorAll(".pdf-word.word-highlight, .pdf-word.sentence-highlight").forEach(function (el) {
+      el.classList.remove("word-highlight");
+      el.classList.remove("sentence-highlight");
+    });
+  }
+
+  function highlightCurrentWord() {
+    clearAllHighlights();
+    if (state.currentWordIndex < 0 || !state.pdfData) return;
+    var word = state.pdfData.allWords[state.currentWordIndex];
+    if (!word) return;
+
+    var targetPage = word.pageIndex + 1;
+    var currentPageNum = dom.currentPageNum ? parseInt(dom.currentPageNum.value, 10) : 0;
+    if (targetPage !== currentPageNum) {
+      var evt = new CustomEvent("hex:ttsRequestPage", { detail: { pageNum: targetPage } });
+      window.dispatchEvent(evt);
+      setTimeout(function () {
+        var el = document.getElementById(word.id);
+        if (el) el.classList.add("word-highlight");
+      }, 220);
+      return;
+    }
+
+    if (state.highlightMode === "sentence") {
+      var range = getSentenceRange(state.pdfData.allWords, state.currentWordIndex);
+      for (var i = range.start; i <= range.end; i++) {
+        var w = state.pdfData.allWords[i];
+        if (!w) continue;
+        var el2 = document.getElementById(w.id);
+        if (el2) el2.classList.add("sentence-highlight");
+      }
+    }
+
+    var el = document.getElementById(word.id);
+    if (el) {
+      el.classList.add("word-highlight");
+      if (!state.userScrolledAway) autoScrollToWord(word, el);
+    }
+  }
+
+  function autoScrollToWord(word, el) {
+    if (!dom.pdfViewer || !el) return;
+    var rect = el.getBoundingClientRect();
+    var vRect = dom.pdfViewer.getBoundingClientRect();
+    var threshold = vRect.top + vRect.height * 0.7;
+    if (rect.top > threshold || rect.bottom < vRect.top) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
+  function getSentenceRange(allWords, wordIndex) {
+    if (!allWords.length || wordIndex < 0 || wordIndex >= allWords.length) return { start: wordIndex, end: wordIndex };
+    function isEnd(t) {
+      var tr = (t || "").trim();
+      if (!tr) return false;
+      var lc = tr.slice(-1);
+      return lc === "." || lc === "?" || lc === "!";
+    }
+    var start = wordIndex;
+    for (var i = wordIndex - 1; i >= 0; i--) {
+      if (allWords[i].pageIndex !== allWords[wordIndex].pageIndex) { start = i + 1; break; }
+      if (isEnd(allWords[i].originalText)) { start = i + 1; break; }
+      start = i;
+    }
+    var end = wordIndex;
+    for (var j = wordIndex; j < allWords.length; j++) {
+      if (allWords[j].pageIndex !== allWords[wordIndex].pageIndex) { end = j - 1; break; }
+      end = j;
+      if (isEnd(allWords[j].originalText)) break;
+    }
+    return { start: start, end: end };
+  }
+
+  /* ============================================================
+     SPEED MENU
+     ============================================================ */
+  function openSpeedMenu() {
+    if (!dom.ttsSpeedMenu) return;
+    dom.ttsSpeedMenu.innerHTML = "";
+
+    var currentRate = hlsConfig.engine === "hls"
+      ? (hlsConfig.audio ? (hlsConfig.audio.playbackRate || 1) : 1)
+      : speech.rate;
+
+    SPEED_OPTIONS.forEach(function (opt) {
+      var b = document.createElement("button");
+      b.className = "sp-item" + (Math.abs(currentRate - opt) < 0.01 ? " active" : "");
+      var tick = Math.abs(currentRate - opt) < 0.01 ? '<span class="tick">✓</span>' : '';
+      b.innerHTML = "<span>" + opt.toFixed(2).replace(/\.?0+$/, "") + "×</span>" + tick;
+      b.addEventListener("click", function () {
+        if (hlsConfig.engine === "hls" && hlsConfig.audio) {
+          hlsConfig.audio.playbackRate = opt;
+        } else {
+          speech.rate = opt;
+        }
+        updatePlayUI();
+        closeSpeedMenu();
+      });
+      dom.ttsSpeedMenu.appendChild(b);
+    });
+    var r = dom.ttsSpeedBtn.getBoundingClientRect();
+    dom.ttsSpeedMenu.style.right = Math.max(8, window.innerWidth - r.right) + "px";
+    dom.ttsSpeedMenu.style.bottom = (window.innerHeight - r.top + 6) + "px";
+    dom.ttsSpeedMenu.classList.add("open");
+  }
+  function closeSpeedMenu() {
+    if (dom.ttsSpeedMenu) dom.ttsSpeedMenu.classList.remove("open");
+  }
+
+  /* ============================================================
+     DOCK VISIBILITY
+     ============================================================ */
+  function showDock() {
+    if (dom.ttsDock) {
+      dom.ttsDock.classList.add("visible");
+      dom.ttsDock.setAttribute("aria-hidden", "false");
+    }
+  }
+  function hideDock() {
+    if (dom.ttsDock) {
+      dom.ttsDock.classList.remove("visible");
+      dom.ttsDock.setAttribute("aria-hidden", "true");
+    }
+  }
+
+  /* ============================================================
+     TTS CONFIG EXPOSURE (for main app menu)
+     ============================================================ */
+  function loadTtsConfig() {
+    try {
+      var eng = localStorage.getItem(STORAGE_KEY_ENGINE) || "browser";
+      var url = localStorage.getItem(STORAGE_KEY_HLS_URL) || "";
+      hlsConfig.engine = (eng === "hls") ? "hls" : "browser";
+      hlsConfig.urlTemplate = url;
+    } catch (e) {}
+  }
+
+  window.HEXTtsConfig = function () {
+    return { engine: hlsConfig.engine, hlsUrl: hlsConfig.urlTemplate };
+  };
+
+  window.HEXSetTtsConfig = function (cfg) {
+    if (!cfg) return;
+    if (cfg.engine === "hls" || cfg.engine === "browser") {
+      hlsConfig.engine = cfg.engine;
+      try { localStorage.setItem(STORAGE_KEY_ENGINE, cfg.engine); } catch (e) {}
+    }
+    if (typeof cfg.hlsUrl === "string") {
+      hlsConfig.urlTemplate = cfg.hlsUrl;
+      try { localStorage.setItem(STORAGE_KEY_HLS_URL, cfg.hlsUrl); } catch (e) {}
+    }
+    // If engine changed away from HLS, tear down any active HLS stream
+    if (hlsConfig.engine !== "hls") {
+      destroyHls(true);
+      speech.status = "idle";
+    }
+    updatePlayUI();
+    updateProgressUI();
+  };
+
+  /* ============================================================
+     WIRE UP EVENTS
+     ============================================================ */
+  function initUI() {
+    if (dom.ttsPlayBtn) dom.ttsPlayBtn.addEventListener("click", togglePlayPause);
+    if (dom.ttsStopBtn) dom.ttsStopBtn.addEventListener("click", function () { stopSpeech(false); });
+    if (dom.ttsSpeedBtn) dom.ttsSpeedBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      if (dom.ttsSpeedMenu.classList.contains("open")) closeSpeedMenu();
+      else openSpeedMenu();
+    });
+    if (dom.ttsVoiceBtn) dom.ttsVoiceBtn.addEventListener("click", openVoicePicker);
+
+    // HLS progress bar seek
+    if (dom.ttsHlsTrack) {
+      dom.ttsHlsTrack.addEventListener("click", function (e) {
+        if (!hlsConfig.audio || !isFinite(hlsConfig.audio.duration) || hlsConfig.audio.duration <= 0) return;
+        var rect = dom.ttsHlsTrack.getBoundingClientRect();
+        var pct = (e.clientX - rect.left) / rect.width;
+        hlsConfig.audio.currentTime = pct * hlsConfig.audio.duration;
+      });
+    }
+
+    document.addEventListener("click", function (e) {
+      if (dom.ttsSpeedMenu && !e.target.closest("#ttsSpeedMenu") && !e.target.closest("#ttsSpeedBtn")) {
+        closeSpeedMenu();
+      }
+    });
+
+    if (dom.voicePickerBackdrop) dom.voicePickerBackdrop.addEventListener("click", closeVoicePicker);
+    if (dom.vpClose) dom.vpClose.addEventListener("click", closeVoicePicker);
+    if (dom.vpSearch) {
+      dom.vpSearch.addEventListener("input", function () {
+        voicesState.searchQuery = dom.vpSearch.value;
+        renderVoiceList();
+      });
+    }
+    document.querySelectorAll(".vp-filters button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        document.querySelectorAll(".vp-filters button").forEach(function (x) { x.classList.remove("active"); });
+        b.classList.add("active");
+        voicesState.genderFilter = b.getAttribute("data-gender");
+        renderVoiceList();
+      });
+    });
+
+    if (dom.dictClose) dom.dictClose.addEventListener("click", closeDefinition);
+    document.addEventListener("click", function (e) {
+      if (dom.dictPopup && dom.dictPopup.classList.contains("open")) {
+        if (!e.target.closest("#dictPopup") && !e.target.closest(".pdf-word")) {
+          closeDefinition();
+        }
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        if (dom.dictPopup && dom.dictPopup.classList.contains("open")) closeDefinition();
+        if (dom.voicePicker && dom.voicePicker.classList.contains("open")) closeVoicePicker();
+        closeSpeedMenu();
+      }
+    });
+
+    if (dom.pdfViewer) {
+      dom.pdfViewer.addEventListener("scroll", function () {
+        if (speech.status === "idle") return;
+        if (state.currentWordIndex < 0) return;
+        var el = document.getElementById(state.pdfData.allWords[state.currentWordIndex].id);
+        if (!el) return;
+        var rect = el.getBoundingClientRect();
+        var vRect = dom.pdfViewer.getBoundingClientRect();
+        state.userScrolledAway = (rect.bottom < vRect.top || rect.top > vRect.bottom);
+      }, { passive: true });
+    }
+
+    if (dom.pdfViewer) {
+      dom.pdfViewer.addEventListener("mousedown", function (e) {
+        if (e.target.closest(".pdf-word")) return;
+        closeDefinition();
+      });
+    }
+  }
+
+  /* ============================================================
+     HOOK: existing app dispatches hex:* custom events
+     ============================================================ */
+  function initHooks() {
+    window.addEventListener("hex:docLoaded", function () {
+      state.pdfData = null;
+      state.idMap = null;
+      state.extractPromise = null;
+      state.currentWordIndex = -1;
+      state.userScrolledAway = false;
+      speech.notifiedTrack = null;
+      showDock();
+      updatePlayUI();
+      updateProgressUI();
+      setTimeout(function () {
+        extractAllPages().then(function (data) {
+          if (data && data.totalWordCount > 0) {
+            setTimeout(function () {
+              try {
+                var evt = new CustomEvent("hex:ttsRequestRender", {});
+                window.dispatchEvent(evt);
+              } catch (e) {}
+            }, 30);
+          } else if (data && data.totalWordCount === 0) {
+            toast("This PDF has no selectable text (probably a scan). Use OCR from the Tools panel.", "warn", 6000);
+          }
+        });
+      }, 100);
+    });
+
+    window.addEventListener("hex:docClosed", function () {
+      stopSpeech(true);
+      hideDock();
+      state.pdfData = null;
+      state.idMap = null;
+      state.extractPromise = null;
+      state.lastRenderedPage = 0;
+      speech.notifiedTrack = null;
+      var tl = dom.pageWrap ? dom.pageWrap.querySelector(".textLayer") : null;
+      if (tl && tl.parentNode) tl.parentNode.removeChild(tl);
+    });
+
+    window.addEventListener("hex:pageRendered", function (e) {
+      var d = e.detail || {};
+      if (!d.pageNum || !d.viewport) return;
+      state.lastRenderedPage = d.pageNum;
+      if (state.pdfData) {
+        rebuildTextLayerForPage(d.pageNum, d.viewport);
+      } else if (state.extracting || state.extractPromise) {
+        (state.extractPromise || Promise.resolve(null)).then(function () {
+          if (state.pdfData) rebuildTextLayerForPage(d.pageNum, d.viewport);
+        });
+      }
+
+      // In HLS mode, if a stream is currently playing, advance to new page's stream
+      if (hlsConfig.engine === "hls" &&
+          speech.status === "playing" &&
+          hlsConfig.audio &&
+          !hlsConfig.audio.paused &&
+          hlsConfig.urlTemplate.indexOf("{page}") !== -1) {
+        var oldPage = hlsConfig._currentHlsPage || 0;
+        if (oldPage !== d.pageNum) {
+          hlsConfig._currentHlsPage = d.pageNum;
+          startHlsForPage(d.pageNum);
+        }
+      }
+    });
+
+    window.addEventListener("hex:ttsRequestPage", function (e) {
+      var d = e.detail || {};
+      if (!d.pageNum) return;
+      var pi = document.getElementById("pageInput");
+      if (pi) {
+        pi.value = String(d.pageNum);
+        var kd = new KeyboardEvent("keydown", { key: "Enter", bubbles: true });
+        pi.dispatchEvent(kd);
+      }
+    });
+
+    window.addEventListener("hex:ttsRequestRender", function () {
+      var pi = document.getElementById("pageInput");
+      if (!pi) return;
+      var kd = new KeyboardEvent("keydown", { key: "Enter", bubbles: true });
+      pi.dispatchEvent(kd);
+    });
+  }
+
+  /* ============================================================
+     BOOT
+     ============================================================ */
+  function boot() {
+    cacheDom();
+    loadTtsConfig();
+    loadVoices();
+    initUI();
+    initHooks();
+    updatePlayUI();
+    updateProgressUI();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+})();
+</script>
+
+<script>
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+function ctrlShiftKey(e, keyCode) {
+  return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+}
+
+document.onkeydown = (e) => {
+  if (
+    event.keyCode === 123 ||
+    ctrlShiftKey(e, 'I') ||
+    ctrlShiftKey(e, 'J') ||
+    ctrlShiftKey(e, 'C') ||
+    (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
+  )
+    return false;
+};
+</script>
 <script>
 // Disable right-click
 document.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -4584,10 +6926,8 @@ document.onkeydown = (e) => {
   )
     return false;
 };
-
-<script src='demo-to-prevent-copy-paste-on-blogger_files/googleapis.js'>
 </script>
-<script type='text/javascript'>
+<script>
  if (typeof document.onselectstart!="undefined" ) {
   document.onselectstart=new Function ("return false" );
  }
@@ -4662,11 +7002,9 @@ if (document.addEventListener) {
     }, false);
 }else{
     document.attachEvent('oncontextmenu', function() {
-    window.event.returnValue = false;
+    window.returnValue = false;
     });
 }
 </script>
-
-  
 </body>
 </html>
